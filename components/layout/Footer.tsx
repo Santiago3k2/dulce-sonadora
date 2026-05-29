@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { MapPin, Phone, Clock, Mail } from 'lucide-react';
 import { categoryGroups } from '@/lib/data/categories';
 import { WHATSAPP_NUMBER, buildWhatsAppLink } from '@/lib/utils/format';
+import Logo from '@/components/ui/Logo';
 
 const Facebook = ({ size = 18 }) => (
   <svg
@@ -75,10 +76,13 @@ export default function Footer() {
         <div className="grid md:grid-cols-4 gap-10">
           {/* Brand */}
           <div>
-            <Link href="/" className="logo-text text-2xl">
-              Dulce Soñadora
+            <Link href="/" aria-label="Dulce Soñadora" className="inline-block">
+              <Logo size="md" />
             </Link>
-            <p className="mt-4 text-sm text-text-muted leading-relaxed">
+            <p className="mt-4 text-sm text-text-muted leading-relaxed italic">
+              &ldquo;El encanto de soñar&rdquo;
+            </p>
+            <p className="mt-2 text-sm text-text-muted leading-relaxed">
               Pijamas y lencería con diseños románticos, hechos con dedicación y los mejores materiales para tus noches.
             </p>
             <div className="flex gap-3 mt-5">

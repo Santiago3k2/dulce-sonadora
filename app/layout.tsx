@@ -22,14 +22,21 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: 'Dulce Soñadora — Pijamas y Lencería',
+  title: 'Dulce Soñadora — El encanto de soñar',
   description:
     'Pijamas en satín y algodón, lencería y baby doll. Diseños románticos, calidad superior, envíos a toda Colombia.',
-  keywords: ['pijamas', 'lencería', 'satín', 'algodón', 'baby doll', 'Colombia'],
+  keywords: ['pijamas', 'lencería', 'satín', 'algodón', 'baby doll', 'Colombia', 'Dulce Soñadora'],
   openGraph: {
-    title: 'Dulce Soñadora',
-    description: 'Pijamas y lencería con diseños encantadores',
+    title: 'Dulce Soñadora — El encanto de soñar',
+    description: 'Pijamas y lencería con diseños encantadores. Envíos a toda Colombia.',
     type: 'website',
+    images: ['/logo.jpeg'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Dulce Soñadora',
+    description: 'El encanto de soñar — Pijamas y lencería',
+    images: ['/logo.jpeg'],
   },
 };
 

@@ -14,6 +14,7 @@ import {
 import { categoryGroups } from '@/lib/data/categories';
 import { useCartStore } from '@/lib/store/cartStore';
 import { useWishlistStore } from '@/lib/store/wishlistStore';
+import Logo from '@/components/ui/Logo';
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -55,10 +56,10 @@ export default function Header() {
       >
         <div className="container mx-auto px-4 lg:px-8">
           {/* Desktop */}
-          <div className="hidden md:flex items-center justify-between h-20">
+          <div className="hidden md:flex items-center justify-between h-24">
             {/* Logo */}
-            <Link href="/" className="logo-text text-2xl lg:text-3xl">
-              Dulce Soñadora
+            <Link href="/" aria-label="Dulce Soñadora — Inicio" className="flex items-center">
+              <Logo size="md" priority />
             </Link>
 
             {/* Nav */}
@@ -150,7 +151,7 @@ export default function Header() {
           </div>
 
           {/* Mobile */}
-          <div className="md:hidden flex items-center justify-between h-16">
+          <div className="md:hidden flex items-center justify-between h-20">
             <button
               onClick={() => setMobileOpen(true)}
               aria-label="Abrir menú"
@@ -158,8 +159,8 @@ export default function Header() {
             >
               <Menu size={24} />
             </button>
-            <Link href="/" className="logo-text text-xl">
-              Dulce Soñadora
+            <Link href="/" aria-label="Dulce Soñadora — Inicio" className="flex items-center">
+              <Logo size="sm" priority />
             </Link>
             <button
               onClick={openCart}
@@ -193,7 +194,7 @@ export default function Header() {
           } flex flex-col overflow-y-auto`}
         >
           <div className="flex items-center justify-between px-5 py-4 border-b border-gray-line">
-            <span className="logo-text text-lg">Dulce Soñadora</span>
+            <Logo size="sm" />
             <button
               onClick={() => setMobileOpen(false)}
               aria-label="Cerrar menú"
