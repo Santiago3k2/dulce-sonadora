@@ -56,7 +56,7 @@ export default function Header() {
       >
         <div className="container mx-auto px-4 lg:px-8">
           {/* Desktop */}
-          <div className="hidden md:flex items-center justify-between h-24">
+          <div className="hidden md:flex items-center justify-between h-28">
             {/* Logo */}
             <Link href="/" aria-label="Dulce Soñadora — Inicio" className="flex items-center">
               <Logo size="md" priority />

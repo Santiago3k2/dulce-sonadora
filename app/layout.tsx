@@ -30,13 +30,13 @@ export const metadata: Metadata = {
     title: 'Dulce Soñadora — El encanto de soñar',
     description: 'Pijamas y lencería con diseños encantadores. Envíos a toda Colombia.',
     type: 'website',
-    images: ['/logo.jpeg'],
+    images: ['/logo.png'],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Dulce Soñadora',
     description: 'El encanto de soñar — Pijamas y lencería',
-    images: ['/logo.jpeg'],
+    images: ['/logo.png'],
   },
 };
 
