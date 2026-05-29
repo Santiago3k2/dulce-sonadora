@@ -1,0 +1,32 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# next.js
+.next/
+out/
+
+# production
+build/
+
+# misc
+.DS_Store
+*.pem
+*.log
+*.tsbuildinfo
+
+# env files
+.env
+.env*.local
+
+# vercel
+.vercel
+
+# IDE
+.vscode/
+.idea/
+
+# Carpetas de fuente original (no subir al repo)
+ROPA DULCE-*/
+EFECTO*.txt

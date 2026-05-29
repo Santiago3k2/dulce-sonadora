@@ -1,0 +1,145 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --pink-soft: #F9C5D1;
+  --pink-dark: #E8829A;
+  --pink-deeper: #D86A85;
+  --cream: #FFF7F5;
+  --gray-soft: #F8F8F8;
+  --text-dark: #222222;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  font-family: var(--font-poppins), system-ui, sans-serif;
+  color: var(--text-dark);
+  background: #ffffff;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-playfair), Georgia, serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f8f8f8;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--pink-dark);
+  border-radius: 4px;
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Embla carousel base styles */
+.embla {
+  overflow: hidden;
+}
+.embla__container {
+  display: flex;
+}
+.embla__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+}
+
+/* Smooth transitions */
+.btn-primary {
+  background: var(--pink-dark);
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  letter-spacing: 0.025em;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.btn-primary:hover {
+  background: var(--pink-deeper);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px -8px rgba(232, 130, 154, 0.5);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--pink-dark);
+  border: 1.5px solid var(--pink-dark);
+  padding: 0.75rem 2rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.btn-outline:hover {
+  background: var(--pink-dark);
+  color: white;
+}
+
+/* Section heading */
+.section-title {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 2.25rem;
+  font-weight: 400;
+  text-align: center;
+  color: var(--text-dark);
+  letter-spacing: 0.025em;
+}
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 1.75rem;
+  }
+}
+
+/* Italic logo style */
+.logo-text {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--pink-deeper);
+}
+
+/* Image hover */
+.img-hover {
+  transition: transform 0.6s ease;
+}
+.img-hover:hover {
+  transform: scale(1.05);
+}
+
+/* Bottom nav safe area for iPhone */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
