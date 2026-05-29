@@ -50,21 +50,22 @@ export default function Footer() {
   return (
     <footer className="bg-gray-soft border-t border-gray-line mt-20">
       {/* Newsletter / call to action band */}
-      <div className="bg-pink-soft/40 py-10 px-4">
-        <div className="container mx-auto text-center">
-          <h2 className="font-serif text-2xl md:text-3xl text-pink-deeper">
+      <div className="bg-gradient-warm py-12 px-4 relative overflow-hidden">
+        <div className="absolute inset-0 bg-white/10" />
+        <div className="container mx-auto text-center relative">
+          <h2 className="font-serif text-2xl md:text-4xl text-white drop-shadow-md">
             Únete a nuestra comunidad
           </h2>
-          <p className="text-sm text-text-muted mt-2 max-w-md mx-auto">
+          <p className="text-sm md:text-base text-white/95 mt-3 max-w-md mx-auto">
             Recibe novedades, ofertas exclusivas y los nuevos diseños directo a tu WhatsApp.
           </p>
           <a
             href={whatsappLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-primary mt-5"
+            className="mt-6 inline-flex items-center justify-center gap-2 bg-white text-pink-deeper px-8 py-3 rounded-full font-semibold hover:scale-105 hover:shadow-xl transition-all"
           >
-            Escríbenos
+            Escríbenos ✨
           </a>
         </div>
       </div>

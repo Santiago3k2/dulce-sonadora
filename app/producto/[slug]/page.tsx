@@ -54,7 +54,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
         <section className="mt-20">
           <div className="text-center mb-10">
             <h2 className="section-title">También te puede gustar</h2>
-            <div className="mx-auto mt-4 w-16 h-px bg-pink-deeper" />
+            <div className="divider-gradient" />
           </div>
           <ProductGrid products={related} />
         </section>

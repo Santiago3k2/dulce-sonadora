@@ -91,7 +91,7 @@ export default function HeroSlider() {
         <div className="embla__container">
           {slides.map((s, i) => (
             <div key={i} className="embla__slide">
-              <div className="relative w-full min-h-[460px] md:min-h-[560px] lg:min-h-[640px] bg-pink-soft/20">
+              <div className="relative w-full min-h-[460px] md:min-h-[560px] lg:min-h-[640px] bg-gradient-hero">
                 {/* Image */}
                 <div className="absolute inset-0 md:left-1/2 md:right-0">
                   <Image
@@ -105,13 +105,13 @@ export default function HeroSlider() {
                 </div>
 
                 {/* Overlay gradient for readability */}
-                <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-transparent md:via-white/70 md:to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-r from-cream via-cream/85 to-transparent md:via-cream/70 md:to-transparent" />
 
                 {/* Content */}
                 <div className="relative container mx-auto h-full min-h-[460px] md:min-h-[560px] lg:min-h-[640px] flex items-center px-6 lg:px-12">
                   <div className="max-w-md md:max-w-xl space-y-4 md:space-y-6">
-                    <p className="text-xs md:text-sm uppercase tracking-[0.25em] text-pink-deeper">
-                      {s.subtitle}
+                    <p className="text-xs md:text-sm uppercase tracking-[0.25em] text-pink-deeper font-semibold">
+                      ✨ {s.subtitle}
                     </p>
                     <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl text-text-dark leading-tight">
                       {s.title}
@@ -124,13 +124,13 @@ export default function HeroSlider() {
                         <span className="text-text-muted text-lg md:text-xl line-through">
                           {formatCOP(s.priceRetail)}
                         </span>
-                        <span className="font-serif text-pink-deeper text-3xl md:text-5xl font-semibold">
+                        <span className="font-serif text-3xl md:text-5xl font-bold bg-gradient-to-r from-pink-vivid to-pink-deeper bg-clip-text text-transparent">
                           {formatCOP(s.priceWholesale)}
                         </span>
                       </div>
                     </div>
                     <Link href={s.href} className="btn-primary inline-flex">
-                      {s.cta}
+                      {s.cta} →
                     </Link>
                   </div>
                 </div>

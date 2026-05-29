@@ -7,10 +7,10 @@ interface BadgeProps {
 }
 
 const styles = {
-  new: 'bg-pink-soft text-pink-deeper',
-  sale: 'bg-pink-deeper text-white',
-  'sold-out': 'bg-gray-700 text-white',
-  featured: 'bg-white text-pink-deeper border border-pink-soft',
+  new: 'bg-gradient-to-r from-pink-dark to-pink-deeper text-white shadow-pink-soft',
+  sale: 'bg-gradient-to-r from-pink-vivid to-pink-deeper text-white shadow-pink',
+  'sold-out': 'bg-gray-800 text-white',
+  featured: 'bg-gradient-to-r from-gold-soft to-rose-gold text-white shadow-pink-soft',
 };
 
 export default function Badge({ variant = 'new', children, className = '' }: BadgeProps) {

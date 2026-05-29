@@ -44,8 +44,8 @@ export default function Header() {
   return (
     <>
       {/* Top announcement bar */}
-      <div className="bg-pink-deeper text-white text-center text-xs py-2 px-4">
-        Envíos contra entrega a toda Colombia · Precio mayorista desde 6 unidades 🌸
+      <div className="bg-gradient-warm text-white text-center text-xs py-2.5 px-4 font-medium tracking-wide">
+        ✨ Envíos contra entrega a toda Colombia · Precio mayorista desde 6 unidades 🌸
       </div>
 
       <header

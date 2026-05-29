@@ -1,4 +1,4 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import ProductGrid from '@/components/products/ProductGrid';
 import { products } from '@/lib/data/products';
 import { categoryGroups } from '@/lib/data/categories';
@@ -17,7 +17,7 @@ export default function ShopPage() {
           Catálogo completo
         </p>
         <h1 className="font-serif text-3xl md:text-5xl text-text-dark">Tienda</h1>
-        <div className="mx-auto mt-4 w-16 h-px bg-pink-deeper" />
+        <div className="divider-gradient" />
         <p className="mt-4 text-text-muted max-w-2xl mx-auto text-sm">
           Descubre {products.length} productos pensados para tu comodidad y elegancia.
         </p>

@@ -1,4 +1,4 @@
-import { MapPin, Phone, Mail, Clock, MessageCircle, Instagram } from 'lucide-react';
+﻿import { MapPin, Phone, Mail, Clock, MessageCircle, Instagram } from 'lucide-react';
 import { WHATSAPP_NUMBER, buildWhatsAppLink } from '@/lib/utils/format';
 
 export const metadata = {
@@ -24,7 +24,7 @@ export default function ContactPage() {
           Estamos aquí para ti
         </p>
         <h1 className="font-serif text-3xl md:text-5xl">Contáctanos</h1>
-        <div className="mx-auto mt-4 w-16 h-px bg-pink-deeper" />
+        <div className="divider-gradient" />
         <p className="mt-4 text-text-muted max-w-2xl mx-auto">
           ¿Dudas sobre tallas, envíos o pedidos al por mayor? Escríbenos y te respondemos pronto.
         </p>

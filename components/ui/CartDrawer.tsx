@@ -87,12 +87,12 @@ export default function CartDrawer() {
 
         {/* Wholesale banner */}
         {wholesale ? (
-          <div className="bg-pink-soft/40 px-5 py-3 text-center text-sm text-pink-deeper font-medium">
+          <div className="bg-gradient-warm text-white px-5 py-3 text-center text-sm font-semibold shadow-pink-soft">
             ¡Precio mayorista activado! 🎉
           </div>
         ) : items.length > 0 ? (
-          <div className="bg-gray-soft px-5 py-3 text-center text-xs text-text-muted">
-            Añade {remaining} unidad{remaining > 1 ? 'es' : ''} más para precio mayorista
+          <div className="bg-gradient-pink-soft px-5 py-3 text-center text-xs text-pink-deeper font-medium">
+            Añade <strong>{remaining}</strong> más para precio mayorista
           </div>
         ) : null}
 

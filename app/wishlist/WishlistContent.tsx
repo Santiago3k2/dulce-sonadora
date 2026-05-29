@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -30,7 +30,7 @@ export default function WishlistContent() {
           Tus favoritos
         </p>
         <h1 className="font-serif text-3xl md:text-5xl">Lista de Deseos</h1>
-        <div className="mx-auto mt-4 w-16 h-px bg-pink-deeper" />
+        <div className="divider-gradient" />
       </header>
 
       {wishlistProducts.length === 0 ? (

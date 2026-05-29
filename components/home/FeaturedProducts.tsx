@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
@@ -23,7 +23,7 @@ export default function FeaturedProducts() {
           Nuestros favoritos
         </p>
         <h2 className="section-title">Productos Recomendados</h2>
-        <div className="mx-auto mt-4 w-16 h-px bg-pink-deeper" />
+        <div className="divider-gradient" />
       </div>
 
       {/* Tabs */}

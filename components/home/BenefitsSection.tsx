@@ -22,11 +22,11 @@ const benefits = [
 
 export default function BenefitsSection() {
   return (
-    <section className="bg-gray-soft py-16 md:py-20">
+    <section className="bg-gradient-hero py-16 md:py-20">
       <div className="container mx-auto px-4 lg:px-8 grid md:grid-cols-3 gap-10">
         {benefits.map((b, i) => (
-          <div key={i} className="text-center flex flex-col items-center">
-            <div className="w-16 h-16 rounded-full bg-white border border-pink-soft flex items-center justify-center mb-4">
+          <div key={i} className="text-center flex flex-col items-center group">
+            <div className="w-20 h-20 rounded-full bg-white shadow-pink-soft border-2 border-pink-soft flex items-center justify-center mb-4 group-hover:scale-110 group-hover:shadow-pink transition-all duration-300">
               {b.icon}
             </div>
             <h3 className="font-serif text-xl text-text-dark mb-2">{b.title}</h3>

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
@@ -51,7 +51,7 @@ export default function CartPageContent() {
     <div className="container mx-auto px-4 lg:px-8 py-12 md:py-16">
       <header className="text-center mb-10">
         <h1 className="font-serif text-3xl md:text-5xl">Tu Carrito</h1>
-        <div className="mx-auto mt-4 w-16 h-px bg-pink-deeper" />
+        <div className="divider-gradient" />
       </header>
 
       {items.length === 0 ? (
@@ -72,12 +72,12 @@ export default function CartPageContent() {
           {/* Items */}
           <div className="lg:col-span-2">
             {wholesale ? (
-              <div className="bg-pink-soft/40 px-5 py-4 rounded-md text-center text-pink-deeper font-medium mb-6">
+              <div className="bg-gradient-warm text-white px-5 py-4 rounded-lg text-center font-semibold mb-6 shadow-pink">
                 ¡Precio mayorista activado! 🎉
               </div>
             ) : (
-              <div className="bg-gray-soft px-5 py-4 rounded-md text-center text-text-muted text-sm mb-6">
-                Añade {remaining} unidad{remaining > 1 ? 'es' : ''} más para activar el precio mayorista.
+              <div className="bg-gradient-pink-soft px-5 py-4 rounded-lg text-center text-pink-deeper text-sm mb-6 border border-pink-soft">
+                Añade <strong>{remaining}</strong> unidad{remaining > 1 ? 'es' : ''} más para activar el <strong>precio mayorista</strong>.
               </div>
             )}
 
