@@ -1,12 +1,7 @@
 import type { Metadata } from 'next';
 import { Playfair_Display, Poppins } from 'next/font/google';
 import './globals.css';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
-import MobileBottomNav from '@/components/layout/MobileBottomNav';
-import CartDrawer from '@/components/ui/CartDrawer';
-import SplashScreen from '@/components/ui/SplashScreen';
-import PromoModal from '@/components/ui/PromoModal';
+import ConditionalShell from '@/components/layout/ConditionalShell';
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -50,13 +45,7 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${playfair.variable} ${poppins.variable}`}>
       <body className="font-sans bg-white text-text-dark antialiased">
-        <SplashScreen />
-        <Header />
-        <main className="min-h-screen pb-20 md:pb-0">{children}</main>
-        <Footer />
-        <MobileBottomNav />
-        <CartDrawer />
-        <PromoModal />
+        <ConditionalShell>{children}</ConditionalShell>
       </body>
     </html>
   );

@@ -12,10 +12,12 @@ import { WHATSAPP_NUMBER, buildWhatsAppLink, formatCOP } from '@/lib/utils/forma
 
 const COLOR_HEX_MAP: Record<string, string> = {
   rosa: '#F9C5D1',
+  durazno: '#F4A9A0',
   rojo: '#D43F4F',
   blanco: '#FFFFFF',
   negro: '#111111',
   azul: '#2F4B8B',
+  'azul acero': '#7E97AD',
   'azul marino': '#1B2C4E',
   verde: '#5BA86C',
   'verde menta': '#9FD8B5',
@@ -98,7 +100,7 @@ export default function ProductDetail({ product }: { product: Product }) {
             ))}
           </div>
         )}
-        <div className="relative aspect-[3/4] flex-1 bg-gray-soft overflow-hidden">
+        <div className="relative aspect-[731/1280] flex-1 bg-gray-soft overflow-hidden">
           <Image
             src={mainImage}
             alt={product.name}
@@ -158,7 +160,11 @@ export default function ProductDetail({ product }: { product: Product }) {
             {product.colors.map((color) => (
               <button
                 key={color}
-                onClick={() => setSelectedColor(color)}
+                onClick={() => {
+                  setSelectedColor(color);
+                  const img = product.colorImages?.[color];
+                  if (img) setMainImage(img);
+                }}
                 aria-label={color}
                 title={color}
                 className={`w-10 h-10 rounded-full border-2 transition ${

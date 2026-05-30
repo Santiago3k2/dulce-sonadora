@@ -31,7 +31,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           onMouseLeave={() => setHovered(false)}
         >
           {/* Image */}
-          <div className="relative aspect-[3/4] bg-gray-soft overflow-hidden">
+          <div className="relative aspect-[731/1280] bg-gray-soft overflow-hidden">
             <Image
               src={mainImage}
               alt={product.name}
@@ -106,12 +106,20 @@ export default function ProductCard({ product }: ProductCardProps) {
         </Link>
 
         {/* Select options button */}
-        <Link
-          href={`/producto/${product.slug}`}
-          className="mt-2 inline-block text-xs uppercase tracking-wider text-pink-deeper hover:text-pink-dark transition"
-        >
-          Seleccionar opciones →
-        </Link>
+        <div className="mt-2 flex items-center gap-3 flex-wrap">
+          <Link
+            href={`/producto/${product.slug}`}
+            className="text-xs uppercase tracking-wider text-pink-deeper hover:text-pink-dark transition"
+          >
+            Seleccionar opciones →
+          </Link>
+          <Link
+            href={`/oferta/${product.slug}`}
+            className="text-xs uppercase tracking-wider font-bold bg-gradient-to-r from-pink-vivid to-pink-deeper bg-clip-text text-transparent hover:opacity-80 transition"
+          >
+            ✨ Ver oferta
+          </Link>
+        </div>
       </div>
 
       {quickViewOpen && (

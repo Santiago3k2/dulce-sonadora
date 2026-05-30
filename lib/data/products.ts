@@ -8,6 +8,8 @@ export interface Product {
   priceWholesale: number;
   wholesaleMinQty: number;
   colors: string[];
+  /** Optional map of color name → image path, so selecting a color shows its photo. */
+  colorImages?: Record<string, string>;
   sizes: string[];
   isFeatured: boolean;
   isNew: boolean;
@@ -66,22 +68,34 @@ export const products: Product[] = [
   {
     id: 'p-014',
     slug: 'romper-menta-solido-ruffle',
-    name: 'Romper Menta Sólido Ruffle',
+    name: 'Conjunto Short Unicolor Ruffle',
     category: 'baby-doll',
     images: [
-      '/products/ref-014-romper-menta-solido-ruffle/photo-1.jpg',
-      '/products/ref-014-romper-menta-solido-ruffle/photo-2.jpg',
+      '/products/ref-014-romper-menta-solido-ruffle/photo-durazno.jpg',
+      '/products/ref-014-romper-menta-solido-ruffle/photo-rojo.jpg',
+      '/products/ref-014-romper-menta-solido-ruffle/photo-amarillo.jpg',
+      '/products/ref-014-romper-menta-solido-ruffle/photo-menta.jpg',
+      '/products/ref-014-romper-menta-solido-ruffle/photo-azul.jpg',
+      '/products/ref-014-romper-menta-solido-ruffle/photo-blanco.jpg',
     ],
     priceRetail: 84000,
     priceWholesale: 42000,
     wholesaleMinQty: 6,
-    colors: ['menta'],
+    colors: ['durazno', 'rojo', 'amarillo', 'menta', 'azul acero', 'blanco'],
+    colorImages: {
+      durazno: '/products/ref-014-romper-menta-solido-ruffle/photo-durazno.jpg',
+      rojo: '/products/ref-014-romper-menta-solido-ruffle/photo-rojo.jpg',
+      amarillo: '/products/ref-014-romper-menta-solido-ruffle/photo-amarillo.jpg',
+      menta: '/products/ref-014-romper-menta-solido-ruffle/photo-menta.jpg',
+      'azul acero': '/products/ref-014-romper-menta-solido-ruffle/photo-azul.jpg',
+      blanco: '/products/ref-014-romper-menta-solido-ruffle/photo-blanco.jpg',
+    },
     sizes: DEFAULT_SIZES,
     isFeatured: true,
     isNew: true,
     inStock: true,
     description:
-      'Romper en color menta con detalle de ruffle. Diseño femenino y delicado, ideal como baby doll.',
+      'Conjunto de short y blusa unicolor con tiritas ruffle y moñito delicado. Tela suave y fresca, ideal para dormir. Disponible en piel de durazno, rojo, amarillo, menta, azul y blanco.',
   },
 
   // ── LENCERÍA SEXI ──

@@ -15,10 +15,12 @@ interface QuickViewProps {
 
 const COLOR_HEX_MAP: Record<string, string> = {
   rosa: '#F9C5D1',
+  durazno: '#F4A9A0',
   rojo: '#D43F4F',
   blanco: '#FFFFFF',
   negro: '#111111',
   azul: '#2F4B8B',
+  'azul acero': '#7E97AD',
   'azul marino': '#1B2C4E',
   verde: '#5BA86C',
   'verde menta': '#9FD8B5',
@@ -103,7 +105,7 @@ export default function QuickView({ product, onClose }: QuickViewProps) {
         <div className="grid md:grid-cols-2 gap-0">
           {/* Images */}
           <div className="bg-gray-soft">
-            <div className="relative aspect-[3/4]">
+            <div className="relative aspect-[731/1280]">
               <Image
                 src={mainImage}
                 alt={product.name}
@@ -163,7 +165,11 @@ export default function QuickView({ product, onClose }: QuickViewProps) {
                 {product.colors.map((color) => (
                   <button
                     key={color}
-                    onClick={() => setSelectedColor(color)}
+                    onClick={() => {
+                      setSelectedColor(color);
+                      const img = product.colorImages?.[color];
+                      if (img) setMainImage(img);
+                    }}
                     aria-label={color}
                     title={color}
                     className={`w-9 h-9 rounded-full border-2 transition ${

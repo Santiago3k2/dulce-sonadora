@@ -14,7 +14,7 @@ export const categories: Category[] = [
     name: 'Baby Doll',
     group: 'lenceria',
     groupLabel: 'Lencería',
-    image: '/products/ref-014-romper-menta-solido-ruffle/photo-1.jpg',
+    image: '/products/ref-014-romper-menta-solido-ruffle/photo-durazno.jpg',
     description: 'Baby dolls elegantes y románticos en distintos diseños.',
   },
   {
