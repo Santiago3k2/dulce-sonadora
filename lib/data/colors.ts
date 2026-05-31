@@ -18,6 +18,7 @@ export const COLOR_HEX_MAP: Record<string, string> = {
   'verde menta': '#9FD8B5',
   menta: '#A8E0C4',
   amarillo: '#F6D858',
+  naranja: '#E8833A',
   morado: '#8E5BA8',
   lila: '#C9A8D8',
   crema: '#F1E4D0',
