@@ -28,6 +28,7 @@ import {
 } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { Product, products as ALL_PRODUCTS } from '@/lib/data/products';
+import { imageForColor } from '@/lib/data/colors';
 import { formatCOP, WHATSAPP_NUMBER, buildWhatsAppLink } from '@/lib/utils/format';
 import { AnimatedDock } from '@/components/ui/animated-dock';
 
@@ -339,7 +340,7 @@ function GallerySelector({ product }: { product: Product }) {
               alt={product.name}
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
+              className="object-contain transition-transform duration-700 group-hover:scale-105"
             />
             {product.isNew && (
               <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-pink-deeper text-white text-[11px] font-bold uppercase tracking-wider">
@@ -398,7 +399,7 @@ function GallerySelector({ product }: { product: Product }) {
                   key={c}
                   onClick={() => {
                     setColor(c);
-                    const img = product.colorImages?.[c];
+                    const img = imageForColor(product, c);
                     if (img) {
                       const idx = product.images.indexOf(img);
                       if (idx >= 0) setImgIdx(idx);

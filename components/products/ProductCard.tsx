@@ -37,7 +37,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               alt={product.name}
               fill
               sizes="(max-width: 768px) 50vw, 25vw"
-              className={`object-cover transition-all duration-500 ${
+              className={`object-contain transition-all duration-500 ${
                 hovered && product.images.length > 1
                   ? 'opacity-0 scale-105'
                   : 'opacity-100'
@@ -49,7 +49,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 alt={product.name}
                 fill
                 sizes="(max-width: 768px) 50vw, 25vw"
-                className={`object-cover transition-all duration-500 ${
+                className={`object-contain transition-all duration-500 ${
                   hovered ? 'opacity-100 scale-105' : 'opacity-0'
                 }`}
               />

@@ -5,47 +5,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { X, ShoppingBag } from 'lucide-react';
 import type { Product } from '@/lib/data/products';
+import { colorSwatch, imageForColor } from '@/lib/data/colors';
 import PriceDisplay from '@/components/ui/PriceDisplay';
 import { useCartStore } from '@/lib/store/cartStore';
 
 interface QuickViewProps {
   product: Product;
   onClose: () => void;
-}
-
-const COLOR_HEX_MAP: Record<string, string> = {
-  rosa: '#F9C5D1',
-  durazno: '#F4A9A0',
-  rojo: '#D43F4F',
-  blanco: '#FFFFFF',
-  negro: '#111111',
-  azul: '#2F4B8B',
-  'azul acero': '#7E97AD',
-  'azul marino': '#1B2C4E',
-  verde: '#5BA86C',
-  'verde menta': '#9FD8B5',
-  menta: '#A8E0C4',
-  amarillo: '#F6D858',
-  morado: '#8E5BA8',
-  lila: '#C9A8D8',
-  crema: '#F1E4D0',
-  cereza: '#B5253A',
-  beige: '#D6BFA1',
-  fucsia: '#D9388E',
-  sage: '#B5C5A8',
-  gris: '#9C9C9C',
-  leopardo:
-    'repeating-linear-gradient(45deg,#D9A86A 0 6px,#7A4E20 6px 8px,#D9A86A 8px 14px)',
-  multicolor:
-    'linear-gradient(90deg,#F9C5D1,#F6D858,#9FD8B5,#8E5BA8)',
-  teal: '#3F8896',
-  malva: '#C49BB7',
-  donut: '#F6D858',
-};
-
-function colorSwatch(color: string) {
-  const key = color.toLowerCase().split('/')[0].trim();
-  return COLOR_HEX_MAP[key] || '#E8829A';
 }
 
 export default function QuickView({ product, onClose }: QuickViewProps) {
@@ -111,7 +77,7 @@ export default function QuickView({ product, onClose }: QuickViewProps) {
                 alt={product.name}
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover"
+                className="object-contain"
               />
             </div>
             {product.images.length > 1 && (
@@ -167,7 +133,7 @@ export default function QuickView({ product, onClose }: QuickViewProps) {
                     key={color}
                     onClick={() => {
                       setSelectedColor(color);
-                      const img = product.colorImages?.[color];
+                      const img = imageForColor(product, color);
                       if (img) setMainImage(img);
                     }}
                     aria-label={color}

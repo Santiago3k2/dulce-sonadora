@@ -4,46 +4,12 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { Heart, ShoppingBag, MessageCircle, Truck, RotateCcw, Shield } from 'lucide-react';
 import type { Product } from '@/lib/data/products';
+import { colorSwatch, imageForColor } from '@/lib/data/colors';
 import PriceDisplay from '@/components/ui/PriceDisplay';
 import Badge from '@/components/ui/Badge';
 import { useCartStore } from '@/lib/store/cartStore';
 import { useWishlistStore } from '@/lib/store/wishlistStore';
 import { WHATSAPP_NUMBER, buildWhatsAppLink, formatCOP } from '@/lib/utils/format';
-
-const COLOR_HEX_MAP: Record<string, string> = {
-  rosa: '#F9C5D1',
-  durazno: '#F4A9A0',
-  rojo: '#D43F4F',
-  blanco: '#FFFFFF',
-  negro: '#111111',
-  azul: '#2F4B8B',
-  'azul acero': '#7E97AD',
-  'azul marino': '#1B2C4E',
-  verde: '#5BA86C',
-  'verde menta': '#9FD8B5',
-  menta: '#A8E0C4',
-  amarillo: '#F6D858',
-  morado: '#8E5BA8',
-  lila: '#C9A8D8',
-  crema: '#F1E4D0',
-  cereza: '#B5253A',
-  beige: '#D6BFA1',
-  fucsia: '#D9388E',
-  sage: '#B5C5A8',
-  gris: '#9C9C9C',
-  leopardo:
-    'repeating-linear-gradient(45deg,#D9A86A 0 6px,#7A4E20 6px 8px,#D9A86A 8px 14px)',
-  multicolor:
-    'linear-gradient(90deg,#F9C5D1,#F6D858,#9FD8B5,#8E5BA8)',
-  teal: '#3F8896',
-  malva: '#C49BB7',
-  donut: '#F6D858',
-};
-
-function colorSwatch(color: string) {
-  const key = color.toLowerCase().split('/')[0].trim();
-  return COLOR_HEX_MAP[key] || '#E8829A';
-}
 
 export default function ProductDetail({ product }: { product: Product }) {
   const [mainImage, setMainImage] = useState(product.images[0]);
@@ -107,7 +73,7 @@ export default function ProductDetail({ product }: { product: Product }) {
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
             priority
-            className="object-cover"
+            className="object-contain"
           />
           <div className="absolute top-4 left-4 flex flex-col gap-1.5">
             {product.isNew && <Badge variant="new">Nuevo</Badge>}
@@ -162,7 +128,7 @@ export default function ProductDetail({ product }: { product: Product }) {
                 key={color}
                 onClick={() => {
                   setSelectedColor(color);
-                  const img = product.colorImages?.[color];
+                  const img = imageForColor(product, color);
                   if (img) setMainImage(img);
                 }}
                 aria-label={color}
