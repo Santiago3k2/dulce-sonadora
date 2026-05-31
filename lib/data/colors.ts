@@ -22,6 +22,7 @@ export const COLOR_HEX_MAP: Record<string, string> = {
   lila: '#C9A8D8',
   crema: '#F1E4D0',
   cereza: '#B5253A',
+  vino: '#7A2233',
   beige: '#D6BFA1',
   fucsia: '#D9388E',
   sage: '#B5C5A8',
