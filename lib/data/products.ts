@@ -25,7 +25,7 @@ export const products: Product[] = [
   {
     id: 'p-058',
     slug: 'conjunto-satin-rosa-cerezas',
-    name: 'Conjunto Satín Rosa Cerezas',
+    name: 'Ref 058 — Conjunto Satín Largo Estampado',
     category: 'short-satin-especial',
     images: [
       '/products/ref-058-conjunto-satin-rosa-cerezas/photo-1.jpg',
@@ -36,13 +36,13 @@ export const products: Product[] = [
     priceRetail: 96000,
     priceWholesale: 48000,
     wholesaleMinQty: 6,
-    colors: ['rosa', 'cereza'],
+    colors: ['Rosa Cerezas', 'Azul Corazones', 'Blanco Snoopy', 'Rosa Floral'],
     sizes: DEFAULT_SIZES,
     isFeatured: true,
     isNew: true,
     inStock: true,
     description:
-      'Conjunto de short y blusa en satín rosa con estampado de cerezas. Suave al tacto, perfecto para las noches románticas.',
+      'Conjunto de cami y pantalón largo en satín suave. Elige tu estampado: cerezas, corazones, Snoopy o floral. Perfecto para noches románticas.',
   },
   {
     id: 'p-sinref-satin-negro',
@@ -102,22 +102,25 @@ export const products: Product[] = [
   {
     id: 'p-026',
     slug: 'vestido-slip-verde-menta-con-encaje',
-    name: 'Vestido Slip Verde Menta con Encaje',
+    name: 'Ref 026 — Vestido Slip con Encaje',
     category: 'lenceria-sexi',
     images: [
       '/products/ref-026-vestido-slip-verde-menta-con-encaje/photo-1.jpg',
       '/products/ref-026-vestido-slip-verde-menta-con-encaje/photo-2.jpg',
+      '/products/ref-026-vestido-slip-verde-menta-con-encaje/photo-3.jpg',
+      '/products/ref-026-vestido-slip-verde-menta-con-encaje/photo-4.jpg',
+      '/products/ref-026-vestido-slip-verde-menta-con-encaje/photo-5.jpg',
     ],
     priceRetail: 110000,
     priceWholesale: 55000,
     wholesaleMinQty: 6,
-    colors: ['verde menta'],
+    colors: ['verde menta', 'negro', 'amarillo', 'rosa', 'lila'],
     sizes: DEFAULT_SIZES,
     isFeatured: true,
     isNew: true,
     inStock: true,
     description:
-      'Vestido slip en verde menta con detalles de encaje. Elegante, sensual y muy femenino.',
+      'Vestido slip con detalle de encaje en el escote. Elegante, sensual y muy femenino. Disponible en verde menta, negro, amarillo, rosa y lila.',
   },
 
   // ── PIJAMAS NAVIDAD (ALGODÓN) ──
@@ -202,6 +205,28 @@ export const products: Product[] = [
   },
 
   // ── REFS NORMALES (ALGODÓN) ──
+  {
+    id: 'p-007',
+    slug: 'tank-short-estampado',
+    name: 'Ref 007 — Tank + Short Estampado',
+    category: 'short-algodon',
+    images: [
+      '/products/ref-007-tank-short/photo-1.jpg',
+      '/products/ref-007-tank-short/photo-2.jpg',
+      '/products/ref-007-tank-short/photo-3.jpg',
+      '/products/ref-007-tank-short/photo-4.jpg',
+    ],
+    priceRetail: 68000,
+    priceWholesale: 34000,
+    wholesaleMinQty: 6,
+    colors: ['Blanco Smile', 'Durazno Good Times', 'Rosa Honey', 'Menta Good Vibes'],
+    sizes: DEFAULT_SIZES,
+    isFeatured: true,
+    isNew: true,
+    inStock: true,
+    description:
+      'Tank con frase y short estampado en algodón fresco. Elige tu diseño: Smile, Good Times, Honey o Good Vibes.',
+  },
   {
     id: 'p-004',
     slug: 'camiseta-corazon-leopardo-hello-rosa',
