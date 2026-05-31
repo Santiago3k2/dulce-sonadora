@@ -35,10 +35,20 @@ export const COLOR_HEX_MAP: Record<string, string> = {
   donut: '#F6D858',
 };
 
-/** Color de fondo del círculo para un nombre de color (toma la 1ª palabra antes de "/"). */
+/**
+ * Color de fondo del círculo para un nombre de color o variante.
+ * Acepta nombres descriptivos como "Amarillo Donas" o "Durazno Pandas":
+ * busca el color real dentro del texto. "azul marino" / "verde menta" /
+ * "azul acero" (claves de dos palabras) tienen prioridad sobre la 1ª palabra.
+ */
 export function colorSwatch(color: string): string {
-  const key = color.toLowerCase().split('/')[0].trim();
-  return COLOR_HEX_MAP[key] || '#E8829A';
+  const norm = color.toLowerCase().split('/')[0].trim();
+  if (COLOR_HEX_MAP[norm]) return COLOR_HEX_MAP[norm];
+  for (const key of Object.keys(COLOR_HEX_MAP)) {
+    if (key.includes(' ') && norm.startsWith(key)) return COLOR_HEX_MAP[key];
+  }
+  const firstWord = norm.split(' ')[0];
+  return COLOR_HEX_MAP[firstWord] || '#E8829A';
 }
 
 /**
