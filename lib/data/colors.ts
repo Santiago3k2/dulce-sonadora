@@ -27,6 +27,7 @@ export const COLOR_HEX_MAP: Record<string, string> = {
   sage: '#B5C5A8',
   gris: '#9C9C9C',
   petroleo: '#2E6E78',
+  terracota: '#C66B3D',
   leopardo:
     'repeating-linear-gradient(45deg,#D9A86A 0 6px,#7A4E20 6px 8px,#D9A86A 8px 14px)',
   multicolor: 'linear-gradient(90deg,#F9C5D1,#F6D858,#9FD8B5,#8E5BA8)',
