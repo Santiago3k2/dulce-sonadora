@@ -16,7 +16,7 @@ Deploy en **Vercel** (1 clic).
 - 🏷️ **Precio mayorista automático** al sumar ≥ 6 unidades
 - 👁️ Modal Quick View
 - 💬 Botón **Pedir por WhatsApp** que genera mensaje con el detalle
-- 📦 33 productos reales en 13 categorías
+- 📦 37 productos reales en 8 categorías oficiales
 - 📱 Mobile-first responsive
 
 ---
@@ -100,7 +100,7 @@ lib/
 ├── data/             # categories.ts, products.ts
 ├── store/            # cartStore, wishlistStore (Zustand)
 └── utils/            # format helpers (COP + WhatsApp)
-public/products/      # 174 fotos reales de productos
+public/products/      # 197 fotos reales de productos
 ```
 
 ---

@@ -1,139 +1,95 @@
 export interface Category {
   slug: string;
   name: string;
-  group: 'lenceria' | 'pijamas-satin' | 'pijamas-algodon';
+  group: 'dama' | 'ninos';
   groupLabel: string;
   image: string;
   description?: string;
 }
 
+// Categorías oficiales según la Tabla de Precios 2026 (Confeccionar G&C S.A.S.):
+// secciones Pantalón, Capri, Short, Bata, Niño y Niña. Se separan por tela
+// (algodón = piel de durazno / franela / felpa, vs. satín) donde aplica.
 export const categories: Category[] = [
-  // LENCERÍA
+  // ── DAMA ──
   {
-    slug: 'baby-doll',
-    name: 'Baby Doll',
-    group: 'lenceria',
-    groupLabel: 'Lencería',
-    image: '/products/ref-014-romper-menta-solido-ruffle/photo-durazno.jpg',
-    description: 'Baby dolls elegantes y románticos en distintos diseños.',
-  },
-  {
-    slug: 'lenceria-sexi',
-    name: 'Lencería Sexi',
-    group: 'lenceria',
-    groupLabel: 'Lencería',
-    image: '/products/ref-026-vestido-slip-verde-menta-con-encaje/photo-1.jpg',
-    description: 'Lencería sensual para ocasiones especiales.',
-  },
-  {
-    slug: 'camisones',
-    name: 'Camisones',
-    group: 'lenceria',
-    groupLabel: 'Lencería',
-    image: '/products/ref-071-camison-satin-flamencos-corazones-floral/photo-1.jpg',
-    description: 'Camisones cortos en satín y algodón, frescos y femeninos.',
-  },
-
-  // PIJAMAS SATÍN
-  {
-    slug: 'short-satin-especial',
-    name: 'Short Satín Especial',
-    group: 'pijamas-satin',
-    groupLabel: 'Pijamas Satín',
-    image: '/products/ref-039-satin-conjunto-estampados/photo-1.jpg',
-    description: 'Conjuntos especiales en satín suave con detalles únicos.',
-  },
-  {
-    slug: 'bata-satin',
-    name: 'Bata Satín',
-    group: 'pijamas-satin',
-    groupLabel: 'Pijamas Satín',
-    image: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-2.jpg',
-    description: 'Batas livianas en satín perfectas para el día y la noche.',
-  },
-  {
-    slug: 'cachetero-especial',
-    name: 'Cachetero Especial',
-    group: 'pijamas-satin',
-    groupLabel: 'Pijamas Satín',
-    image: '/products/sin-ref-satin-negro-mickey-minnie-corazones/photo-1.jpg',
-    description: 'Cacheteros sensuales en satín con encajes.',
-  },
-  {
-    slug: 'levantadoras',
-    name: 'Levantadoras',
-    group: 'pijamas-satin',
-    groupLabel: 'Pijamas Satín',
-    image: '/products/ref-201-camison-maternidad-enterito-bebe-dinosaurios/photo-1.jpg',
-    description: 'Levantadoras cómodas y elegantes para tu descanso.',
+    slug: 'pantalon-algodon',
+    name: 'Pantalón Algodón',
+    group: 'dama',
+    groupLabel: 'Dama',
+    image: '/products/ref-006-tank-be-happy-sage-capri-floral-gris/photo-1.jpg',
+    description: 'Pijamas de pantalón largo en algodón piel de durazno, franela y felpa.',
   },
   {
     slug: 'pantalon-satin',
     name: 'Pantalón Satín',
-    group: 'pijamas-satin',
-    groupLabel: 'Pijamas Satín',
-    image: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-3.jpg',
-    description: 'Pantalones largos en satín, frescos y elegantes.',
-  },
-  {
-    slug: 'short-satin-clasico',
-    name: 'Short Satín Clásico',
-    group: 'pijamas-satin',
-    groupLabel: 'Pijamas Satín',
-    image: '/products/sin-ref-satin-negro-mickey-minnie-corazones/photo-1.jpg',
-    description: 'Shorts clásicos en satín, suaves y resistentes.',
-  },
-
-  // PIJAMAS ALGODÓN
-  {
-    slug: 'short-algodon',
-    name: 'Short Algodón',
-    group: 'pijamas-algodon',
-    groupLabel: 'Pijamas Algodón',
-    image: '/products/ref-035-cami-rosa-short-frutilla-azul/photo-1.jpg',
-    description: 'Shorts en algodón cómodo, frescos para el verano.',
+    group: 'dama',
+    groupLabel: 'Dama',
+    image: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-1.jpg',
+    description: 'Pijamas de pantalón largo en satín suave.',
   },
   {
     slug: 'capri',
     name: 'Capri',
-    group: 'pijamas-algodon',
-    groupLabel: 'Pijamas Algodón',
+    group: 'dama',
+    groupLabel: 'Dama',
     image: '/products/ref-002-camiseta-capri-estampado/photo-1.jpg',
-    description: 'Conjuntos con capri en algodón, prácticos y modernos.',
+    description: 'Conjuntos con capri, frescos y cómodos.',
   },
   {
-    slug: 'pantalon-largo',
-    name: 'Pantalón Largo',
-    group: 'pijamas-algodon',
-    groupLabel: 'Pijamas Algodón',
-    image: '/products/ref-042-conjunto-good-night-y-stars-amarillo-y-verde/photo-2.jpg',
-    description: 'Pijamas con pantalón largo en algodón, ideales para clima frío.',
+    slug: 'short-algodon',
+    name: 'Short Algodón',
+    group: 'dama',
+    groupLabel: 'Dama',
+    image: '/products/ref-035-cami-rosa-short-frutilla-azul/photo-1.jpg',
+    description: 'Pijamas de short en algodón piel de durazno.',
   },
   {
-    slug: 'batas-piel-durazno',
-    name: 'Batas Piel Durazno',
-    group: 'pijamas-algodon',
-    groupLabel: 'Pijamas Algodón',
-    image: '/products/ref-401-camiseta-pantalon-felpa-osito-beige-y-avocato-verde/photo-1.jpg',
-    description: 'Batas en piel durazno, suaves y abrigadas.',
+    slug: 'short-satin',
+    name: 'Short Satín',
+    group: 'dama',
+    groupLabel: 'Dama',
+    image: '/products/ref-039-satin-conjunto-estampados/photo-1.jpg',
+    description: 'Pijamas de short en satín.',
+  },
+  {
+    slug: 'bata',
+    name: 'Bata',
+    group: 'dama',
+    groupLabel: 'Dama',
+    image: '/products/ref-201-camison-maternidad-enterito-bebe-dinosaurios/photo-1.jpg',
+    description: 'Batas, camisones y vestidos para descansar.',
+  },
+
+  // ── NIÑOS ──
+  {
+    slug: 'nino',
+    name: 'Niño',
+    group: 'ninos',
+    groupLabel: 'Niños',
+    image: '/products/ref-049-nino-superheroes-captain-america-y-spiderman/photo-1.jpg',
+    description: 'Pijamas para niño con sus personajes favoritos.',
+  },
+  {
+    slug: 'nina',
+    name: 'Niña',
+    group: 'ninos',
+    groupLabel: 'Niños',
+    image: '/products/ref-036-nina-huntyk-crema-short-morado/photo-1.jpg',
+    description: 'Pijamas para niña con personajes y estampados tiernos.',
   },
 ];
 
 export const categoryGroups = [
   {
-    key: 'lenceria',
-    label: 'Lencería',
-    categories: categories.filter((c) => c.group === 'lenceria'),
+    key: 'dama',
+    label: 'Dama',
+    categories: categories.filter((c) => c.group === 'dama'),
   },
   {
-    key: 'pijamas-satin',
-    label: 'Pijamas Satín',
-    categories: categories.filter((c) => c.group === 'pijamas-satin'),
-  },
-  {
-    key: 'pijamas-algodon',
-    label: 'Pijamas Algodón',
-    categories: categories.filter((c) => c.group === 'pijamas-algodon'),
+    key: 'ninos',
+    label: 'Niños',
+    categories: categories.filter((c) => c.group === 'ninos'),
   },
 ];
 
