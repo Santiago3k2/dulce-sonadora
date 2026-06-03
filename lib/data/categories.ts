@@ -25,6 +25,14 @@ export const categories: Category[] = [
     image: '/products/ref-026-vestido-slip-verde-menta-con-encaje/photo-1.jpg',
     description: 'Lencería sensual para ocasiones especiales.',
   },
+  {
+    slug: 'camisones',
+    name: 'Camisones',
+    group: 'lenceria',
+    groupLabel: 'Lencería',
+    image: '/products/ref-071-camison-satin-flamencos-corazones-floral/photo-1.jpg',
+    description: 'Camisones cortos en satín y algodón, frescos y femeninos.',
+  },
 
   // PIJAMAS SATÍN
   {
@@ -32,7 +40,7 @@ export const categories: Category[] = [
     name: 'Short Satín Especial',
     group: 'pijamas-satin',
     groupLabel: 'Pijamas Satín',
-    image: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-1.jpg',
+    image: '/products/ref-039-satin-conjunto-estampados/photo-1.jpg',
     description: 'Conjuntos especiales en satín suave con detalles únicos.',
   },
   {
@@ -64,7 +72,7 @@ export const categories: Category[] = [
     name: 'Pantalón Satín',
     group: 'pijamas-satin',
     groupLabel: 'Pijamas Satín',
-    image: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-5.jpg',
+    image: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-3.jpg',
     description: 'Pantalones largos en satín, frescos y elegantes.',
   },
   {
@@ -90,7 +98,7 @@ export const categories: Category[] = [
     name: 'Capri',
     group: 'pijamas-algodon',
     groupLabel: 'Pijamas Algodón',
-    image: '/products/ref-006-tank-be-happy-sage-capri-floral-gris/photo-1.jpg',
+    image: '/products/ref-002-camiseta-capri-estampado/photo-1.jpg',
     description: 'Conjuntos con capri en algodón, prácticos y modernos.',
   },
   {
@@ -98,7 +106,7 @@ export const categories: Category[] = [
     name: 'Pantalón Largo',
     group: 'pijamas-algodon',
     groupLabel: 'Pijamas Algodón',
-    image: '/products/ref-042-conjunto-good-night-y-stars-amarillo-y-verde/photo-1.jpg',
+    image: '/products/ref-042-conjunto-good-night-y-stars-amarillo-y-verde/photo-2.jpg',
     description: 'Pijamas con pantalón largo en algodón, ideales para clima frío.',
   },
   {

@@ -31,3 +31,7 @@ build/
 ROPA DULCE-*/
 EFECTO*.txt
 LANDING-PAGE-DULCE-SONADORA/
+
+# Excel de precios (documento fuente, no se despliega) y su lock temporal
+Tabla_Precios_*.xlsx
+~$*.xlsx

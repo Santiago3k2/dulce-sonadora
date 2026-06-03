@@ -36,6 +36,8 @@ export const COLOR_HEX_MAP: Record<string, string> = {
   teal: '#3F8896',
   malva: '#C49BB7',
   donut: '#F6D858',
+  aqua: '#7FD4D0',
+  nude: '#E8C9B8',
 };
 
 /**

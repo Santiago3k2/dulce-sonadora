@@ -25,10 +25,10 @@ const slides: Slide[] = [
     subtitle: 'Suaves como un sueño',
     description: '6 pijamas en satín',
     image: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-1.jpg',
-    priceRetail: 96000,
-    priceWholesale: 48000,
+    priceRetail: 98000,
+    priceWholesale: 49000,
     cta: 'Comprar',
-    href: '/categoria/short-satin-especial',
+    href: '/categoria/pantalon-satin',
   },
   {
     title: 'Lencería Sexi',

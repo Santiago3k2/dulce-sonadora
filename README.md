@@ -16,7 +16,7 @@ Deploy en **Vercel** (1 clic).
 - 🏷️ **Precio mayorista automático** al sumar ≥ 6 unidades
 - 👁️ Modal Quick View
 - 💬 Botón **Pedir por WhatsApp** que genera mensaje con el detalle
-- 📦 27 productos reales en 12 categorías
+- 📦 33 productos reales en 13 categorías
 - 📱 Mobile-first responsive
 
 ---
