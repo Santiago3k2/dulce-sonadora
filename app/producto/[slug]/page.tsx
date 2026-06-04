@@ -1,17 +1,12 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ChevronRight } from 'lucide-react';
-import { products, getProductBySlug, getRelatedProducts } from '@/lib/data/products';
-import { getCategoryBySlug } from '@/lib/data/categories';
+import { getProductBySlug, getRelatedProducts, getCategoryBySlug } from '@/lib/data/queries';
 import ProductDetail from './ProductDetail';
 import ProductGrid from '@/components/products/ProductGrid';
 
-export function generateStaticParams() {
-  return products.map((p) => ({ slug: p.slug }));
-}
-
-export function generateMetadata({ params }: { params: { slug: string } }) {
-  const product = getProductBySlug(params.slug);
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+  const product = await getProductBySlug(params.slug);
   if (!product) return { title: 'Producto — Dulce Soñadora' };
   return {
     title: `${product.name} — Dulce Soñadora`,
@@ -19,12 +14,12 @@ export function generateMetadata({ params }: { params: { slug: string } }) {
   };
 }
 
-export default function ProductPage({ params }: { params: { slug: string } }) {
-  const product = getProductBySlug(params.slug);
+export default async function ProductPage({ params }: { params: { slug: string } }) {
+  const product = await getProductBySlug(params.slug);
   if (!product) return notFound();
 
-  const category = getCategoryBySlug(product.category);
-  const related = getRelatedProducts(product.id, product.category, 4);
+  const category = await getCategoryBySlug(product.category);
+  const related = await getRelatedProducts(product.id, product.category, 4);
 
   return (
     <div className="container mx-auto px-4 lg:px-8 py-6 md:py-10">

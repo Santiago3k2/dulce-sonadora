@@ -2,9 +2,9 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { categories } from '@/lib/data/categories';
+import type { Category } from '@/lib/data/categories';
 
-export default function CategoryGrid() {
+export default function CategoryGrid({ categories }: { categories: Category[] }) {
   return (
     <section className="container mx-auto px-4 lg:px-8 py-16 md:py-20">
       <div className="text-center mb-12">

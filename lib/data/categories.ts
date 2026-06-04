@@ -7,6 +7,12 @@ export interface Category {
   description?: string;
 }
 
+export interface CategoryGroup {
+  key: string;
+  label: string;
+  categories: Category[];
+}
+
 // Categorías oficiales según la Tabla de Precios 2026 (Confeccionar G&C S.A.S.):
 // secciones Pantalón, Capri, Short, Bata, Niño y Niña. Se separan por tela
 // (algodón = piel de durazno / franela / felpa, vs. satín) donde aplica.

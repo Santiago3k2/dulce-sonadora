@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -27,7 +27,7 @@ import {
   ArrowLeft,
 } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'motion/react';
-import { Product, products as ALL_PRODUCTS } from '@/lib/data/products';
+import type { Product } from '@/lib/data/products';
 import { imageForColor } from '@/lib/data/colors';
 import { formatCOP, WHATSAPP_NUMBER, buildWhatsAppLink } from '@/lib/utils/format';
 import { AnimatedDock } from '@/components/ui/animated-dock';
@@ -518,11 +518,7 @@ function Testimonials() {
 /* ============================================================
    LOOKBOOK
    ============================================================ */
-function Lookbook({ product }: { product: Product }) {
-  const others = useMemo(
-    () => ALL_PRODUCTS.filter((p) => p.id !== product.id && p.images[0]).slice(0, 6),
-    [product.id]
-  );
+function Lookbook({ product, others }: { product: Product; others: Product[] }) {
   const ref = useReveal<HTMLDivElement>();
   return (
     <section className="bg-white py-20 lg:py-28">
@@ -870,7 +866,13 @@ function MiniFooter() {
 /* ============================================================
    EXPORT — landing completa
    ============================================================ */
-export default function PajamaLanding({ product }: { product: Product }) {
+export default function PajamaLanding({
+  product,
+  related = [],
+}: {
+  product: Product;
+  related?: Product[];
+}) {
   return (
     <>
       <AnnouncementBar />
@@ -880,7 +882,7 @@ export default function PajamaLanding({ product }: { product: Product }) {
       <Benefits />
       <GallerySelector product={product} />
       <Testimonials />
-      <Lookbook product={product} />
+      <Lookbook product={product} others={related} />
       <CheckoutCard product={product} />
       <FAQ />
       <Social />

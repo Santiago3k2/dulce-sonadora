@@ -1,18 +1,14 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { getProductBySlug, products } from '@/lib/data/products';
+import { getProductBySlug, getAllProducts } from '@/lib/data/queries';
 import PajamaLanding from '@/components/landing/PajamaLanding';
 
-export function generateStaticParams() {
-  return products.map((p) => ({ slug: p.slug }));
-}
-
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
   params: { slug: string };
-}): Metadata {
-  const product = getProductBySlug(params.slug);
+}): Promise<Metadata> {
+  const product = await getProductBySlug(params.slug);
   if (!product) return { title: 'Oferta — Dulce Soñadora' };
   return {
     title: `${product.name} — Oferta Dulce Soñadora`,
@@ -26,12 +22,14 @@ export function generateMetadata({
   };
 }
 
-export default function OfertaPage({
+export default async function OfertaPage({
   params,
 }: {
   params: { slug: string };
 }) {
-  const product = getProductBySlug(params.slug);
+  const product = await getProductBySlug(params.slug);
   if (!product) notFound();
-  return <PajamaLanding product={product} />;
+  const all = await getAllProducts();
+  const related = all.filter((p) => p.id !== product.id && p.images[0]).slice(0, 6);
+  return <PajamaLanding product={product} related={related} />;
 }

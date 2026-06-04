@@ -11,12 +11,12 @@ import {
   ChevronDown,
   Search,
 } from 'lucide-react';
-import { categoryGroups } from '@/lib/data/categories';
+import type { CategoryGroup } from '@/lib/data/categories';
 import { useCartStore } from '@/lib/store/cartStore';
 import { useWishlistStore } from '@/lib/store/wishlistStore';
 import Logo from '@/components/ui/Logo';
 
-export default function Header() {
+export default function Header({ groups }: { groups: CategoryGroup[] }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
@@ -70,7 +70,7 @@ export default function Header() {
               >
                 Inicio
               </Link>
-              {categoryGroups.map((group) => (
+              {groups.map((group) => (
                 <div
                   key={group.key}
                   className="relative"
@@ -218,7 +218,7 @@ export default function Header() {
             >
               Tienda
             </Link>
-            {categoryGroups.map((group) => (
+            {groups.map((group) => (
               <details
                 key={group.key}
                 className="border-b border-gray-line"

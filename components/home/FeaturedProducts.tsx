@@ -2,18 +2,19 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import {
-  getFeaturedProducts,
-  getNewProducts,
-} from '@/lib/data/products';
 import ProductGrid from '@/components/products/ProductGrid';
+import type { Product } from '@/lib/data/products';
 
 type TabKey = 'featured' | 'new';
 
-export default function FeaturedProducts() {
+export default function FeaturedProducts({
+  featured,
+  news,
+}: {
+  featured: Product[];
+  news: Product[];
+}) {
   const [tab, setTab] = useState<TabKey>('featured');
-  const featured = getFeaturedProducts();
-  const news = getNewProducts();
   const products = tab === 'featured' ? featured : news;
 
   return (

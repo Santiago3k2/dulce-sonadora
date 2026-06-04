@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Heart } from 'lucide-react';
 import ProductGrid from '@/components/products/ProductGrid';
-import { products } from '@/lib/data/products';
+import type { Product } from '@/lib/data/products';
 import { useWishlistStore } from '@/lib/store/wishlistStore';
 
-export default function WishlistContent() {
+export default function WishlistContent({ products }: { products: Product[] }) {
   const [mounted, setMounted] = useState(false);
   const items = useWishlistStore((s) => s.items);
 

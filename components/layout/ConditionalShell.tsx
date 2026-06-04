@@ -7,6 +7,7 @@ import MobileBottomNav from '@/components/layout/MobileBottomNav';
 import CartDrawer from '@/components/ui/CartDrawer';
 import SplashScreen from '@/components/ui/SplashScreen';
 import PromoModal from '@/components/ui/PromoModal';
+import type { CategoryGroup } from '@/lib/data/categories';
 
 /**
  * Renderiza la "chrome" del sitio (header, footer, nav, drawer, etc.)
@@ -15,8 +16,10 @@ import PromoModal from '@/components/ui/PromoModal';
  */
 export default function ConditionalShell({
   children,
+  groups,
 }: {
   children: React.ReactNode;
+  groups: CategoryGroup[];
 }) {
   const path = usePathname() ?? '';
   const isStandaloneLanding = path.startsWith('/oferta');
@@ -28,9 +31,9 @@ export default function ConditionalShell({
   return (
     <>
       <SplashScreen />
-      <Header />
+      <Header groups={groups} />
       <main className="min-h-screen pb-20 md:pb-0">{children}</main>
-      <Footer />
+      <Footer groups={groups} />
       <MobileBottomNav />
       <CartDrawer />
       <PromoModal />

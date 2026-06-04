@@ -1,14 +1,17 @@
 ﻿import Link from 'next/link';
 import ProductGrid from '@/components/products/ProductGrid';
-import { products } from '@/lib/data/products';
-import { categoryGroups } from '@/lib/data/categories';
+import { getAllProducts, getCategoryGroups } from '@/lib/data/queries';
 
 export const metadata = {
   title: 'Tienda — Dulce Soñadora',
   description: 'Explora todo nuestro catálogo de pijamas y lencería.',
 };
 
-export default function ShopPage() {
+export default async function ShopPage() {
+  const [products, categoryGroups] = await Promise.all([
+    getAllProducts(),
+    getCategoryGroups(),
+  ]);
   return (
     <div className="container mx-auto px-4 lg:px-8 py-12 md:py-16">
       {/* Header */}

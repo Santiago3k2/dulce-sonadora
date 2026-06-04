@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Metadata } from 'next';
-import { products } from '@/lib/data/products';
+import { getAllProducts } from '@/lib/data/queries';
 import { formatCOP } from '@/lib/utils/format';
 import { ExternalLink, Sparkles } from 'lucide-react';
 
@@ -20,7 +20,8 @@ export const metadata: Metadata = {
  *
  * Cada link abre la landing aislada, lista para TikTok Ads.
  */
-export default function OfertaIndexPage() {
+export default async function OfertaIndexPage() {
+  const products = await getAllProducts();
   return (
     <div className="min-h-screen bg-cream">
       <div className="container mx-auto px-6 lg:px-12 py-16">

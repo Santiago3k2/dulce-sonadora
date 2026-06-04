@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Playfair_Display, Poppins } from 'next/font/google';
 import './globals.css';
 import ConditionalShell from '@/components/layout/ConditionalShell';
+import { getCategoryGroups } from '@/lib/data/queries';
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -37,15 +38,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+// La tienda lee datos en vivo de Supabase (refleja cambios del panel sin redeploy).
+export const dynamic = 'force-dynamic';
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const groups = await getCategoryGroups();
   return (
     <html lang="es" className={`${playfair.variable} ${poppins.variable}`}>
       <body className="font-sans bg-white text-text-dark antialiased">
-        <ConditionalShell>{children}</ConditionalShell>
+        <ConditionalShell groups={groups}>{children}</ConditionalShell>
       </body>
     </html>
   );

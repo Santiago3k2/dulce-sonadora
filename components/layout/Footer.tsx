@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { MapPin, Phone, Clock, Mail } from 'lucide-react';
-import { categoryGroups } from '@/lib/data/categories';
+import type { CategoryGroup } from '@/lib/data/categories';
 import { WHATSAPP_NUMBER, buildWhatsAppLink } from '@/lib/utils/format';
 import Logo from '@/components/ui/Logo';
 
@@ -42,7 +42,7 @@ const TikTok = ({ size = 18 }) => (
   </svg>
 );
 
-export default function Footer() {
+export default function Footer({ groups }: { groups: CategoryGroup[] }) {
   const whatsappLink = buildWhatsAppLink(
     WHATSAPP_NUMBER,
     '¡Hola Dulce Soñadora! Quisiera más información.'
@@ -117,7 +117,7 @@ export default function Footer() {
           </div>
 
           {/* Categories */}
-          {categoryGroups.map((group) => (
+          {groups.map((group) => (
             <div key={group.key}>
               <h4 className="font-serif text-lg mb-4 text-text-dark">
                 {group.label}

@@ -2,15 +2,10 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ChevronRight } from 'lucide-react';
 import ProductGrid from '@/components/products/ProductGrid';
-import { categories, getCategoryBySlug } from '@/lib/data/categories';
-import { getProductsByCategory } from '@/lib/data/products';
+import { getCategoryBySlug, getProductsByCategory } from '@/lib/data/queries';
 
-export function generateStaticParams() {
-  return categories.map((c) => ({ slug: c.slug }));
-}
-
-export function generateMetadata({ params }: { params: { slug: string } }) {
-  const category = getCategoryBySlug(params.slug);
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+  const category = await getCategoryBySlug(params.slug);
   if (!category) return { title: 'Categoría — Dulce Soñadora' };
   return {
     title: `${category.name} — Dulce Soñadora`,
@@ -18,10 +13,10 @@ export function generateMetadata({ params }: { params: { slug: string } }) {
   };
 }
 
-export default function CategoryPage({ params }: { params: { slug: string } }) {
-  const category = getCategoryBySlug(params.slug);
+export default async function CategoryPage({ params }: { params: { slug: string } }) {
+  const category = await getCategoryBySlug(params.slug);
   if (!category) return notFound();
-  const products = getProductsByCategory(params.slug);
+  const products = await getProductsByCategory(params.slug);
 
   return (
     <div className="container mx-auto px-4 lg:px-8 py-10 md:py-12">
