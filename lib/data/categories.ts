@@ -1,7 +1,7 @@
 export interface Category {
   slug: string;
   name: string;
-  group: 'dama' | 'ninos';
+  group: 'dama' | 'hombre' | 'ninos';
   groupLabel: string;
   image: string;
   description?: string;
@@ -61,6 +61,16 @@ export const categories: Category[] = [
     description: 'Batas, camisones y vestidos para descansar.',
   },
 
+  // ── HOMBRE ──
+  {
+    slug: 'hombre',
+    name: 'Hombre',
+    group: 'hombre',
+    groupLabel: 'Hombre',
+    image: '/products/ref-065-bermuda-camisa-cuello-v-manga-franela/photo-1.jpg',
+    description: 'Pijamas para hombre, cómodos y frescos.',
+  },
+
   // ── NIÑOS ──
   {
     slug: 'nino',
@@ -85,6 +95,11 @@ export const categoryGroups = [
     key: 'dama',
     label: 'Dama',
     categories: categories.filter((c) => c.group === 'dama'),
+  },
+  {
+    key: 'hombre',
+    label: 'Hombre',
+    categories: categories.filter((c) => c.group === 'hombre'),
   },
   {
     key: 'ninos',

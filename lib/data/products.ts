@@ -935,12 +935,12 @@ export const products: Product[] = [
       'Camisón fresco en algodón tipo esqueleto (racerback) con frases estampadas. Diseños: Paris, Don\'t Overthink It, Be the Change y Dreams. (Precio estimado — no está en el Excel oficial.)',
   },
 
-  // ══════════ SHORT ALGODÓN — HOMBRE ══════════
+  // ══════════ HOMBRE ══════════
   {
     id: 'p-065',
     slug: 'bermuda-camisa-cuello-v-manga-franela',
     name: 'Ref 065 - BERMUDA CON CAMISA CUELLO EN V CON MANGA EN FRANELA',
-    category: 'short-algodon',
+    category: 'hombre',
     images: [
       '/products/ref-065-bermuda-camisa-cuello-v-manga-franela/photo-1.jpg',
       '/products/ref-065-bermuda-camisa-cuello-v-manga-franela/photo-2.jpg',
@@ -953,12 +953,21 @@ export const products: Product[] = [
     priceRetail: 36000,
     priceWholesale: 26000,
     wholesaleMinQty: 6,
-    colors: [],
+    colors: [
+      'Azul Marino Puntos Rojo',
+      'Gris Anclas Azul Marino',
+      'Verde Oliva Puntos',
+      'Azul Marino Puntos Gris',
+      'Azul Marino Diamantes',
+      'Negro Puntos',
+      'Vino',
+    ],
     sizes: ADULT,
-    isFeatured: false,
+    isFeatured: true,
     isNew: true,
     inStock: true,
-    description: 'Conjunto de bermuda y camisa cuello en V con manga en franela.',
+    description:
+      'Conjunto de bermuda y camiseta cuello en V con bolsillo en el pecho, en franela suave. 7 combinaciones de colores y estampados.',
   },
 
   // ══════════ NIÑO ══════════
