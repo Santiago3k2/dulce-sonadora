@@ -36,7 +36,7 @@ export const products: Product[] = [
   {
     id: 'p-006',
     slug: 'tank-be-happy-sage-capri-floral-gris',
-    name: 'Ref 006 — Tank + Pantalón Largo Estampado',
+    name: 'Ref 006 - PANTALON PIEL DE DURAZNO (SUBLIMADO) CON BLUSA SISA EN PIEL DE DURAZNO UNICOLOR',
     category: 'pantalon-algodon',
     images: [
       '/products/ref-006-tank-be-happy-sage-capri-floral-gris/photo-1.jpg',
@@ -67,7 +67,7 @@ export const products: Product[] = [
   {
     id: 'p-009',
     slug: 'camiseta-love-rosa-negro-corazones-blanco-leopardo',
-    name: 'Ref 009 — Camiseta + Pantalón Largo Estampado',
+    name: 'Ref 009 - PANTALON PIEL DE DURAZNO (SUBLIMADO) CON BLUSA MANGA EN PIEL DE DURAZNO UNICOLOR',
     category: 'pantalon-algodon',
     images: [
       '/products/ref-009-camiseta-love-rosa-negro-corazones-blanco-leopardo/photo-1.jpg',
@@ -104,7 +104,7 @@ export const products: Product[] = [
   {
     id: 'p-023',
     slug: 'cami-rosa-pantalon-panda-morado',
-    name: 'Ref 023 — Cami + Pantalón Largo Estampado',
+    name: 'Ref 023 - PANTALON PIEL DE DURAZNO (SUBLIMADO) CON BLUSA TIRAS EN PIEL DE DURAZNO UNICOLOR',
     category: 'pantalon-algodon',
     images: [
       '/products/ref-023-cami-rosa-pantalon-panda-morado/photo-1.jpg',
@@ -133,7 +133,7 @@ export const products: Product[] = [
   {
     id: 'p-042',
     slug: 'conjunto-good-night-stars-amarillo-verde',
-    name: 'Ref 042 — Conjunto Camiseta + Pantalón Largo',
+    name: 'Ref 042 - PANTALON PIEL DE DURAZNO (UNICOLOR) CON BLUSA MANGA EN PIEL DE DURAZNO UNICOLOR',
     category: 'pantalon-algodon',
     images: [
       '/products/ref-042-conjunto-good-night-y-stars-amarillo-y-verde/photo-1.jpg',
@@ -171,7 +171,7 @@ export const products: Product[] = [
   {
     id: 'p-044',
     slug: 'camiseta-pantalon-damas-lila-candy-crema-floral-menta-margaritas',
-    name: 'Ref 044 — Camiseta + Pantalón Largo Estampado',
+    name: 'Ref 044 - PANTALON PIEL DE DURAZNO (SUBLIMADO) CON BLUSA MANGA EN PIEL DE DURAZNO UNICOLOR',
     category: 'pantalon-algodon',
     images: [
       '/products/ref-044-camiseta-pantalon-damas-lila-candy-crema-floral-menta-margaritas/photo-1.jpg',
@@ -204,7 +204,7 @@ export const products: Product[] = [
   {
     id: 'p-068',
     slug: 'pantalon-camisa-botones-unicolor',
-    name: 'Ref 068 — Pantalón + Camisa de Botones Unicolor',
+    name: 'Ref 068 - PANTALON FRANELA CON CAMISA DE BOTONES',
     category: 'pantalon-algodon',
     images: [
       '/products/ref-068-pantalon-camisa-botones-unicolor/photo-1.jpg',
@@ -226,7 +226,7 @@ export const products: Product[] = [
   {
     id: 'p-401',
     slug: 'camiseta-pantalon-felpa-osito-beige-avocato-verde',
-    name: 'Ref 401 — Camiseta + Pantalón Felpa',
+    name: 'Ref 401 - CONJUNTO CAMISETA PANTALON FELPA',
     category: 'pantalon-algodon',
     images: [
       '/products/ref-401-camiseta-pantalon-felpa-osito-beige-y-avocato-verde/photo-1.jpg',
@@ -255,7 +255,7 @@ export const products: Product[] = [
   {
     id: 'p-sinref-menta',
     slug: 'menta-top-pantalon-cuadros-teal',
-    name: 'Sin Ref — Menta Top + Pantalón Cuadros Teal',
+    name: 'Sin Ref - PANTALON PIEL DE DURAZNO UNICOLOR',
     category: 'pantalon-algodon',
     images: [
       '/products/sin-ref-menta-top-pantalon-cuadros-teal/photo-1.jpg',
@@ -277,7 +277,7 @@ export const products: Product[] = [
   {
     id: 'p-058',
     slug: 'conjunto-satin-rosa-cerezas',
-    name: 'Ref 058 — Conjunto Satín Largo (Pantalón)',
+    name: 'Ref 058 - PANTALON SATIN (SUBLIMADO) CON BLUSA SATIN TIRA (SUBLIMADA)',
     category: 'pantalon-satin',
     images: [
       '/products/ref-058-conjunto-satin-rosa-cerezas/photo-1.jpg',
@@ -301,7 +301,7 @@ export const products: Product[] = [
   {
     id: 'p-002',
     slug: 'camiseta-capri-estampado',
-    name: 'Ref 002 — Camiseta + Capri Estampado',
+    name: 'Ref 002 - CAPRI PIEL DE DURAZNO (SUBLIMADO) CON BLUSA DE MANGA PIEL DE DURAZNO UNICOLOR',
     category: 'capri',
     images: [
       '/products/ref-002-camiseta-capri-estampado/photo-1.jpg',
@@ -330,7 +330,7 @@ export const products: Product[] = [
   {
     id: 'p-008',
     slug: 'tank-plus-be-happy-verde-sweetness-donut-cuadros-azul',
-    name: 'Ref 008 — Tank + Capri Estampado',
+    name: 'Ref 008 - CAPRI PIEL DE DURAZNO (SUBLIMADO) CON BLUSA DE SISA PIEL DE DURAZNO UNICOLOR',
     category: 'capri',
     images: [
       '/products/ref-008-tank-plus-be-happy-verde-sweetness-donut-cuadros-azul/photo-1.jpg',
@@ -365,7 +365,7 @@ export const products: Product[] = [
   {
     id: 'p-020',
     slug: 'tank-amarillo-ruffle-capri-donut-azul',
-    name: 'Ref 020 — Tank Ruffle + Capri Estampado',
+    name: 'Ref 020 - CAPRI PIEL DE DURAZNO (SUBLIMADO) CON BLUSA DE TIRAS PIEL DE DURAZNO UNICOLOR',
     category: 'capri',
     images: [
       '/products/ref-020-tank-amarillo-ruffle-capri-donut-azul/photo-1.jpg',
@@ -401,7 +401,7 @@ export const products: Product[] = [
   {
     id: 'p-069',
     slug: 'capri-camisa-botones-estampados',
-    name: 'Ref 069 — Capri + Camisa de Botones',
+    name: 'Ref 069 - CAPRI FRANELA CAMISA DE BOTONES',
     category: 'capri',
     images: [
       '/products/ref-069-capri-camisa-botones-estampados/photo-1.jpg',
@@ -432,7 +432,7 @@ export const products: Product[] = [
   {
     id: 'p-004',
     slug: 'camiseta-corazon-leopardo-hello-rosa',
-    name: 'Ref 004 — Camiseta Corazón + Short Estampado',
+    name: 'Ref 004 - SHORT PIEL DE DURAZNO (SUBLIMADO) CON BLUSA DE MANGA PIEL DE DURAZNO UNICOLOR',
     category: 'short-algodon',
     images: [
       '/products/ref-004-camiseta-corazon-leopardo-y-hello-rosa/photo-1.jpg',
@@ -462,7 +462,7 @@ export const products: Product[] = [
   {
     id: 'p-007',
     slug: 'tank-short-estampado',
-    name: 'Ref 007 — Tank + Short Estampado',
+    name: 'Ref 007 - SHORT PIEL DE DURAZNO (SUBLIMADO) CON BLUSA DE TIRAS PIEL DE DURAZNO UNICOLOR',
     category: 'short-algodon',
     images: [
       '/products/ref-007-tank-short/photo-1.jpg',
@@ -484,7 +484,7 @@ export const products: Product[] = [
   {
     id: 'p-015',
     slug: 'tank-plus-smile-blanco-short-malva-sweetness-amarillo',
-    name: 'Ref 015 — Tank + Short Estampado',
+    name: 'Ref 015 - SHORT PIEL DE DURAZNO (SUBLIMADO) CON BLUSA DE SISA PIEL DE DURAZNO UNICOLOR',
     category: 'short-algodon',
     images: [
       '/products/ref-015-tank-plus-smile-blanco-short-malva-sweetness-amarillo-short-donut/photo-1.jpg',
@@ -521,7 +521,7 @@ export const products: Product[] = [
   {
     id: 'p-035',
     slug: 'cami-rosa-short-frutilla-azul',
-    name: 'Ref 035 — Cami + Short Estampado',
+    name: 'Ref 035 - SHORT PIEL DE DURAZNO (SUBLIMADO) CON BLUSA DE TIRAS PIEL DE DURAZNO UNICOLOR',
     category: 'short-algodon',
     images: [
       '/products/ref-035-cami-rosa-short-frutilla-azul/photo-1.jpg',
@@ -554,7 +554,7 @@ export const products: Product[] = [
   {
     id: 'p-014',
     slug: 'romper-menta-solido-ruffle',
-    name: 'Ref 014 — Conjunto Short Unicolor Ruffle',
+    name: 'Ref 014 - SHORT PIEL DE DURAZNO (UNICOLOR) CON BLUSA PIEL DE DURAZNO UNICOLOR GOLAS',
     category: 'short-algodon',
     images: [
       '/products/ref-014-romper-menta-solido-ruffle/photo-durazno.jpg',
@@ -586,7 +586,7 @@ export const products: Product[] = [
   {
     id: 'p-402',
     slug: 'cami-blanco-lotso-bear-short-rosa',
-    name: 'Ref 402 — Cami + Short Estampado',
+    name: 'Ref 402 - CONJUNTO CAMI SHORT ESTAMPADO',
     category: 'short-algodon',
     images: [
       '/products/ref-402-cami-blanco-lotso-bear-short-rosa/photo-1.jpg',
@@ -699,7 +699,7 @@ export const products: Product[] = [
   {
     id: 'p-039',
     slug: 'satin-conjunto-estampados',
-    name: 'Ref 039 — Conjunto Short Satín Estampado',
+    name: 'Ref 039 - SHORT DE SATIN (SUBLIMADO) CON BLUSA DE TIRAS (SUBLIMADO)',
     category: 'short-satin',
     images: [
       '/products/ref-039-satin-conjunto-estampados/photo-1.jpg',
@@ -729,7 +729,7 @@ export const products: Product[] = [
   {
     id: 'p-111',
     slug: 'short-satin-unicolor',
-    name: 'Ref 111 — Cami + Short Satín Unicolor',
+    name: 'Ref 111 - SHORT DE SATIN UNICOLOR CON BLUSA DE TIRAS UNICOLOR',
     category: 'short-satin',
     images: [
       '/products/ref-111-short-satin-unicolor/photo-1.jpg',
@@ -753,7 +753,7 @@ export const products: Product[] = [
   {
     id: 'p-sinref-satin-negro',
     slug: 'satin-negro-mickey-minnie-corazones',
-    name: 'Satín Negro Mickey Minnie Corazones',
+    name: 'Sin Ref - SHORT DE SATIN UNICOLOR',
     category: 'short-satin',
     images: [
       '/products/sin-ref-satin-negro-mickey-minnie-corazones/photo-1.jpg',
@@ -774,7 +774,7 @@ export const products: Product[] = [
   {
     id: 'p-201',
     slug: 'camison-maternidad-enterito-bebe-dinosaurios',
-    name: 'Ref 201 — Bata Materna + Enterito Bebé',
+    name: 'Ref 201 - BATA MATERNA CON CONJUNTO DE BEBE',
     category: 'bata',
     images: [
       '/products/ref-201-camison-maternidad-enterito-bebe-dinosaurios/photo-1.jpg',
@@ -810,7 +810,7 @@ export const products: Product[] = [
   {
     id: 'p-029',
     slug: 'bata-senorial-botones-estampada',
-    name: 'Ref 029 — Bata Señorial de Botones Estampada',
+    name: 'Ref 029 - BATA SENORIAL DE BOTONES ESTAMPADA EN ALGODON',
     category: 'bata',
     images: [
       '/products/ref-029-bata-senorial-botones-estampada/photo-1.jpg',
@@ -841,7 +841,7 @@ export const products: Product[] = [
   {
     id: 'p-013',
     slug: 'camison-satin-unicolor',
-    name: 'Ref 013 — Camisón Satín Unicolor',
+    name: 'Ref 013 - BATA EN SATIN UNICOLOR EN TIRAS',
     category: 'bata',
     images: [
       '/products/ref-013-camison-satin-unicolor/photo-1.jpg',
@@ -865,7 +865,7 @@ export const products: Product[] = [
   {
     id: 'p-026',
     slug: 'vestido-slip-verde-menta-con-encaje',
-    name: 'Ref 026 — Vestido Slip con Encaje',
+    name: 'Ref 026 - BATA EN SATIN UNICOLOR EN TIRAS',
     category: 'bata',
     images: [
       '/products/ref-026-vestido-slip-verde-menta-con-encaje/photo-1.jpg',
@@ -888,7 +888,7 @@ export const products: Product[] = [
   {
     id: 'p-071',
     slug: 'camison-satin-flamencos-corazones-floral',
-    name: 'Ref 071 — Camisón Satín Estampado',
+    name: 'Ref 071 - CAMISON SATIN TIRAS ESTAMPADO',
     category: 'bata',
     images: [
       '/products/ref-071-camison-satin-flamencos-corazones-floral/photo-1.jpg',
@@ -910,7 +910,7 @@ export const products: Product[] = [
   {
     id: 'p-107',
     slug: 'camison-tiras-paris-frases',
-    name: 'Ref 107 — Camisón Tiras Estampado',
+    name: 'Ref 107 - CAMISON TIRAS ESTAMPADO FRASES',
     category: 'bata',
     images: [
       '/products/ref-107-camison-tiras-paris-frases/photo-1.jpg',
@@ -935,11 +935,37 @@ export const products: Product[] = [
       'Camisón fresco en algodón tipo esqueleto (racerback) con frases estampadas. Diseños: Paris, Don\'t Overthink It, Be the Change y Dreams. (Precio estimado — no está en el Excel oficial.)',
   },
 
+  // ══════════ SHORT ALGODÓN — HOMBRE ══════════
+  {
+    id: 'p-065',
+    slug: 'bermuda-camisa-cuello-v-manga-franela',
+    name: 'Ref 065 - BERMUDA CON CAMISA CUELLO EN V CON MANGA EN FRANELA',
+    category: 'short-algodon',
+    images: [
+      '/products/ref-065-bermuda-camisa-cuello-v-manga-franela/photo-1.jpg',
+      '/products/ref-065-bermuda-camisa-cuello-v-manga-franela/photo-2.jpg',
+      '/products/ref-065-bermuda-camisa-cuello-v-manga-franela/photo-3.jpg',
+      '/products/ref-065-bermuda-camisa-cuello-v-manga-franela/photo-4.jpg',
+      '/products/ref-065-bermuda-camisa-cuello-v-manga-franela/photo-5.jpg',
+      '/products/ref-065-bermuda-camisa-cuello-v-manga-franela/photo-6.jpg',
+      '/products/ref-065-bermuda-camisa-cuello-v-manga-franela/photo-7.jpg',
+    ],
+    priceRetail: 36000,
+    priceWholesale: 26000,
+    wholesaleMinQty: 6,
+    colors: [],
+    sizes: ADULT,
+    isFeatured: false,
+    isNew: true,
+    inStock: true,
+    description: 'Conjunto de bermuda y camisa cuello en V con manga en franela.',
+  },
+
   // ══════════ NIÑO ══════════
   {
     id: 'p-049',
     slug: 'nino-superheroes-captain-america-spiderman',
-    name: 'Ref 049 — Niño Camiseta + Pantalón Largo Personajes',
+    name: 'Ref 049 - PANTALON DE NINO PIEL DE DURAZNO (SUBLIMADO) CAMISA UNICOLOR EN PIEL DE DURAZNO',
     category: 'nino',
     images: [
       '/products/ref-049-nino-superheroes-captain-america-y-spiderman/photo-1.jpg',
@@ -971,7 +997,7 @@ export const products: Product[] = [
   {
     id: 'p-060',
     slug: 'nino-minecraft-manga-corta-verde',
-    name: 'Ref 060 — Niño Camiseta + Short Personajes',
+    name: 'Ref 060 - SHORT DE NINO PIEL DE DURAZNO (SUBLIMADO) CAMISA UNICOLOR EN PIEL DE DURAZNO',
     category: 'nino',
     images: [
       '/products/ref-060-nino-minecraft-manga-corta-verde/photo-1.jpg',
@@ -1003,7 +1029,7 @@ export const products: Product[] = [
   {
     id: 'p-061',
     slug: 'nino-manga-larga-minecraft-verde-sonic-azul',
-    name: 'Ref 061 — Niño Manga Larga + Pantalón Personajes',
+    name: 'Ref 061 - PANTALON DE NINO PIEL DE DURAZNO (SUBLIMADO) CAMISA MANGA LARGA EN PIEL DE DURAZNO',
     category: 'nino',
     images: [
       '/products/ref-061-nino-manga-larga-minecraft-verde-y-sonic-azul/photo-1.jpg',
@@ -1034,7 +1060,7 @@ export const products: Product[] = [
   {
     id: 'p-036',
     slug: 'nina-huntyk-crema-short-morado',
-    name: 'Ref 036 — Niña Camiseta + Short Estampado',
+    name: 'Ref 036 - SHORT DE NINA GOLAS PIEL DE DURAZNO (SUBLIMADO) CON BLUSA MANGA UNICOLOR PIEL DE DURAZNO',
     category: 'nina',
     images: [
       '/products/ref-036-nina-huntyk-crema-short-morado/photo-1.jpg',
@@ -1065,7 +1091,7 @@ export const products: Product[] = [
   {
     id: 'p-037',
     slug: 'nina-minnie-mouse-fucsia-multicolor',
-    name: 'Ref 037 — Niña Camiseta + Pantalón Largo Estampado',
+    name: 'Ref 037 - PANTALON DE NINA PIEL DE DURAZNO (SUBLIMADO) CON BLUSA MANGA EN GOLAS UNICOLOR PIEL DE DURAZNO',
     category: 'nina',
     images: [
       '/products/ref-037-nina-minnie-mouse-fucsia-multicolor/photo-1.jpg',
