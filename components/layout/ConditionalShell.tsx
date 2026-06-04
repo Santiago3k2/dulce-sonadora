@@ -22,9 +22,10 @@ export default function ConditionalShell({
   groups: CategoryGroup[];
 }) {
   const path = usePathname() ?? '';
-  const isStandaloneLanding = path.startsWith('/oferta');
+  // /oferta = landings aisladas para Ads. /admin = panel con su propio layout.
+  const isStandalone = path.startsWith('/oferta') || path.startsWith('/admin');
 
-  if (isStandaloneLanding) {
+  if (isStandalone) {
     return <main className="min-h-screen">{children}</main>;
   }
 
