@@ -1,12 +1,25 @@
+import { createAdminClient } from '@/lib/supabase/admin';
+import CategoriesManager from '@/components/admin/CategoriesManager';
+import type { AdminCategory } from '@/lib/admin/types';
+
 export const dynamic = 'force-dynamic';
 
-export default function CategoriasPage() {
+export default async function CategoriasPage() {
+  const sb = createAdminClient();
+  const [{ data: categories }, { data: prods }] = await Promise.all([
+    sb.from('categories').select('*').order('sort_order', { ascending: true }),
+    sb.from('products').select('category_id'),
+  ]);
+
+  const counts: Record<string, number> = {};
+  (prods ?? []).forEach((p: { category_id: string | null }) => {
+    if (p.category_id) counts[p.category_id] = (counts[p.category_id] || 0) + 1;
+  });
+
   return (
-    <div>
-      <h1 className="text-2xl font-semibold text-slate-800 mb-1">Categorías</h1>
-      <p className="text-sm text-slate-500">
-        Crear, editar y reordenar categorías — disponible en la Fase 4.
-      </p>
-    </div>
+    <CategoriesManager
+      categories={(categories ?? []) as AdminCategory[]}
+      counts={counts}
+    />
   );
 }

@@ -32,6 +32,16 @@ export interface AdminProduct {
   sort_order: number;
 }
 
+export interface AdminCategoryInput {
+  id?: string;
+  name: string;
+  slug?: string;
+  group_label: string;
+  image: string | null;
+  description: string;
+  is_active: boolean;
+}
+
 export interface AdminProductInput {
   id?: string;
   ref: string | null;
