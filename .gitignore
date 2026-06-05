@@ -23,6 +23,9 @@ build/
 # vercel
 .vercel
 
+# shopify (archivos locales del CLI)
+.shopify/
+
 # IDE
 .vscode/
 .idea/

@@ -1,0 +1,21 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "1cb0e70b3bd42377cf688669f54359a4"
+name = "dulce-sonadora-headless"
+application_url = "https://dulce-sonadora.vercel.app"
+embedded = false
+
+[access_scopes]
+scopes = "read_products,write_products,read_orders,write_orders,read_customers,write_customers,read_inventory,write_inventory,read_locations,read_price_rules,read_discounts"
+
+[auth]
+redirect_urls = [
+  "https://dulce-sonadora.vercel.app/api/auth/callback",
+  "http://localhost:3000/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2026-07"
+
+[build]
+automatically_update_urls_on_dev = false
