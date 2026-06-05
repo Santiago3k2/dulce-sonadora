@@ -60,3 +60,39 @@ export interface AdminProductInput {
   in_stock: boolean;
   is_active: boolean;
 }
+
+export interface OrderLineItem {
+  productId: string;
+  ref?: string | null;
+  slug: string;
+  name: string;
+  image?: string | null;
+  color: string;
+  size: string;
+  quantity: number;
+  unitPrice: number;
+}
+
+export interface AdminOrder {
+  id: string;
+  order_number: number;
+  customer_name: string;
+  customer_phone: string;
+  customer_address: string | null;
+  customer_city: string | null;
+  notes: string | null;
+  items: OrderLineItem[];
+  subtotal: number;
+  total: number;
+  is_wholesale: boolean;
+  status: string;
+  created_at: string;
+}
+
+export const ORDER_STATUSES = [
+  'pendiente',
+  'en_proceso',
+  'enviado',
+  'entregado',
+  'cancelado',
+] as const;

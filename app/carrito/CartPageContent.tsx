@@ -192,17 +192,24 @@ export default function CartPageContent() {
                   {formatCOP(total)}
                 </span>
               </div>
+              <Link
+                href="/checkout"
+                className="w-full bg-pink-deeper hover:bg-pink-dark text-white py-3 rounded-full font-semibold flex items-center justify-center gap-2 transition mb-3"
+              >
+                <ShoppingBag size={18} />
+                Finalizar pedido
+              </Link>
               <a
                 href={whatsappLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full bg-[#25D366] hover:bg-[#1ebe5d] text-white py-3 rounded-full font-medium flex items-center justify-center gap-2 transition"
+                className="w-full bg-white border border-[#25D366] text-[#1ebe5d] hover:bg-[#25D366]/5 py-2.5 rounded-full font-medium flex items-center justify-center gap-2 transition text-sm"
               >
                 <MessageCircle size={18} />
-                Pedir por WhatsApp
+                O pedir por WhatsApp
               </a>
               <p className="mt-3 text-xs text-text-muted text-center">
-                Te confirmamos el pedido y coordinamos el envío contra entrega.
+                Pago contra entrega. Te confirmamos el pedido y coordinamos el envío.
               </p>
             </div>
           </aside>
