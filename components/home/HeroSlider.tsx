@@ -24,7 +24,7 @@ const slides: Slide[] = [
     title: 'Pijamas Satín',
     subtitle: 'Suaves como un sueño',
     description: 'Conjunto en satín',
-    image: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-1.jpg',
+    image: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-1.png',
     priceRetail: 59000,
     priceWholesale: 49000,
     cta: 'Comprar',
@@ -100,12 +100,12 @@ export default function HeroSlider() {
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
                     priority={i === 0}
-                    className="object-cover"
+                    className="object-cover object-top"
                   />
                 </div>
 
-                {/* Overlay gradient for readability */}
-                <div className="absolute inset-0 bg-gradient-to-r from-cream via-cream/85 to-transparent md:via-cream/70 md:to-transparent" />
+                {/* Overlay gradient for readability (lighter, fades fast so the photo no se opaca) */}
+                <div className="absolute inset-0 bg-gradient-to-r from-cream via-cream/60 via-30% to-transparent to-75% md:via-cream/40 md:via-45% md:to-65%" />
 
                 {/* Content */}
                 <div className="relative container mx-auto h-full min-h-[460px] md:min-h-[560px] lg:min-h-[640px] flex items-center px-6 lg:px-12">
