@@ -141,7 +141,7 @@ export default function Header({ groups }: { groups: CategoryGroup[] }) {
                 )}
               </button>
               <Link
-                href="/contacto"
+                href="/cuenta"
                 aria-label="Mi cuenta"
                 className="hover:text-pink-deeper transition"
               >
@@ -261,6 +261,15 @@ export default function Header({ groups }: { groups: CategoryGroup[] }) {
                     {wishlistCount}
                   </span>
                 )}
+              </span>
+            </Link>
+            <Link
+              href="/cuenta"
+              onClick={() => setMobileOpen(false)}
+              className="block py-3 border-b border-gray-line text-sm uppercase tracking-wider hover:text-pink-deeper"
+            >
+              <span className="inline-flex items-center gap-2">
+                <User size={16} /> Mi cuenta
               </span>
             </Link>
           </nav>

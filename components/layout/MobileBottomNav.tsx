@@ -45,7 +45,7 @@ export default function MobileBottomNav() {
       icon: <WhatsAppIcon size={22} />,
       external: true,
     },
-    { href: '/contacto', label: 'Mi Cuenta', icon: <User size={20} /> },
+    { href: '/cuenta', label: 'Mi Cuenta', icon: <User size={20} /> },
   ];
 
   return (

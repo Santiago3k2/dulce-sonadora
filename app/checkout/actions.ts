@@ -2,6 +2,8 @@
 
 import { revalidatePath } from 'next/cache';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { createServerSupabase } from '@/lib/supabase/server';
+import { tierIsWholesale } from '@/lib/customer';
 import { isPaymentMethod, priceForMethod, type PaymentMethod } from '@/lib/utils/pricing';
 import { notifyNewOrder } from '@/lib/notifications/email';
 
@@ -30,31 +32,42 @@ const METHOD_LABEL: Record<PaymentMethod, string> = {
   online: 'Pago en línea (con recargo de pasarela)',
 };
 
-/** Inserta el pedido; si la columna payment_method aún no existe en la BD,
- *  reintenta guardándolo dentro de las notas (compatibilidad hasta migrar). */
+/** Inserta el pedido tolerando columnas que aún no existan en la BD
+ *  (payment_method, customer_id): si la migración no se ha corrido, reintenta
+ *  sin esa columna — payment_method se preserva dentro de las notas. */
 async function insertOrder(
   sb: ReturnType<typeof createAdminClient>,
   row: Record<string, unknown>,
   method: PaymentMethod
 ) {
-  const first = await sb
-    .from('orders')
-    .insert({ ...row, payment_method: method })
-    .select('order_number')
-    .single();
-  if (!first.error) return first;
-  if (!/payment_method/i.test(first.error.message)) return first;
-  const notes = [`[Pago: ${METHOD_LABEL[method]}]`, row.notes].filter(Boolean).join(' ');
-  return sb
-    .from('orders')
-    .insert({ ...row, notes })
-    .select('order_number')
-    .single();
+  let payload: Record<string, unknown> = { ...row, payment_method: method };
+
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const res = await sb.from('orders').insert(payload).select('order_number').single();
+    if (!res.error) return res;
+    const msg = res.error.message;
+
+    if (/payment_method/i.test(msg) && 'payment_method' in payload) {
+      const { payment_method: _pm, ...rest } = payload;
+      const notes = [`[Pago: ${METHOD_LABEL[method]}]`, row.notes].filter(Boolean).join(' ');
+      payload = { ...rest, notes };
+      continue;
+    }
+    if (/customer_id/i.test(msg) && 'customer_id' in payload) {
+      const { customer_id: _cid, ...rest } = payload;
+      payload = rest;
+      continue;
+    }
+    return res;
+  }
+
+  return sb.from('orders').insert(payload).select('order_number').single();
 }
 
 /**
- * Crea un pedido. Público (el cliente no inicia sesión), pero corre en el
+ * Crea un pedido. Funciona como invitado o con cliente logueado; corre en el
  * servidor y RECALCULA los precios desde la BD para que no se puedan manipular.
+ * Si hay sesión, asocia el pedido al cliente y aplica su tier/descuento.
  * Si el método de pago es online, aplica el recargo de pasarela por unidad
  * (misma fórmula de la tabla de precios PAGO_ONLINE).
  */
@@ -80,14 +93,38 @@ export async function createOrder(input: CreateOrderInput) {
 
   const byId = new Map((products ?? []).map((p) => [p.id, p]));
   const totalQty = items.reduce((s, i) => s + i.quantity, 0);
-  const isWholesale = totalQty >= WHOLESALE_MIN_QTY;
+
+  // Cliente logueado: aplica su tier (mayorista/vip) y descuento especial.
+  // La sesión se lee server-side, así que no se puede falsear desde el navegador.
+  let customerId: string | null = null;
+  let tierWholesale = false;
+  let discountPct = 0;
+  const {
+    data: { user },
+  } = await createServerSupabase().auth.getUser();
+  if (user) {
+    customerId = user.id;
+    const { data: prof } = await sb
+      .from('profiles')
+      .select('tier, discount_pct')
+      .eq('id', user.id)
+      .maybeSingle();
+    if (prof) {
+      tierWholesale = tierIsWholesale(prof.tier);
+      discountPct = Number(prof.discount_pct) || 0;
+    }
+  }
+
+  // Mayorista por cantidad (≥6) O por tier del cliente.
+  const isWholesale = totalQty >= WHOLESALE_MIN_QTY || tierWholesale;
 
   const lineItems = [];
   let total = 0;
   for (const it of items) {
     const p = byId.get(it.productId);
     if (!p || !p.is_active) continue;
-    const base = isWholesale ? p.price_wholesale : p.price_retail;
+    const raw = isWholesale ? p.price_wholesale : p.price_retail;
+    const base = discountPct > 0 ? Math.round(raw * (1 - discountPct / 100)) : raw;
     const unit = priceForMethod(base, method);
     total += unit * it.quantity;
     lineItems.push({
@@ -108,6 +145,7 @@ export async function createOrder(input: CreateOrderInput) {
   const { data, error } = await insertOrder(
     sb,
     {
+      customer_id: customerId,
       customer_name: name,
       customer_phone: phone,
       customer_address: input.customer_address?.trim() || null,

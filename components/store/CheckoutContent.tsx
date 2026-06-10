@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { CheckCircle2, Loader2, MessageCircle, ShoppingBag } from 'lucide-react';
 import { useCartStore } from '@/lib/store/cartStore';
+import { createClient } from '@/lib/supabase/client';
 import { formatCOP, buildWhatsAppLink, WHATSAPP_NUMBER } from '@/lib/utils/format';
 import { createOrder } from '@/app/checkout/actions';
 import {
@@ -19,7 +20,6 @@ export default function CheckoutContent() {
   useEffect(() => setMounted(true), []);
 
   const items = useCartStore((s) => s.items);
-  const totalPrice = useCartStore((s) => s.totalPrice);
   const isWholesaleActive = useCartStore((s) => s.isWholesaleActive);
   const clearCart = useCartStore((s) => s.clearCart);
 
@@ -32,6 +32,31 @@ export default function CheckoutContent() {
   const [error, setError] = useState('');
   const [saving, start] = useTransition();
   const [done, setDone] = useState<{ orderNumber: number; message: string } | null>(null);
+
+  // Si el cliente tiene sesión, precarga sus datos y aplica su tier especial.
+  const [tierWholesale, setTierWholesale] = useState(false);
+  const [discountPct, setDiscountPct] = useState(0);
+  useEffect(() => {
+    (async () => {
+      const sb = createClient();
+      const {
+        data: { user },
+      } = await sb.auth.getUser();
+      if (!user) return;
+      const { data: prof } = await sb
+        .from('profiles')
+        .select('full_name, phone, address, city, tier, discount_pct')
+        .eq('id', user.id)
+        .maybeSingle();
+      if (!prof) return;
+      setName((v) => v || prof.full_name || '');
+      setPhone((v) => v || prof.phone || '');
+      setAddress((v) => v || prof.address || '');
+      setCity((v) => v || prof.city || '');
+      setTierWholesale(prof.tier === 'mayorista' || prof.tier === 'vip');
+      setDiscountPct(Number(prof.discount_pct) || 0);
+    })();
+  }, []);
 
   const inputCls =
     'w-full rounded-lg border border-gray-line px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-pink-deeper/30 focus:border-pink-deeper';
@@ -84,12 +109,17 @@ export default function CheckoutContent() {
     );
   }
 
-  const wholesale = isWholesaleActive();
+  // Mayorista por cantidad (≥6) o por tier del cliente (mayorista/vip).
+  const wholesale = isWholesaleActive() || tierWholesale;
+  // Precio base por unidad: tier + descuento especial del cliente (si lo tiene).
+  const unitBase = (it: (typeof items)[number]) => {
+    const raw = wholesale ? it.priceWholesale : it.priceRetail;
+    return discountPct > 0 ? Math.round(raw * (1 - discountPct / 100)) : raw;
+  };
   // Precio unitario según método de pago elegido (online lleva recargo de pasarela)
-  const unitFor = (it: (typeof items)[number]) =>
-    priceForMethod(wholesale ? it.priceWholesale : it.priceRetail, payMethod);
+  const unitFor = (it: (typeof items)[number]) => priceForMethod(unitBase(it), payMethod);
   const total = items.reduce((s, it) => s + unitFor(it) * it.quantity, 0);
-  const baseTotal = totalPrice();
+  const baseTotal = items.reduce((s, it) => s + unitBase(it) * it.quantity, 0);
   const surcharge = total - baseTotal;
 
   function submit(e: React.FormEvent) {
@@ -104,6 +134,7 @@ export default function CheckoutContent() {
     const snapshot = items.map((it) => ({ ...it }));
     const wasWholesale = wholesale;
     const wasMethod = payMethod;
+    const wasDiscount = discountPct;
     start(async () => {
       const res = await createOrder({
         customer_name: name,
@@ -125,10 +156,9 @@ export default function CheckoutContent() {
       const methodLabel = PAYMENT_METHODS.find((m) => m.value === wasMethod)?.label ?? wasMethod;
       let msg = `¡Hola Dulce Soñadora! 🌸 Confirmo mi pedido #${res.orderNumber}:\n\n`;
       snapshot.forEach((it) => {
-        const unit = priceForMethod(
-          wasWholesale ? it.priceWholesale : it.priceRetail,
-          wasMethod
-        );
+        const raw = wasWholesale ? it.priceWholesale : it.priceRetail;
+        const baseU = wasDiscount > 0 ? Math.round(raw * (1 - wasDiscount / 100)) : raw;
+        const unit = priceForMethod(baseU, wasMethod);
         msg += `• ${it.name} x${it.quantity} (Talla ${it.size}, ${it.color}) — ${formatCOP(unit * it.quantity)}\n`;
       });
       msg += `\nTotal: ${formatCOP(res.total)}\nMétodo de pago: ${methodLabel}\n\nNombre: ${name}\nTeléfono: ${phone}`;
@@ -262,6 +292,11 @@ export default function CheckoutContent() {
             {wholesale && (
               <p className="text-xs text-emerald-600 mb-2 text-center">
                 ¡Precio mayorista aplicado! 🎉
+              </p>
+            )}
+            {discountPct > 0 && (
+              <p className="text-xs text-pink-deeper mb-2 text-center">
+                Descuento de cliente especial: {discountPct}% 💖
               </p>
             )}
             {isOnline(payMethod) && surcharge > 0 && (
