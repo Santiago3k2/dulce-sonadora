@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { isPaymentMethod, priceForMethod, type PaymentMethod } from '@/lib/utils/pricing';
+import { notifyNewOrder } from '@/lib/notifications/email';
 
 interface CartLine {
   productId: string;
@@ -122,6 +123,22 @@ export async function createOrder(input: CreateOrderInput) {
   );
   if (error) return { error: error.message };
 
+  await notifyNewOrder({
+    orderNumber: data.order_number as number,
+    customerName: name,
+    customerPhone: phone,
+    customerCity: input.customer_city?.trim() || null,
+    total,
+    paymentLabel: METHOD_LABEL[method],
+    items: lineItems.map((li) => ({
+      name: li.name,
+      quantity: li.quantity,
+      size: li.size,
+      color: li.color,
+      unitPrice: li.unitPrice,
+    })),
+  });
+
   revalidatePath('/admin/pedidos');
   revalidatePath('/admin');
   return { ok: true, orderNumber: data.order_number as number, total };
@@ -170,7 +187,7 @@ export async function logWhatsAppOrder(items: CartLine[], source: string) {
     }
     if (!lineItems.length) return { ok: false };
 
-    await insertOrder(
+    const { data } = await insertOrder(
       sb,
       {
         customer_name: 'Cliente WhatsApp (por confirmar)',
@@ -184,6 +201,24 @@ export async function logWhatsAppOrder(items: CartLine[], source: string) {
       },
       'whatsapp'
     );
+
+    if (data?.order_number != null) {
+      await notifyNewOrder({
+        orderNumber: data.order_number as number,
+        customerName: 'Cliente WhatsApp (por confirmar)',
+        customerPhone: 'en el chat de WhatsApp',
+        total,
+        paymentLabel: 'WhatsApp / contra entrega',
+        isWhatsAppLead: true,
+        items: lineItems.map((li) => ({
+          name: li.name,
+          quantity: li.quantity,
+          size: li.size,
+          color: li.color,
+          unitPrice: li.unitPrice,
+        })),
+      });
+    }
 
     revalidatePath('/admin/pedidos');
     revalidatePath('/admin');
