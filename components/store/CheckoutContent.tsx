@@ -7,6 +7,12 @@ import { CheckCircle2, Loader2, MessageCircle, ShoppingBag } from 'lucide-react'
 import { useCartStore } from '@/lib/store/cartStore';
 import { formatCOP, buildWhatsAppLink, WHATSAPP_NUMBER } from '@/lib/utils/format';
 import { createOrder } from '@/app/checkout/actions';
+import {
+  PAYMENT_METHODS,
+  priceForMethod,
+  isOnline,
+  type PaymentMethod,
+} from '@/lib/utils/pricing';
 
 export default function CheckoutContent() {
   const [mounted, setMounted] = useState(false);
@@ -22,6 +28,7 @@ export default function CheckoutContent() {
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
   const [notes, setNotes] = useState('');
+  const [payMethod, setPayMethod] = useState<PaymentMethod>('whatsapp');
   const [error, setError] = useState('');
   const [saving, start] = useTransition();
   const [done, setDone] = useState<{ orderNumber: number; message: string } | null>(null);
@@ -78,7 +85,12 @@ export default function CheckoutContent() {
   }
 
   const wholesale = isWholesaleActive();
-  const total = totalPrice();
+  // Precio unitario según método de pago elegido (online lleva recargo de pasarela)
+  const unitFor = (it: (typeof items)[number]) =>
+    priceForMethod(wholesale ? it.priceWholesale : it.priceRetail, payMethod);
+  const total = items.reduce((s, it) => s + unitFor(it) * it.quantity, 0);
+  const baseTotal = totalPrice();
+  const surcharge = total - baseTotal;
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -91,6 +103,7 @@ export default function CheckoutContent() {
     }));
     const snapshot = items.map((it) => ({ ...it }));
     const wasWholesale = wholesale;
+    const wasMethod = payMethod;
     start(async () => {
       const res = await createOrder({
         customer_name: name,
@@ -99,6 +112,7 @@ export default function CheckoutContent() {
         customer_city: city,
         notes,
         items: orderItems,
+        payment_method: payMethod,
       });
       if (res?.error) {
         setError(res.error);
@@ -108,12 +122,16 @@ export default function CheckoutContent() {
         setError('No se pudo crear el pedido. Intenta de nuevo.');
         return;
       }
+      const methodLabel = PAYMENT_METHODS.find((m) => m.value === wasMethod)?.label ?? wasMethod;
       let msg = `¡Hola Dulce Soñadora! 🌸 Confirmo mi pedido #${res.orderNumber}:\n\n`;
       snapshot.forEach((it) => {
-        const unit = wasWholesale ? it.priceWholesale : it.priceRetail;
+        const unit = priceForMethod(
+          wasWholesale ? it.priceWholesale : it.priceRetail,
+          wasMethod
+        );
         msg += `• ${it.name} x${it.quantity} (Talla ${it.size}, ${it.color}) — ${formatCOP(unit * it.quantity)}\n`;
       });
-      msg += `\nTotal: ${formatCOP(res.total)}\n\nNombre: ${name}\nTeléfono: ${phone}`;
+      msg += `\nTotal: ${formatCOP(res.total)}\nMétodo de pago: ${methodLabel}\n\nNombre: ${name}\nTeléfono: ${phone}`;
       if (address) msg += `\nDirección: ${address}${city ? ', ' + city : ''}`;
       if (notes) msg += `\nNota: ${notes}`;
       setDone({ orderNumber: res.orderNumber, message: msg });
@@ -164,6 +182,43 @@ export default function CheckoutContent() {
               placeholder="Ej. punto de referencia, color preferido…"
             />
           </div>
+
+          <div>
+            <label className={labelCls}>Método de pago *</label>
+            <div className="space-y-2">
+              {PAYMENT_METHODS.map((m) => (
+                <label
+                  key={m.value}
+                  className={`flex items-start gap-3 rounded-lg border px-3 py-2.5 cursor-pointer transition ${
+                    payMethod === m.value
+                      ? 'border-pink-deeper bg-pink-deeper/5 ring-1 ring-pink-deeper/30'
+                      : 'border-gray-line hover:border-pink-deeper/40'
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="payMethod"
+                    value={m.value}
+                    checked={payMethod === m.value}
+                    onChange={() => setPayMethod(m.value)}
+                    className="mt-0.5 accent-pink-deeper"
+                  />
+                  <span className="text-sm">
+                    <span className="font-medium block">{m.label}</span>
+                    <span className="text-xs text-text-muted">{m.hint}</span>
+                  </span>
+                </label>
+              ))}
+            </div>
+            {isOnline(payMethod) && surcharge > 0 && (
+              <p className="text-xs text-amber-700 bg-amber-50 rounded-lg px-3 py-2 mt-2">
+                El pago en línea incluye el costo de la pasarela de pago
+                (+{formatCOP(surcharge)}). Pagando por WhatsApp o transferencia ahorras ese
+                recargo.
+              </p>
+            )}
+          </div>
+
           {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>}
           <button
             type="submit"
@@ -174,7 +229,9 @@ export default function CheckoutContent() {
             Confirmar pedido · {formatCOP(total)}
           </button>
           <p className="text-xs text-text-muted text-center">
-            Pago contra entrega. Te contactamos para coordinar el envío.
+            {isOnline(payMethod)
+              ? 'Te enviaremos el enlace de pago seguro al confirmar tu pedido.'
+              : 'Pago contra entrega. Te contactamos para coordinar el envío.'}
           </p>
         </form>
 
@@ -183,7 +240,7 @@ export default function CheckoutContent() {
             <h2 className="font-serif text-lg mb-4">Tu pedido</h2>
             <ul className="space-y-3 mb-4">
               {items.map((it) => {
-                const unit = wholesale ? it.priceWholesale : it.priceRetail;
+                const unit = unitFor(it);
                 return (
                   <li key={it.id} className="flex gap-3">
                     <div className="relative w-12 h-16 bg-white rounded overflow-hidden shrink-0">
@@ -206,6 +263,12 @@ export default function CheckoutContent() {
               <p className="text-xs text-emerald-600 mb-2 text-center">
                 ¡Precio mayorista aplicado! 🎉
               </p>
+            )}
+            {isOnline(payMethod) && surcharge > 0 && (
+              <div className="flex justify-between text-xs text-text-muted mb-1">
+                <span>Incluye costo pasarela de pago</span>
+                <span>+{formatCOP(surcharge)}</span>
+              </div>
             )}
             <div className="flex justify-between items-baseline border-t border-gray-line pt-3">
               <span className="text-sm text-text-muted">Total</span>

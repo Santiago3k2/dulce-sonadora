@@ -10,6 +10,7 @@ import Badge from '@/components/ui/Badge';
 import { useCartStore } from '@/lib/store/cartStore';
 import { useWishlistStore } from '@/lib/store/wishlistStore';
 import { WHATSAPP_NUMBER, buildWhatsAppLink, formatCOP } from '@/lib/utils/format';
+import { logWhatsAppOrder } from '@/app/checkout/actions';
 
 export default function ProductDetail({ product }: { product: Product }) {
   const [mainImage, setMainImage] = useState(product.images[0]);
@@ -213,6 +214,20 @@ export default function ProductDetail({ product }: { product: Product }) {
           href={whatsappMsg}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => {
+            // Registra la consulta como pedido pendiente para seguimiento comercial
+            void logWhatsAppOrder(
+              [
+                {
+                  productId: product.id,
+                  color: selectedColor,
+                  size: selectedSize,
+                  quantity,
+                },
+              ],
+              'consulta en página de producto'
+            );
+          }}
           className="mt-3 w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white py-3 px-6 rounded-full font-medium transition"
         >
           <MessageCircle size={18} />

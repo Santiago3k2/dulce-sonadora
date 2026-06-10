@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Plus, Minus, Trash2, ShoppingBag, MessageCircle } from 'lucide-react';
 import { useCartStore } from '@/lib/store/cartStore';
 import { formatCOP, buildWhatsAppLink, WHATSAPP_NUMBER } from '@/lib/utils/format';
+import { logWhatsAppOrder } from '@/app/checkout/actions';
 
 export default function CartPageContent() {
   const [mounted, setMounted] = useState(false);
@@ -203,6 +204,18 @@ export default function CartPageContent() {
                 href={whatsappLink}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => {
+                  // Registra el pedido en el panel admin sin bloquear la apertura del chat
+                  void logWhatsAppOrder(
+                    items.map((i) => ({
+                      productId: i.productId,
+                      color: i.color,
+                      size: i.size,
+                      quantity: i.quantity,
+                    })),
+                    'página del carrito'
+                  );
+                }}
                 className="w-full bg-white border border-[#25D366] text-[#1ebe5d] hover:bg-[#25D366]/5 py-2.5 rounded-full font-medium flex items-center justify-center gap-2 transition text-sm"
               >
                 <MessageCircle size={18} />
