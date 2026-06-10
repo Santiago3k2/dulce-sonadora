@@ -1090,7 +1090,7 @@ export const products: Product[] = [
     id: 'p-203',
     slug: 'camison-unicolor-encaje-tiras',
     name: 'Ref 203 - CAMISON UNICOLOR EN TIRAS CON ENCAJE',
-    category: 'bata-algodon',
+    category: 'bata-piel-durazno',
     images: [
       '/products/ref-203-camison-unicolor-encaje-tiras/photo-1.png',
       '/products/ref-203-camison-unicolor-encaje-tiras/photo-2.png',
