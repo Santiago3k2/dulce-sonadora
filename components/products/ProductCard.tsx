@@ -31,7 +31,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           onMouseLeave={() => setHovered(false)}
         >
           {/* Image */}
-          <div className="relative aspect-[731/1280] bg-gray-soft overflow-hidden">
+          <div className="relative aspect-[2/3] bg-cream overflow-hidden rounded-lg">
             <Image
               src={mainImage}
               alt={product.name}

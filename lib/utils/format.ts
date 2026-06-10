@@ -11,4 +11,4 @@ export function cn(...classes: (string | false | null | undefined)[]): string {
   return classes.filter(Boolean).join(' ');
 }
 
-export const WHATSAPP_NUMBER = '573001234567';
+export const WHATSAPP_NUMBER = '573169030999';

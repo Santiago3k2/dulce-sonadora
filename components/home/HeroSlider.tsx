@@ -31,29 +31,29 @@ const slides: Slide[] = [
     href: '/categoria/pantalon-satin',
   },
   {
-    title: 'Camisones y Batas',
+    title: 'Capri en Franela',
+    subtitle: 'Comodidad con estilo',
+    description: 'Conjunto camisa y capri',
+    image: '/products/ref-069-capri-camisa-botones-estampados/photo-1.png',
+    priceRetail: 47000,
+    priceWholesale: 37000,
+    cta: 'Comprar',
+    href: '/categoria/capri',
+  },
+  {
+    title: 'Camisones Satín',
     subtitle: 'Elegante y femenina',
-    description: 'Camisones y slips',
-    image: '/products/ref-026-vestido-slip-verde-menta-con-encaje/photo-1.jpg',
+    description: 'Camisones y batas',
+    image: '/products/ref-013-camison-satin-unicolor/photo-1.png',
     priceRetail: 34000,
     priceWholesale: 24000,
     cta: 'Descubrir',
     href: '/categoria/bata',
   },
   {
-    title: 'Pijamas Navideñas',
-    subtitle: 'Magia en cada noche',
-    description: 'Pijamas de navidad',
-    image: '/products/navidad-1-merry-christmas-rojo-verde-papa-noel/photo-1.jpg',
-    priceRetail: 32000,
-    priceWholesale: 22000,
-    cta: 'Comprar',
-    href: '/categoria/short-algodon',
-  },
-  {
     title: 'Conjuntos en Felpa',
-    subtitle: 'Suavidad piel durazno',
-    description: 'Conjuntos abrigadores',
+    subtitle: 'Abrigo suave y tierno',
+    description: 'Conjuntos en felpa',
     image: '/products/ref-401-camiseta-pantalon-felpa-osito-beige-y-avocato-verde/photo-1.jpg',
     priceRetail: 47000,
     priceWholesale: 37000,
@@ -65,7 +65,7 @@ const slides: Slide[] = [
 export default function HeroSlider() {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: 'start' },
-    [Autoplay({ delay: 4000, stopOnInteraction: false })]
+    [Autoplay({ delay: 5000, stopOnInteraction: false })]
   );
   const [selected, setSelected] = useState(0);
   const [count, setCount] = useState(0);
@@ -86,30 +86,15 @@ export default function HeroSlider() {
   }, [emblaApi]);
 
   return (
-    <section className="relative">
+    <section className="relative bg-gradient-hero overflow-hidden">
       <div className="embla" ref={emblaRef}>
         <div className="embla__container">
           {slides.map((s, i) => (
             <div key={i} className="embla__slide">
-              <div className="relative w-full min-h-[460px] md:min-h-[560px] lg:min-h-[640px] bg-gradient-hero">
-                {/* Image */}
-                <div className="absolute inset-0 md:left-1/2 md:right-0">
-                  <Image
-                    src={s.image}
-                    alt={s.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    priority={i === 0}
-                    className="object-cover object-top"
-                  />
-                </div>
-
-                {/* Overlay gradient for readability (lighter, fades fast so the photo no se opaca) */}
-                <div className="absolute inset-0 bg-gradient-to-r from-cream via-cream/60 via-30% to-transparent to-75% md:via-cream/40 md:via-45% md:to-65%" />
-
-                {/* Content */}
-                <div className="relative container mx-auto h-full min-h-[460px] md:min-h-[560px] lg:min-h-[640px] flex items-center px-6 lg:px-12">
-                  <div className="max-w-md md:max-w-xl space-y-4 md:space-y-6">
+              <div className="container mx-auto px-6 lg:px-12">
+                <div className="grid md:grid-cols-2 items-center gap-2 md:gap-8 min-h-[600px] md:min-h-[600px] lg:min-h-[660px] pb-14 md:pb-0">
+                  {/* Texto */}
+                  <div className="order-2 md:order-1 text-center md:text-left space-y-4 md:space-y-5">
                     <p className="text-xs md:text-sm uppercase tracking-[0.25em] text-pink-deeper font-semibold">
                       ✨ {s.subtitle}
                     </p>
@@ -120,7 +105,7 @@ export default function HeroSlider() {
                       <p className="text-sm md:text-base text-text-muted">
                         {s.description} desde
                       </p>
-                      <div className="flex items-baseline gap-3">
+                      <div className="flex items-baseline gap-3 justify-center md:justify-start">
                         <span className="text-text-muted text-lg md:text-xl line-through">
                           {formatCOP(s.priceRetail)}
                         </span>
@@ -132,6 +117,19 @@ export default function HeroSlider() {
                     <Link href={s.href} className="btn-primary inline-flex">
                       {s.cta} →
                     </Link>
+                  </div>
+
+                  {/* Imagen completa (object-contain: nunca recorta la modelo) */}
+                  <div className="order-1 md:order-2 relative w-full h-[360px] sm:h-[440px] md:h-[600px]">
+                    <Image
+                      src={s.image}
+                      alt={s.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      priority={i === 0}
+                      quality={90}
+                      className="object-contain object-bottom md:object-center drop-shadow-sm"
+                    />
                   </div>
                 </div>
               </div>
@@ -157,14 +155,14 @@ export default function HeroSlider() {
       </button>
 
       {/* Dots */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex gap-2">
+      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-10 flex gap-2">
         {Array.from({ length: count }).map((_, i) => (
           <button
             key={i}
             onClick={() => scrollTo(i)}
             aria-label={`Ir al slide ${i + 1}`}
             className={`h-2 rounded-full transition-all ${
-              selected === i ? 'w-8 bg-pink-deeper' : 'w-2 bg-white/80'
+              selected === i ? 'w-8 bg-pink-deeper' : 'w-2 bg-pink-deeper/30'
             }`}
           />
         ))}

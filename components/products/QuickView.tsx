@@ -70,8 +70,8 @@ export default function QuickView({ product, onClose }: QuickViewProps) {
 
         <div className="grid md:grid-cols-2 gap-0">
           {/* Images */}
-          <div className="bg-gray-soft">
-            <div className="relative aspect-[731/1280]">
+          <div className="bg-cream">
+            <div className="relative aspect-[2/3]">
               <Image
                 src={mainImage}
                 alt={product.name}

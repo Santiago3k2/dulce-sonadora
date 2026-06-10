@@ -67,7 +67,7 @@ export default function ProductDetail({ product }: { product: Product }) {
             ))}
           </div>
         )}
-        <div className="relative aspect-[731/1280] flex-1 bg-gray-soft overflow-hidden">
+        <div className="relative aspect-[2/3] flex-1 bg-cream overflow-hidden rounded-lg">
           <Image
             src={mainImage}
             alt={product.name}
