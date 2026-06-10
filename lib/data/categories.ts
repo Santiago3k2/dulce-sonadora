@@ -31,7 +31,7 @@ export const categories: Category[] = [
     name: 'Pantalón Satín',
     group: 'dama',
     groupLabel: 'Dama',
-    image: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-1.jpg',
+    image: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-1.png',
     description: 'Pijamas de pantalón largo en satín suave.',
   },
   {

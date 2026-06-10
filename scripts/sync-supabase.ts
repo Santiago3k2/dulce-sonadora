@@ -1,4 +1,5 @@
 import { products } from '../lib/data/products';
+import { categories } from '../lib/data/categories';
 import { createClient } from '@supabase/supabase-js';
 
 /**
@@ -24,6 +25,23 @@ const DRY = process.env.DRY === '1';
 const REMOVE = ['menta-top-pantalon-cuadros-teal', 'satin-negro-mickey-minnie-corazones'];
 
 async function main() {
+  // Categorías (upsert por slug) — incluye la imagen, que también vive en /public
+  const catRows = categories.map((c, i) => ({
+    slug: c.slug,
+    name: c.name,
+    group: c.group,
+    group_label: c.groupLabel,
+    image: c.image,
+    description: c.description ?? null,
+    sort_order: i,
+    is_active: true,
+  }));
+  if (!DRY) {
+    const { error: cue } = await sb.from('categories').upsert(catRows, { onConflict: 'slug' });
+    if (cue) throw cue;
+    console.log(`✓ Upsert categorías: ${catRows.length}`);
+  }
+
   const { data: cats, error: ce } = await sb.from('categories').select('id, slug');
   if (ce) throw ce;
   const catMap = Object.fromEntries((cats ?? []).map((c) => [c.slug, c.id]));
