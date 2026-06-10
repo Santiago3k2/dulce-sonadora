@@ -1098,8 +1098,8 @@ export const products: Product[] = [
       '/products/ref-203-camison-unicolor-encaje-tiras/photo-4.png',
       '/products/ref-203-camison-unicolor-encaje-tiras/photo-5.png',
     ],
-    priceRetail: 34000,
-    priceWholesale: 24000,
+    priceRetail: 37000,
+    priceWholesale: 27000,
     wholesaleMinQty: 6,
     colors: ['Lila', 'Menta', 'Amarillo', 'Rosa Palo', 'Gris'],
     sizes: ADULT,
@@ -1107,7 +1107,7 @@ export const products: Product[] = [
     isNew: true,
     inStock: true,
     description:
-      'Camisón corto unicolor en tiritas ajustables con escote en V, detalle de encaje y moñito, bordes tipo lechuga. Disponible en lila, menta, amarillo, rosa palo y gris. (Precio estimado — pendiente confirmar.)',
+      'Camisón corto unicolor en tiritas ajustables con escote en V, detalle de encaje y moñito, bordes tipo lechuga. Disponible en lila, menta, amarillo, rosa palo y gris.',
   },
   {
     id: 'p-nino-bano',
@@ -1274,8 +1274,8 @@ export const products: Product[] = [
       '/products/ref-046-camison-manga-corta-frases/photo-3.png',
       '/products/ref-046-camison-manga-corta-frases/photo-4.png',
     ],
-    priceRetail: 30000,
-    priceWholesale: 20000,
+    priceRetail: 31000,
+    priceWholesale: 21000,
     wholesaleMinQty: 6,
     colors: [
       'Rosa Paris',
@@ -1288,7 +1288,7 @@ export const products: Product[] = [
     isNew: true,
     inStock: true,
     description:
-      'Camisón fresco manga corta en algodón con frases estampadas. Diseños: Paris, Don\'t Overthink It, Dreams y Be the Change. (Precio estimado — pendiente confirmar.)',
+      'Camisón fresco manga corta en piel de durazno con frases estampadas. Diseños: Paris, Don\'t Overthink It, Dreams y Be the Change.',
   },
   {
     id: 'p-074',
