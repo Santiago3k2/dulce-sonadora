@@ -129,7 +129,7 @@ export async function getCategoryBySlug(slug: string): Promise<Category | null> 
 
 export async function getCategoryGroups(): Promise<CategoryGroup[]> {
   const cats = await getCategories();
-  const preferred = ['dama', 'hombre', 'ninos'];
+  const preferred = ['pantalon', 'capri', 'short', 'bata', 'navidad', 'dama', 'hombre', 'ninos'];
   const keys = [
     ...preferred,
     ...cats.map((c) => c.group).filter((g) => !preferred.includes(g)),

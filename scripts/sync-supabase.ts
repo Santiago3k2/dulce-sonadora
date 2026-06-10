@@ -24,6 +24,10 @@ const DRY = process.env.DRY === '1';
 // Productos retirados del catálogo (se borran de la tienda)
 const REMOVE = ['menta-top-pantalon-cuadros-teal', 'satin-negro-mickey-minnie-corazones'];
 
+// Categorías viejas reemplazadas por la división por tela (jun 2026):
+// 'capri' → capri-algodon / capri-piel-durazno, 'bata' → bata-algodon / -satin / -piel-durazno.
+const REMOVE_CATEGORIES = ['capri', 'bata'];
+
 async function main() {
   // Categorías (upsert por slug) — incluye la imagen, que también vive en /public
   const catRows = categories.map((c, i) => ({
@@ -34,7 +38,7 @@ async function main() {
     image: c.image,
     description: c.description ?? null,
     sort_order: i,
-    is_active: true,
+    is_active: c.isActive ?? true,
   }));
   if (!DRY) {
     const { error: cue } = await sb.from('categories').upsert(catRows, { onConflict: 'slug' });
@@ -69,8 +73,13 @@ async function main() {
     };
   });
 
-  // Validaciones
-  const noCat = rows.filter((r) => !r.category_id).map((r) => `${r.slug} (${products.find((p) => p.slug === r.slug)?.category})`);
+  // Validaciones (en DRY las categorías nuevas aún no están en la BD: valida contra la lista local)
+  const localCats = new Set(categories.map((c) => c.slug));
+  const noCat = rows
+    .filter((r) => !r.category_id)
+    .map((r) => ({ row: r, cat: products.find((p) => p.slug === r.slug)?.category ?? '' }))
+    .filter(({ cat }) => !(DRY && localCats.has(cat)))
+    .map(({ row, cat }) => `${row.slug} (${cat})`);
   if (noCat.length) {
     console.error('Productos sin category_id (categoría inexistente):', noCat);
     process.exit(1);
@@ -98,6 +107,18 @@ async function main() {
     await sb.from('products').update({ is_active: false }).in('slug', REMOVE);
   } else {
     console.log(`✓ Eliminados: ${count ?? 0}`);
+  }
+
+  // Categorías reemplazadas: ya sin productos (el upsert los re-apuntó arriba).
+  const { error: cde, count: ccount } = await sb
+    .from('categories')
+    .delete({ count: 'exact' })
+    .in('slug', REMOVE_CATEGORIES);
+  if (cde) {
+    console.warn(`No se pudo borrar categorías viejas (${cde.message}); desactivando.`);
+    await sb.from('categories').update({ is_active: false }).in('slug', REMOVE_CATEGORIES);
+  } else {
+    console.log(`✓ Categorías viejas eliminadas: ${ccount ?? 0}`);
   }
 
   const { count: total } = await sb

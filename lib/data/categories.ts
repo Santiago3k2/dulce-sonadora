@@ -1,10 +1,12 @@
 export interface Category {
   slug: string;
   name: string;
-  group: 'dama' | 'hombre' | 'ninos';
+  group: 'pantalon' | 'capri' | 'short' | 'bata' | 'navidad' | 'hombre' | 'ninos';
   groupLabel: string;
   image: string;
   description?: string;
+  /** false = existe pero oculta en la tienda (apartado reservado "para un futuro"). */
+  isActive?: boolean;
 }
 
 export interface CategoryGroup {
@@ -13,58 +15,125 @@ export interface CategoryGroup {
   categories: Category[];
 }
 
-// Categorías oficiales según la Tabla de Precios 2026 (Confeccionar G&C S.A.S.):
-// secciones Pantalón, Capri, Short, Bata, Niño y Niña. Se separan por tela
-// (algodón = piel de durazno / franela / felpa, vs. satín) donde aplica.
+// Apartados de la tienda: cada prenda (Pantalón, Capri, Short, Bata) se divide
+// por TELA — Algodón (incluye franela, felpa y tela galleta), Piel de Durazno
+// y Satín — según lo que diga el nombre/descripción del producto. Navidad es
+// un apartado independiente. Las subcategorías sin productos aún quedan con
+// isActive: false, listas para activarse cuando llegue mercancía.
 export const categories: Category[] = [
-  // ── DAMA ──
+  // ── PANTALONES ──
   {
     slug: 'pantalon-algodon',
     name: 'Pantalón Algodón',
-    group: 'dama',
-    groupLabel: 'Dama',
+    group: 'pantalon',
+    groupLabel: 'Pantalones',
+    image: '/products/ref-072-pantalon-camisa-botones-unicolor/photo-1.png',
+    description: 'Pijamas de pantalón largo en algodón: tela galleta, franela y felpa.',
+  },
+  {
+    slug: 'pantalon-piel-durazno',
+    name: 'Pantalón Piel de Durazno',
+    group: 'pantalon',
+    groupLabel: 'Pantalones',
     image: '/products/ref-006-tank-be-happy-sage-capri-floral-gris/photo-1.jpg',
-    description: 'Pijamas de pantalón largo en algodón piel de durazno, franela y felpa.',
+    description: 'Pijamas de pantalón largo en suave piel de durazno.',
   },
   {
     slug: 'pantalon-satin',
     name: 'Pantalón Satín',
-    group: 'dama',
-    groupLabel: 'Dama',
+    group: 'pantalon',
+    groupLabel: 'Pantalones',
     image: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-1.png',
     description: 'Pijamas de pantalón largo en satín suave.',
   },
+
+  // ── CAPRIS ──
   {
-    slug: 'capri',
-    name: 'Capri',
-    group: 'dama',
-    groupLabel: 'Dama',
-    image: '/products/ref-002-camiseta-capri-estampado/photo-1.jpg',
-    description: 'Conjuntos con capri, frescos y cómodos.',
+    slug: 'capri-algodon',
+    name: 'Capri Algodón',
+    group: 'capri',
+    groupLabel: 'Capris',
+    image: '/products/ref-069-capri-camisa-botones-estampados/photo-1.png',
+    description: 'Conjuntos con capri en algodón y franela.',
   },
+  {
+    slug: 'capri-piel-durazno',
+    name: 'Capri Piel de Durazno',
+    group: 'capri',
+    groupLabel: 'Capris',
+    image: '/products/ref-002-camiseta-capri-estampado/photo-1.jpg',
+    description: 'Conjuntos con capri en piel de durazno, frescos y cómodos.',
+  },
+  {
+    slug: 'capri-satin',
+    name: 'Capri Satín',
+    group: 'capri',
+    groupLabel: 'Capris',
+    image: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-1.png',
+    description: 'Conjuntos con capri en satín.',
+    isActive: false, // aún sin productos — se activa cuando llegue mercancía
+  },
+
+  // ── SHORTS ──
   {
     slug: 'short-algodon',
     name: 'Short Algodón',
-    group: 'dama',
-    groupLabel: 'Dama',
+    group: 'short',
+    groupLabel: 'Shorts',
+    image: '/products/ref-402-cami-blanco-lotso-bear-short-rosa/photo-1.jpg',
+    description: 'Pijamas de short en algodón.',
+  },
+  {
+    slug: 'short-piel-durazno',
+    name: 'Short Piel de Durazno',
+    group: 'short',
+    groupLabel: 'Shorts',
     image: '/products/ref-035-cami-rosa-short-frutilla-azul/photo-1.jpg',
-    description: 'Pijamas de short en algodón piel de durazno.',
+    description: 'Pijamas de short en piel de durazno.',
   },
   {
     slug: 'short-satin',
     name: 'Short Satín',
-    group: 'dama',
-    groupLabel: 'Dama',
+    group: 'short',
+    groupLabel: 'Shorts',
     image: '/products/ref-039-satin-conjunto-estampados/photo-1.jpg',
     description: 'Pijamas de short en satín.',
   },
+
+  // ── BATAS ──
   {
-    slug: 'bata',
-    name: 'Bata',
-    group: 'dama',
-    groupLabel: 'Dama',
-    image: '/products/ref-201-camison-maternidad-enterito-bebe-dinosaurios/photo-1.jpg',
-    description: 'Batas, camisones y vestidos para descansar.',
+    slug: 'bata-algodon',
+    name: 'Bata Algodón',
+    group: 'bata',
+    groupLabel: 'Batas',
+    image: '/products/ref-029-bata-senorial-botones-estampada/photo-1.png',
+    description: 'Batas y camisones en algodón, frescos para descansar.',
+  },
+  {
+    slug: 'bata-piel-durazno',
+    name: 'Bata Piel de Durazno',
+    group: 'bata',
+    groupLabel: 'Batas',
+    image: '/products/ref-046-camison-manga-corta-frases/photo-1.png',
+    description: 'Batas y camisones en piel de durazno.',
+  },
+  {
+    slug: 'bata-satin',
+    name: 'Bata Satín',
+    group: 'bata',
+    groupLabel: 'Batas',
+    image: '/products/ref-013-camison-satin-unicolor/photo-1.png',
+    description: 'Batas y camisones en satín, elegantes y femeninas.',
+  },
+
+  // ── NAVIDAD ──
+  {
+    slug: 'navidad',
+    name: 'Navidad',
+    group: 'navidad',
+    groupLabel: 'Navidad',
+    image: '/products/navidad-1-merry-christmas-rojo-verde-papa-noel/photo-1.jpg',
+    description: 'Pijamas navideñas para recibir diciembre en familia.',
   },
 
   // ── HOMBRE ──
@@ -96,23 +165,12 @@ export const categories: Category[] = [
   },
 ];
 
-export const categoryGroups = [
-  {
-    key: 'dama',
-    label: 'Dama',
-    categories: categories.filter((c) => c.group === 'dama'),
-  },
-  {
-    key: 'hombre',
-    label: 'Hombre',
-    categories: categories.filter((c) => c.group === 'hombre'),
-  },
-  {
-    key: 'ninos',
-    label: 'Niños',
-    categories: categories.filter((c) => c.group === 'ninos'),
-  },
-];
+export const categoryGroups = ['pantalon', 'capri', 'short', 'bata', 'navidad', 'hombre', 'ninos'].map(
+  (key) => {
+    const inGroup = categories.filter((c) => c.group === key && c.isActive !== false);
+    return { key, label: inGroup[0]?.groupLabel ?? key, categories: inGroup };
+  }
+);
 
 export function getCategoryBySlug(slug: string): Category | undefined {
   return categories.find((c) => c.slug === slug);
