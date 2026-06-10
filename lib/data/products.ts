@@ -869,7 +869,7 @@ export const products: Product[] = [
     id: 'p-107',
     slug: 'camison-tiras-paris-frases',
     name: 'Ref 107 - CAMISON TIRAS ESTAMPADO FRASES',
-    category: 'bata-algodon',
+    category: 'bata-piel-durazno',
     images: [
       '/products/ref-107-camison-tiras-paris-frases/photo-1.jpg',
       '/products/ref-107-camison-tiras-paris-frases/photo-2.jpg',
