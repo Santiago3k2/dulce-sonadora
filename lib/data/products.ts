@@ -253,18 +253,18 @@ export const products: Product[] = [
   },
   {
     id: 'p-401',
-    slug: 'camiseta-pantalon-felpa-osito-beige-avocato-verde',
-    name: 'Ref 401 - CONJUNTO CAMISETA PANTALON FELPA',
-    category: 'pantalon-algodon',
+    slug: 'pantalon-piel-durazno-blusa-sublimada-osito-avocato',
+    name: 'Ref 401 - PANTALON PIEL DE DURAZNO (SUBLIMADO) CON BLUSA MANGA SUBLIMADA EN PIEL DE DURAZNO',
+    category: 'pantalon-piel-durazno',
     images: [
-      '/products/ref-401-camiseta-pantalon-felpa-osito-beige-y-avocato-verde/photo-1.jpg?v=2',
-      '/products/ref-401-camiseta-pantalon-felpa-osito-beige-y-avocato-verde/photo-2.jpg?v=2',
-      '/products/ref-401-camiseta-pantalon-felpa-osito-beige-y-avocato-verde/photo-3.jpg?v=2',
-      '/products/ref-401-camiseta-pantalon-felpa-osito-beige-y-avocato-verde/photo-4.jpg?v=2',
-      '/products/ref-401-camiseta-pantalon-felpa-osito-beige-y-avocato-verde/photo-5.jpg?v=2',
+      '/products/ref-401-pantalon-piel-durazno-blusa-sublimada-osito-avocato/photo-1.jpg?v=2',
+      '/products/ref-401-pantalon-piel-durazno-blusa-sublimada-osito-avocato/photo-2.jpg?v=2',
+      '/products/ref-401-pantalon-piel-durazno-blusa-sublimada-osito-avocato/photo-3.jpg?v=2',
+      '/products/ref-401-pantalon-piel-durazno-blusa-sublimada-osito-avocato/photo-4.jpg?v=2',
+      '/products/ref-401-pantalon-piel-durazno-blusa-sublimada-osito-avocato/photo-5.jpg?v=2',
     ],
-    priceRetail: 47000,
-    priceWholesale: 37000,
+    priceRetail: 42751,
+    priceWholesale: 32751,
     wholesaleMinQty: 6,
     colors: [
       'Beige Osito',
@@ -273,12 +273,12 @@ export const products: Product[] = [
       'Gris Perrito',
       'Verde Avocato',
     ],
-    sizes: ADULT,
+    sizes: ADULT_XXL,
     isFeatured: true,
     isNew: false,
     inStock: true,
     description:
-      'Conjunto camiseta + pantalón en felpa suave, súper abrigador. Varios diseños: osito, Lotso, vaquita, perrito y avocato. (Precio estimado — no está en el Excel oficial.)',
+      'Pijama en suave piel de durazno: blusa manga corta con estampado sublimado y pantalón largo sublimado a juego. Varios diseños: osito, Lotso, vaquita, perrito y avocato.',
   },
   // ══════════ PANTALÓN SATÍN ══════════
   {

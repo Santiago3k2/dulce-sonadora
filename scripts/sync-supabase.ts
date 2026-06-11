@@ -21,8 +21,13 @@ if (!url || !key) {
 const sb = createClient(url, key, { auth: { persistSession: false } });
 const DRY = process.env.DRY === '1';
 
-// Productos retirados del catálogo (se borran de la tienda)
-const REMOVE = ['menta-top-pantalon-cuadros-teal', 'satin-negro-mickey-minnie-corazones'];
+// Productos retirados del catálogo (se borran de la tienda).
+// El slug viejo de la 401 ("...felpa...") se reemplazó por el slug piel de durazno.
+const REMOVE = [
+  'menta-top-pantalon-cuadros-teal',
+  'satin-negro-mickey-minnie-corazones',
+  'camiseta-pantalon-felpa-osito-beige-avocato-verde',
+];
 
 // Categorías viejas reemplazadas (jun 2026):
 // 'capri' → capri-algodon / capri-piel-durazno, 'bata' → bata-algodon / -satin / -piel-durazno.
