@@ -1321,7 +1321,7 @@ export const products: Product[] = [
     name: 'Ref 074 - CONJUNTO CAMISA DE BOTONES MANGA CORTA Y SHORT ESTAMPADO',
     category: 'short-algodon',
     images: [
-      '/products/ref-074-camisa-botones-short-estampado/photo-1.png?v=2',
+      '/products/ref-074-camisa-botones-short-estampado/photo-1.png?v=3',
     ],
     priceRetail: 42000,
     priceWholesale: 32000,
@@ -1340,7 +1340,7 @@ export const products: Product[] = [
     name: 'Ref 076 - CONJUNTO CAMISA DE BOTONES MANGA CORTA Y PANTALON ESTAMPADO',
     category: 'pantalon-algodon',
     images: [
-      '/products/ref-076-camisa-botones-pantalon-estampado/photo-1.png?v=2',
+      '/products/ref-076-camisa-botones-pantalon-estampado/photo-1.png?v=3',
     ],
     priceRetail: 47000,
     priceWholesale: 37000,

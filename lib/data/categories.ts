@@ -80,7 +80,7 @@ export const categories: Category[] = [
     name: 'Short Algodón',
     group: 'short',
     groupLabel: 'Shorts',
-    image: '/products/ref-074-camisa-botones-short-estampado/photo-1.png?v=2',
+    image: '/products/ref-074-camisa-botones-short-estampado/photo-1.png?v=3',
     description: 'Pijamas de short en algodón.',
   },
   {
