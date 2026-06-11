@@ -86,7 +86,7 @@ export default function CheckoutContent() {
           rel="noopener noreferrer"
           className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white py-3 px-6 rounded-full font-medium transition"
         >
-          <MessageCircle size={18} /> Confirmar por WhatsApp
+          <MessageCircle size={18} /> Hablar con un asesor
         </a>
         <div className="mt-6">
           <Link href="/tienda" className="text-pink-deeper hover:underline text-sm">

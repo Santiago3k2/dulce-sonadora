@@ -3,10 +3,9 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Plus, Minus, Trash2, ShoppingBag, MessageCircle } from 'lucide-react';
+import { Plus, Minus, Trash2, ShoppingBag } from 'lucide-react';
 import { useCartStore } from '@/lib/store/cartStore';
-import { formatCOP, buildWhatsAppLink, WHATSAPP_NUMBER } from '@/lib/utils/format';
-import { logWhatsAppOrder } from '@/app/checkout/actions';
+import { formatCOP } from '@/lib/utils/format';
 
 export default function CartPageContent() {
   const [mounted, setMounted] = useState(false);
@@ -32,21 +31,6 @@ export default function CartPageContent() {
   const total = totalPrice();
   const wholesale = isWholesaleActive();
   const remaining = Math.max(0, 6 - totalQty);
-
-  const whatsappMessage = (() => {
-    if (items.length === 0) return '';
-    let msg = '¡Hola Dulce Soñadora! 🌸 Quiero hacer el siguiente pedido:\n\n';
-    items.forEach((it) => {
-      const unit = wholesale ? it.priceWholesale : it.priceRetail;
-      msg += `• ${it.name} x${it.quantity} — Talla ${it.size}, Color ${it.color} — ${formatCOP(unit * it.quantity)}\n`;
-    });
-    msg += `\nTotal: ${formatCOP(total)}`;
-    if (wholesale) msg += `\n(¡Precio mayorista aplicado!)`;
-    msg += `\n\n¡Gracias!`;
-    return msg;
-  })();
-
-  const whatsappLink = buildWhatsAppLink(WHATSAPP_NUMBER, whatsappMessage);
 
   return (
     <div className="container mx-auto px-4 lg:px-8 py-12 md:py-16">
@@ -195,32 +179,11 @@ export default function CartPageContent() {
               </div>
               <Link
                 href="/checkout"
-                className="w-full bg-pink-deeper hover:bg-pink-dark text-white py-3 rounded-full font-semibold flex items-center justify-center gap-2 transition mb-3"
+                className="w-full bg-pink-deeper hover:bg-pink-dark text-white py-3 rounded-full font-semibold flex items-center justify-center gap-2 transition"
               >
                 <ShoppingBag size={18} />
                 Finalizar pedido
               </Link>
-              <a
-                href={whatsappLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => {
-                  // Registra el pedido en el panel admin sin bloquear la apertura del chat
-                  void logWhatsAppOrder(
-                    items.map((i) => ({
-                      productId: i.productId,
-                      color: i.color,
-                      size: i.size,
-                      quantity: i.quantity,
-                    })),
-                    'página del carrito'
-                  );
-                }}
-                className="w-full bg-white border border-[#25D366] text-[#1ebe5d] hover:bg-[#25D366]/5 py-2.5 rounded-full font-medium flex items-center justify-center gap-2 transition text-sm"
-              >
-                <MessageCircle size={18} />
-                O pedir por WhatsApp
-              </a>
               <p className="mt-3 text-xs text-text-muted text-center">
                 Pago contra entrega. Te confirmamos el pedido y coordinamos el envío.
               </p>

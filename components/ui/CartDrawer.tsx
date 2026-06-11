@@ -3,10 +3,9 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { X, Plus, Minus, Trash2, ShoppingBag, MessageCircle } from 'lucide-react';
+import { X, Plus, Minus, Trash2, ShoppingBag } from 'lucide-react';
 import { useCartStore } from '@/lib/store/cartStore';
-import { formatCOP, buildWhatsAppLink, WHATSAPP_NUMBER } from '@/lib/utils/format';
-import { logWhatsAppOrder } from '@/app/checkout/actions';
+import { formatCOP } from '@/lib/utils/format';
 
 export default function CartDrawer() {
   const [mounted, setMounted] = useState(false);
@@ -38,21 +37,6 @@ export default function CartDrawer() {
   const total = totalPrice();
   const wholesale = isWholesaleActive();
   const remaining = Math.max(0, 6 - totalQty);
-
-  const whatsappMessage = (() => {
-    if (items.length === 0) return '';
-    let msg = '¡Hola Dulce Soñadora! 🌸 Quiero hacer el siguiente pedido:\n\n';
-    items.forEach((it) => {
-      const unit = wholesale ? it.priceWholesale : it.priceRetail;
-      msg += `• ${it.name} x${it.quantity} — Talla ${it.size}, Color ${it.color} — ${formatCOP(unit * it.quantity)}\n`;
-    });
-    msg += `\nTotal: ${formatCOP(total)}`;
-    if (wholesale) msg += `\n(¡Precio mayorista aplicado!)`;
-    msg += `\n\n¡Gracias!`;
-    return msg;
-  })();
-
-  const whatsappLink = buildWhatsAppLink(WHATSAPP_NUMBER, whatsappMessage);
 
   return (
     <>
@@ -186,27 +170,14 @@ export default function CartDrawer() {
                 {formatCOP(total)}
               </span>
             </div>
-            <a
-              href={whatsappLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => {
-                // Registra el pedido en el panel admin sin bloquear la apertura del chat
-                void logWhatsAppOrder(
-                  items.map((i) => ({
-                    productId: i.productId,
-                    color: i.color,
-                    size: i.size,
-                    quantity: i.quantity,
-                  })),
-                  'carrito (drawer)'
-                );
-              }}
-              className="w-full bg-[#25D366] hover:bg-[#1ebe5d] text-white py-3 rounded-full font-medium flex items-center justify-center gap-2 transition"
+            <Link
+              href="/checkout"
+              onClick={closeCart}
+              className="w-full bg-pink-deeper hover:bg-pink-dark text-white py-3 rounded-full font-semibold flex items-center justify-center gap-2 transition"
             >
-              <MessageCircle size={18} />
-              Hacer pedido por WhatsApp
-            </a>
+              <ShoppingBag size={18} />
+              Finalizar pedido
+            </Link>
             <Link
               href="/carrito"
               onClick={closeCart}

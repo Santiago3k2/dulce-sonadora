@@ -2,15 +2,14 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { Heart, ShoppingBag, MessageCircle, Truck, RotateCcw, Shield } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Heart, ShoppingBag, Truck, RotateCcw, Shield } from 'lucide-react';
 import type { Product } from '@/lib/data/products';
 import { colorSwatch, imageForColor } from '@/lib/data/colors';
 import PriceDisplay from '@/components/ui/PriceDisplay';
 import Badge from '@/components/ui/Badge';
 import { useCartStore } from '@/lib/store/cartStore';
 import { useWishlistStore } from '@/lib/store/wishlistStore';
-import { WHATSAPP_NUMBER, buildWhatsAppLink, formatCOP } from '@/lib/utils/format';
-import { logWhatsAppOrder } from '@/app/checkout/actions';
 
 export default function ProductDetail({ product }: { product: Product }) {
   const [mainImage, setMainImage] = useState(product.images[0]);
@@ -20,6 +19,7 @@ export default function ProductDetail({ product }: { product: Product }) {
   const addItem = useCartStore((s) => s.addItem);
   const toggleWish = useWishlistStore((s) => s.toggleItem);
   const inWish = useWishlistStore((s) => s.isInWishlist(product.id));
+  const router = useRouter();
 
   const handleAdd = () => {
     addItem({
@@ -35,10 +35,11 @@ export default function ProductDetail({ product }: { product: Product }) {
     });
   };
 
-  const whatsappMsg = buildWhatsAppLink(
-    WHATSAPP_NUMBER,
-    `¡Hola Dulce Soñadora! Estoy interesad@ en *${product.name}* (Talla ${selectedSize}, Color ${selectedColor}). Precio: ${formatCOP(product.priceRetail)}.`
-  );
+  // Pedir y pagar contra entrega: agrega al carrito y lleva al checkout.
+  const handleOrderNow = () => {
+    handleAdd();
+    router.push('/checkout');
+  };
 
   // grid-cols-1 + min-w-0: sin esto, en móvil la tira de miniaturas (6+ fotos)
   // empuja la columna más allá del ancho de pantalla y la foto principal se
@@ -213,29 +214,14 @@ export default function ProductDetail({ product }: { product: Product }) {
           </button>
         </div>
 
-        <a
-          href={whatsappMsg}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => {
-            // Registra la consulta como pedido pendiente para seguimiento comercial
-            void logWhatsAppOrder(
-              [
-                {
-                  productId: product.id,
-                  color: selectedColor,
-                  size: selectedSize,
-                  quantity,
-                },
-              ],
-              'consulta en página de producto'
-            );
-          }}
-          className="mt-3 w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white py-3 px-6 rounded-full font-medium transition"
+        <button
+          onClick={handleOrderNow}
+          disabled={!product.inStock}
+          className="mt-3 w-full inline-flex items-center justify-center gap-2 bg-pink-deeper hover:bg-pink-dark text-white py-3 px-6 rounded-full font-medium transition disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <MessageCircle size={18} />
-          Consultar por WhatsApp
-        </a>
+          <ShoppingBag size={18} />
+          Pedir y pagar contra entrega
+        </button>
 
         <p className="mt-5 text-xs text-text-muted italic">
           ⓘ Precio mayorista aplica automáticamente al sumar {product.wholesaleMinQty} o más unidades en el carrito.
