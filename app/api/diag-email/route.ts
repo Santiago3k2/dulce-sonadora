@@ -11,9 +11,11 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'forbidden' }, { status: 403 });
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.RESEND_ADMIN_EMAIL;
-  const from = process.env.RESEND_FROM || 'Dulce Soñadora <onboarding@resend.dev>';
+  const clean = (v: string | undefined) =>
+    v?.replace(/\uFEFF|ï»¿/g, '').trim() || undefined;
+  const apiKey = clean(process.env.RESEND_API_KEY);
+  const to = clean(process.env.RESEND_ADMIN_EMAIL);
+  const from = clean(process.env.RESEND_FROM) || 'Dulce Soñadora <onboarding@resend.dev>';
 
   const env = {
     hasApiKey: !!apiKey,

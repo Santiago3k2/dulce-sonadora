@@ -82,12 +82,19 @@ function buildHtml(o: OrderEmailData): string {
   </div>`;
 }
 
+// Las env vars pegadas en Vercel desde Windows pueden traer un BOM invisible
+// (U+FEFF o sus bytes "ï»¿") que rompe la cabecera Authorization de fetch.
+function cleanEnv(v: string | undefined): string | undefined {
+  const s = v?.replace(/\uFEFF|ï»¿/g, '').trim();
+  return s || undefined;
+}
+
 export async function notifyNewOrder(data: OrderEmailData): Promise<void> {
-  const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.RESEND_ADMIN_EMAIL;
+  const apiKey = cleanEnv(process.env.RESEND_API_KEY);
+  const to = cleanEnv(process.env.RESEND_ADMIN_EMAIL);
   if (!apiKey || !to) return; // aún no configurado -> no-op silencioso
 
-  const from = process.env.RESEND_FROM || 'Dulce Soñadora <onboarding@resend.dev>';
+  const from = cleanEnv(process.env.RESEND_FROM) || 'Dulce Soñadora <onboarding@resend.dev>';
   try {
     const resend = new Resend(apiKey);
     const tag = data.isWhatsAppLead ? '(WhatsApp) ' : '';
