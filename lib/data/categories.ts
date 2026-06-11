@@ -28,7 +28,7 @@ export const categories: Category[] = [
     group: 'pantalon',
     groupLabel: 'Pantalones',
     image: '/products/ref-072-pantalon-camisa-botones-unicolor/photo-1.png?v=2',
-    description: 'Pijamas de pantalón largo en algodón: tela galleta, franela y felpa.',
+    description: 'Pijamas de pantalón largo en algodón: tela galleta y franela.',
   },
   {
     slug: 'pantalon-piel-durazno',
