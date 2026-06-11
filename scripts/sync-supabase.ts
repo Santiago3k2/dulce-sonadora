@@ -24,9 +24,10 @@ const DRY = process.env.DRY === '1';
 // Productos retirados del catálogo (se borran de la tienda)
 const REMOVE = ['menta-top-pantalon-cuadros-teal', 'satin-negro-mickey-minnie-corazones'];
 
-// Categorías viejas reemplazadas por la división por tela (jun 2026):
+// Categorías viejas reemplazadas (jun 2026):
 // 'capri' → capri-algodon / capri-piel-durazno, 'bata' → bata-algodon / -satin / -piel-durazno.
-const REMOVE_CATEGORIES = ['capri', 'bata'];
+// 'nino'/'nina' → divididas por tipo: nina-pijama, nina-bano, nino-pijama, nino-bano.
+const REMOVE_CATEGORIES = ['capri', 'bata', 'nino', 'nina'];
 
 async function main() {
   // Categorías (upsert por slug) — incluye la imagen, que también vive en /public

@@ -146,22 +146,38 @@ export const categories: Category[] = [
     description: 'Pijamas para hombre, cómodos y frescos.',
   },
 
-  // ── NIÑOS ──
+  // ── NIÑOS (separados por tipo: Pijama vs Vestido de Baño, en niña y niño) ──
   {
-    slug: 'nino',
-    name: 'Niño',
+    slug: 'nina-pijama',
+    name: 'Pijama Niña',
+    group: 'ninos',
+    groupLabel: 'Niños',
+    image: '/products/ref-036-nina-huntyk-crema-short-morado/photo-1.jpg?v=2',
+    description: 'Pijamas para niña con personajes y estampados tiernos.',
+  },
+  {
+    slug: 'nina-bano',
+    name: 'Vestido de Baño Niña',
+    group: 'ninos',
+    groupLabel: 'Niños',
+    image: '/products/ref-207-nina-bano-enterizo-sisa/photo-1.jpg?v=2',
+    description: 'Vestidos de baño para niña con protección solar: enterizos y conjuntos.',
+  },
+  {
+    slug: 'nino-pijama',
+    name: 'Pijama Niño',
     group: 'ninos',
     groupLabel: 'Niños',
     image: '/products/ref-049-nino-superheroes-captain-america-y-spiderman/photo-1.jpg?v=2',
     description: 'Pijamas para niño con sus personajes favoritos.',
   },
   {
-    slug: 'nina',
-    name: 'Niña',
+    slug: 'nino-bano',
+    name: 'Vestido de Baño Niño',
     group: 'ninos',
     groupLabel: 'Niños',
-    image: '/products/ref-036-nina-huntyk-crema-short-morado/photo-1.jpg?v=2',
-    description: 'Pijamas para niña con personajes y estampados tiernos.',
+    image: '/products/ref-204-nino-bano-conjunto-camiseta-short/photo-1.jpg?v=2',
+    description: 'Vestidos de baño para niño con protección solar.',
   },
 ];
 
