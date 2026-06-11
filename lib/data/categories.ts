@@ -27,7 +27,7 @@ export const categories: Category[] = [
     name: 'Pantalón Algodón',
     group: 'pantalon',
     groupLabel: 'Pantalones',
-    image: '/products/ref-072-pantalon-camisa-botones-unicolor/photo-1.png',
+    image: '/products/ref-072-pantalon-camisa-botones-unicolor/photo-1.png?v=2',
     description: 'Pijamas de pantalón largo en algodón: tela galleta, franela y felpa.',
   },
   {
@@ -35,7 +35,7 @@ export const categories: Category[] = [
     name: 'Pantalón Piel de Durazno',
     group: 'pantalon',
     groupLabel: 'Pantalones',
-    image: '/products/ref-006-tank-be-happy-sage-capri-floral-gris/photo-1.jpg',
+    image: '/products/ref-006-tank-be-happy-sage-capri-floral-gris/photo-1.jpg?v=2',
     description: 'Pijamas de pantalón largo en suave piel de durazno.',
   },
   {
@@ -43,7 +43,7 @@ export const categories: Category[] = [
     name: 'Pantalón Satín',
     group: 'pantalon',
     groupLabel: 'Pantalones',
-    image: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-1.png',
+    image: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-1.png?v=2',
     description: 'Pijamas de pantalón largo en satín suave.',
   },
 
@@ -53,7 +53,7 @@ export const categories: Category[] = [
     name: 'Capri Algodón',
     group: 'capri',
     groupLabel: 'Capris',
-    image: '/products/ref-069-capri-camisa-botones-estampados/photo-1.png',
+    image: '/products/ref-069-capri-camisa-botones-estampados/photo-1.png?v=2',
     description: 'Conjuntos con capri en algodón y franela.',
   },
   {
@@ -61,7 +61,7 @@ export const categories: Category[] = [
     name: 'Capri Piel de Durazno',
     group: 'capri',
     groupLabel: 'Capris',
-    image: '/products/ref-002-camiseta-capri-estampado/photo-1.jpg',
+    image: '/products/ref-002-camiseta-capri-estampado/photo-1.jpg?v=2',
     description: 'Conjuntos con capri en piel de durazno, frescos y cómodos.',
   },
   {
@@ -69,7 +69,7 @@ export const categories: Category[] = [
     name: 'Capri Satín',
     group: 'capri',
     groupLabel: 'Capris',
-    image: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-1.png',
+    image: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-1.png?v=2',
     description: 'Conjuntos con capri en satín.',
     isActive: false, // aún sin productos — se activa cuando llegue mercancía
   },
@@ -80,7 +80,7 @@ export const categories: Category[] = [
     name: 'Short Algodón',
     group: 'short',
     groupLabel: 'Shorts',
-    image: '/products/ref-402-cami-blanco-lotso-bear-short-rosa/photo-1.jpg',
+    image: '/products/ref-402-cami-blanco-lotso-bear-short-rosa/photo-1.jpg?v=2',
     description: 'Pijamas de short en algodón.',
   },
   {
@@ -88,7 +88,7 @@ export const categories: Category[] = [
     name: 'Short Piel de Durazno',
     group: 'short',
     groupLabel: 'Shorts',
-    image: '/products/ref-035-cami-rosa-short-frutilla-azul/photo-1.jpg',
+    image: '/products/ref-035-cami-rosa-short-frutilla-azul/photo-1.jpg?v=2',
     description: 'Pijamas de short en piel de durazno.',
   },
   {
@@ -96,7 +96,7 @@ export const categories: Category[] = [
     name: 'Short Satín',
     group: 'short',
     groupLabel: 'Shorts',
-    image: '/products/ref-039-satin-conjunto-estampados/photo-1.jpg',
+    image: '/products/ref-039-satin-conjunto-estampados/photo-1.jpg?v=2',
     description: 'Pijamas de short en satín.',
   },
 
@@ -106,7 +106,7 @@ export const categories: Category[] = [
     name: 'Bata Algodón',
     group: 'bata',
     groupLabel: 'Batas',
-    image: '/products/ref-029-bata-senorial-botones-estampada/photo-1.png',
+    image: '/products/ref-029-bata-senorial-botones-estampada/photo-1.png?v=2',
     description: 'Batas y camisones en algodón, frescos para descansar.',
   },
   {
@@ -114,7 +114,7 @@ export const categories: Category[] = [
     name: 'Bata Piel de Durazno',
     group: 'bata',
     groupLabel: 'Batas',
-    image: '/products/ref-046-camison-manga-corta-frases/photo-1.png',
+    image: '/products/ref-046-camison-manga-corta-frases/photo-1.png?v=2',
     description: 'Batas y camisones en piel de durazno.',
   },
   {
@@ -122,7 +122,7 @@ export const categories: Category[] = [
     name: 'Bata Satín',
     group: 'bata',
     groupLabel: 'Batas',
-    image: '/products/ref-013-camison-satin-unicolor/photo-1.png',
+    image: '/products/ref-013-camison-satin-unicolor/photo-1.png?v=2',
     description: 'Batas y camisones en satín, elegantes y femeninas.',
   },
 
@@ -132,7 +132,7 @@ export const categories: Category[] = [
     name: 'Navidad',
     group: 'navidad',
     groupLabel: 'Navidad',
-    image: '/products/navidad-1-merry-christmas-rojo-verde-papa-noel/photo-1.jpg',
+    image: '/products/navidad-1-merry-christmas-rojo-verde-papa-noel/photo-1.jpg?v=2',
     description: 'Pijamas navideñas para recibir diciembre en familia.',
   },
 
@@ -142,7 +142,7 @@ export const categories: Category[] = [
     name: 'Hombre',
     group: 'hombre',
     groupLabel: 'Hombre',
-    image: '/products/ref-065-bermuda-camisa-cuello-v-manga-franela/photo-1.jpg',
+    image: '/products/ref-065-bermuda-camisa-cuello-v-manga-franela/photo-1.jpg?v=2',
     description: 'Pijamas para hombre, cómodos y frescos.',
   },
 
@@ -152,7 +152,7 @@ export const categories: Category[] = [
     name: 'Niño',
     group: 'ninos',
     groupLabel: 'Niños',
-    image: '/products/ref-049-nino-superheroes-captain-america-y-spiderman/photo-1.jpg',
+    image: '/products/ref-049-nino-superheroes-captain-america-y-spiderman/photo-1.jpg?v=2',
     description: 'Pijamas para niño con sus personajes favoritos.',
   },
   {
@@ -160,7 +160,7 @@ export const categories: Category[] = [
     name: 'Niña',
     group: 'ninos',
     groupLabel: 'Niños',
-    image: '/products/ref-036-nina-huntyk-crema-short-morado/photo-1.jpg',
+    image: '/products/ref-036-nina-huntyk-crema-short-morado/photo-1.jpg?v=2',
     description: 'Pijamas para niña con personajes y estampados tiernos.',
   },
 ];
