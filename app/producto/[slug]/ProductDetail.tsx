@@ -40,12 +40,15 @@ export default function ProductDetail({ product }: { product: Product }) {
     `¡Hola Dulce Soñadora! Estoy interesad@ en *${product.name}* (Talla ${selectedSize}, Color ${selectedColor}). Precio: ${formatCOP(product.priceRetail)}.`
   );
 
+  // grid-cols-1 + min-w-0: sin esto, en móvil la tira de miniaturas (6+ fotos)
+  // empuja la columna más allá del ancho de pantalla y la foto principal se
+  // desborda gigante (el min-width:auto de grid/flex no deja encoger).
   return (
-    <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
       {/* Gallery */}
-      <div className="flex flex-col-reverse md:flex-row gap-4">
+      <div className="flex flex-col-reverse md:flex-row gap-4 min-w-0">
         {product.images.length > 1 && (
-          <div className="flex md:flex-col gap-2 md:gap-3 overflow-x-auto no-scrollbar md:max-h-[640px]">
+          <div className="flex md:flex-col gap-2 md:gap-3 overflow-x-auto no-scrollbar md:max-h-[640px] min-w-0 max-w-full">
             {product.images.map((img, i) => (
               <button
                 key={i}
@@ -91,7 +94,7 @@ export default function ProductDetail({ product }: { product: Product }) {
       </div>
 
       {/* Details */}
-      <div className="flex flex-col">
+      <div className="flex flex-col min-w-0">
         <h1 className="font-serif text-3xl md:text-4xl text-text-dark leading-tight">
           {product.name}
         </h1>

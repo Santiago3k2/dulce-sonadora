@@ -332,8 +332,9 @@ function GallerySelector({ product }: { product: Product }) {
 
   return (
     <section id="producto" className="bg-white py-20 lg:py-28">
-      <div ref={ref} className="reveal container mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-        <div className="space-y-4">
+      {/* grid-cols-1 + min-w-0: evita que la tira de miniaturas desborde el ancho en móvil */}
+      <div ref={ref} className="reveal container mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+        <div className="space-y-4 min-w-0">
           <div className="relative aspect-[731/1280] rounded-3xl overflow-hidden bg-gray-soft group">
             <Image
               src={product.images[imgIdx] ?? product.images[0]}
@@ -352,7 +353,7 @@ function GallerySelector({ product }: { product: Product }) {
             </button>
           </div>
           {product.images.length > 1 && (
-            <div className="flex gap-3 overflow-x-auto no-scrollbar">
+            <div className="flex gap-3 overflow-x-auto no-scrollbar min-w-0 max-w-full">
               {product.images.map((src, i) => (
                 <button
                   key={i}
@@ -366,7 +367,7 @@ function GallerySelector({ product }: { product: Product }) {
           )}
         </div>
 
-        <div className="space-y-6 lg:sticky lg:top-20">
+        <div className="space-y-6 lg:sticky lg:top-20 min-w-0">
           <div>
             <div className="flex items-center gap-2 mb-3">
               <div className="flex">

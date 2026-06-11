@@ -68,9 +68,10 @@ export default function QuickView({ product, onClose }: QuickViewProps) {
           <X size={20} />
         </button>
 
-        <div className="grid md:grid-cols-2 gap-0">
+        {/* grid-cols-1 + min-w-0: evita que la tira de miniaturas desborde el ancho en móvil */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
           {/* Images */}
-          <div className="bg-cream">
+          <div className="bg-cream min-w-0">
             <div className="relative aspect-[2/3]">
               <Image
                 src={mainImage}
@@ -81,7 +82,7 @@ export default function QuickView({ product, onClose }: QuickViewProps) {
               />
             </div>
             {product.images.length > 1 && (
-              <div className="flex gap-2 p-3 overflow-x-auto no-scrollbar">
+              <div className="flex gap-2 p-3 overflow-x-auto no-scrollbar min-w-0 max-w-full">
                 {product.images.map((img, i) => (
                   <button
                     key={i}
@@ -104,7 +105,7 @@ export default function QuickView({ product, onClose }: QuickViewProps) {
           </div>
 
           {/* Details */}
-          <div className="p-6 md:p-8 flex flex-col">
+          <div className="p-6 md:p-8 flex flex-col min-w-0">
             <h2 className="font-serif text-2xl md:text-3xl text-text-dark">
               {product.name}
             </h2>
