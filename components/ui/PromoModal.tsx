@@ -7,6 +7,14 @@ import { X, Gift, Sparkles } from 'lucide-react';
 const STORAGE_KEY = 'dulce-promo-fathers-day-seen';
 const DELAY_MS = 2200; // aparece despues del splash + un respiro
 
+// Fotos de las pijamas para papá (Ref 065 — bermuda + camisa) que se muestran
+// en la promo del Día del Padre.
+const FATHERS_DAY_PHOTOS = [
+  '/products/ref-065-bermuda-camisa-cuello-v-manga-franela/photo-1.jpg',
+  '/products/ref-065-bermuda-camisa-cuello-v-manga-franela/photo-3.jpg',
+  '/products/ref-065-bermuda-camisa-cuello-v-manga-franela/photo-5.jpg',
+];
+
 export default function PromoModal() {
   const [open, setOpen] = useState(false);
 
@@ -128,14 +136,32 @@ export default function PromoModal() {
               desde 6 unidades. ¡Edición limitada del mes!
             </p>
 
+            {/* Fotos de la colección para papá */}
+            <div className="grid grid-cols-3 gap-2 sm:gap-3 max-w-md mx-auto mb-7">
+              {FATHERS_DAY_PHOTOS.map((src, i) => (
+                <div
+                  key={i}
+                  className="relative aspect-[2/3] overflow-hidden rounded-xl ring-1 ring-white/25 shadow-lg shadow-black/30 transition hover:scale-[1.03]"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={src}
+                    alt={`Pijama para papá ${i + 1}`}
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
               <Link
-                href="/tienda"
+                href="/categoria/hombre"
                 onClick={close}
                 className="inline-flex items-center gap-2 bg-white text-[#0F2647] hover:bg-amber-300 hover:scale-105 px-7 py-3 rounded-full font-semibold transition-all shadow-lg w-full sm:w-auto justify-center"
               >
-                Ver colección →
+                Ver pijamas para papá →
               </Link>
               <button
                 onClick={close}
