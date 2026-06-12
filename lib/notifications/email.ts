@@ -89,22 +89,53 @@ function cleanEnv(v: string | undefined): string | undefined {
   return s || undefined;
 }
 
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+/**
+ * Envía con reintentos. Resend limita a 5 correos/segundo: en una ráfaga de
+ * pedidos (compras masivas) los envíos extra reciben 429. En vez de perder el
+ * aviso, reintentamos con espera creciente + jitter. El pedido ya está guardado
+ * en la BD, así que esto solo afecta a la notificación, nunca a la venta.
+ */
+async function sendWithRetry(
+  resend: Resend,
+  params: { from: string; to: string; subject: string; html: string },
+  maxAttempts = 4
+): Promise<void> {
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      const { error } = await resend.emails.send(params);
+      if (!error) return; // enviado
+
+      const status = (error as { statusCode?: number }).statusCode;
+      const retryable = status === 429 || (status != null && status >= 500);
+      if (!retryable || attempt === maxAttempts) {
+        console.error('notifyNewOrder (Resend) error:', error);
+        return;
+      }
+    } catch (e) {
+      if (attempt === maxAttempts) {
+        console.error('notifyNewOrder (Resend) threw:', e);
+        return;
+      }
+    }
+    // Espera ~0.6s, 1.2s, 2.4s + algo de azar para repartir la ráfaga.
+    await sleep(600 * 2 ** (attempt - 1) + Math.random() * 400);
+  }
+}
+
 export async function notifyNewOrder(data: OrderEmailData): Promise<void> {
   const apiKey = cleanEnv(process.env.RESEND_API_KEY);
   const to = cleanEnv(process.env.RESEND_ADMIN_EMAIL);
   if (!apiKey || !to) return; // aún no configurado -> no-op silencioso
 
   const from = cleanEnv(process.env.RESEND_FROM) || 'Dulce Soñadora <onboarding@resend.dev>';
-  try {
-    const resend = new Resend(apiKey);
-    const tag = data.isWhatsAppLead ? '(WhatsApp) ' : '';
-    await resend.emails.send({
-      from,
-      to,
-      subject: `🌸 Nuevo pedido #${data.orderNumber} ${tag}— ${formatCOP(data.total)}`,
-      html: buildHtml(data),
-    });
-  } catch (e) {
-    console.error('notifyNewOrder (Resend):', e);
-  }
+  const resend = new Resend(apiKey);
+  const tag = data.isWhatsAppLead ? '(WhatsApp) ' : '';
+  await sendWithRetry(resend, {
+    from,
+    to,
+    subject: `🌸 Nuevo pedido #${data.orderNumber} ${tag}— ${formatCOP(data.total)}`,
+    html: buildHtml(data),
+  });
 }
