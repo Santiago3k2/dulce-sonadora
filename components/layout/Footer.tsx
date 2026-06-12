@@ -83,7 +83,7 @@ export default function Footer({ groups }: { groups: CategoryGroup[] }) {
               &ldquo;El encanto de soñar&rdquo;
             </p>
             <p className="mt-2 text-sm text-text-muted leading-relaxed">
-              Pijamas y lencería con diseños románticos, hechos con dedicación y los mejores materiales para tus noches.
+              Pijamas con diseños románticos, hechos con dedicación y los mejores materiales para tus noches.
             </p>
             <div className="flex gap-3 mt-5">
               <a
@@ -142,7 +142,7 @@ export default function Footer({ groups }: { groups: CategoryGroup[] }) {
         <div className="mt-12 pt-8 border-t border-gray-line grid sm:grid-cols-2 lg:grid-cols-4 gap-6 text-sm text-text-muted">
           <div className="flex items-start gap-2">
             <MapPin size={16} className="text-pink-deeper mt-0.5" />
-            <span>Cra. 50 # 12-34<br />Medellín, Colombia</span>
+            <span>Cra 4 Occidente 45-67<br />Bucaramanga, Santander</span>
           </div>
           <div className="flex items-start gap-2">
             <Phone size={16} className="text-pink-deeper mt-0.5" />
@@ -152,16 +152,16 @@ export default function Footer({ groups }: { groups: CategoryGroup[] }) {
               rel="noopener noreferrer"
               className="hover:text-pink-deeper"
             >
-              +57 300 123 4567
+              +57 316 903 0999
             </a>
           </div>
           <div className="flex items-start gap-2">
             <Mail size={16} className="text-pink-deeper mt-0.5" />
             <a
-              href="mailto:hola@dulcesoñadora.com"
+              href="mailto:dulcepijamas41@gmail.com"
               className="hover:text-pink-deeper"
             >
-              hola@dulcesoñadora.com
+              dulcepijamas41@gmail.com
             </a>
           </div>
           <div className="flex items-start gap-2">

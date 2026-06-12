@@ -612,7 +612,7 @@ export const products: Product[] = [
     isNew: true,
     inStock: true,
     description:
-      'Cami de tiritas y short con boleros en suave piel de durazno, con tiernos personajes. Varios diseños: Lotso, avocato, osito, perrito y vaquita. (Precio estimado — no está en el Excel oficial.)',
+      'Cami de tiritas y short con boleros en suave piel de durazno, con tiernos personajes. Varios diseños: Lotso, avocato, osito, perrito y vaquita.',
   },
   {
     id: 'p-nav-1',
@@ -632,7 +632,7 @@ export const products: Product[] = [
     isNew: false,
     inStock: true,
     description:
-      'Pijama corta navideña en algodón con estampado Merry Christmas y Papá Noel. (Precio estimado — no está en el Excel oficial.)',
+      'Pijama corta navideña en algodón con estampado Merry Christmas y Papá Noel.',
   },
   {
     id: 'p-nav-2',
@@ -654,7 +654,7 @@ export const products: Product[] = [
     isNew: false,
     inStock: true,
     description:
-      'Pijama corta blanca y azul marino con estampado de renos. (Precio estimado — no está en el Excel oficial.)',
+      'Pijama corta blanca y azul marino con estampado de renos.',
   },
   {
     id: 'p-nav-3',
@@ -675,7 +675,7 @@ export const products: Product[] = [
     isNew: false,
     inStock: true,
     description:
-      'Pijama navideña con la carita de Santa Claus en blanco y rojo. (Precio estimado — no está en el Excel oficial.)',
+      'Pijama navideña con la carita de Santa Claus en blanco y rojo.',
   },
   {
     id: 'p-nav-4',
@@ -694,7 +694,7 @@ export const products: Product[] = [
     isNew: false,
     inStock: true,
     description:
-      'Pijama Ho Ho Ho en blanco con cuadros negros. (Precio estimado — no está en el Excel oficial.)',
+      'Pijama Ho Ho Ho en blanco con cuadros negros.',
   },
 
   // ══════════ SHORT SATÍN ══════════
@@ -865,7 +865,7 @@ export const products: Product[] = [
     isNew: false,
     inStock: true,
     description:
-      'Vestido slip con detalle de encaje en el escote, elegante y femenino. Disponible en verde menta, negro, amarillo, rosa y lila. (Precio estimado — no está en el Excel oficial.)',
+      'Vestido slip con detalle de encaje en el escote, elegante y femenino. Disponible en verde menta, negro, amarillo, rosa y lila.',
   },
   {
     id: 'p-071',
@@ -887,7 +887,7 @@ export const products: Product[] = [
     isNew: true,
     inStock: true,
     description:
-      'Camisón corto en satín con tiritas ajustables y escote en V con encaje. Estampados: flamencos nude, corazones lila, floral azul o gatitos rosa. (Precio estimado — no está en el Excel oficial.)',
+      'Camisón corto en satín con tiritas ajustables y escote en V con encaje. Estampados: flamencos nude, corazones lila, floral azul o gatitos rosa.',
   },
   {
     id: 'p-107',
@@ -914,7 +914,7 @@ export const products: Product[] = [
     isNew: true,
     inStock: true,
     description:
-      'Camisón fresco en algodón tipo esqueleto (racerback) con frases estampadas. Diseños: Paris, Don\'t Overthink It, Be the Change y Dreams. (Precio estimado — no está en el Excel oficial.)',
+      'Camisón fresco en algodón tipo esqueleto (racerback) con frases estampadas. Diseños: Paris, Don\'t Overthink It, Be the Change y Dreams.',
   },
 
   // ══════════ HOMBRE ══════════

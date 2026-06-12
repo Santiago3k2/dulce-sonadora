@@ -74,7 +74,7 @@ export default function ContactPage() {
           <MapPin size={28} className="text-pink-deeper" strokeWidth={1.4} />
           <h4 className="font-serif text-base">Dirección</h4>
           <p className="text-xs text-text-muted">
-            Cra. 50 # 12-34<br />Medellín, Colombia
+            Cra 4 Occidente 45-67<br />Bucaramanga, Santander
           </p>
         </div>
         <div className="flex flex-col items-center text-center gap-2">
@@ -86,17 +86,17 @@ export default function ContactPage() {
             rel="noopener noreferrer"
             className="text-xs text-text-muted hover:text-pink-deeper"
           >
-            +57 300 123 4567
+            +57 316 903 0999
           </a>
         </div>
         <div className="flex flex-col items-center text-center gap-2">
           <Mail size={28} className="text-pink-deeper" strokeWidth={1.4} />
           <h4 className="font-serif text-base">Email</h4>
           <a
-            href="mailto:hola@dulcesoñadora.com"
+            href="mailto:dulcepijamas41@gmail.com"
             className="text-xs text-text-muted hover:text-pink-deeper"
           >
-            hola@dulcesoñadora.com
+            dulcepijamas41@gmail.com
           </a>
         </div>
         <div className="flex flex-col items-center text-center gap-2">
@@ -115,7 +115,7 @@ export default function ContactPage() {
         </h2>
         <form
           className="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto"
-          action="mailto:hola@dulcesoñadora.com"
+          action="mailto:dulcepijamas41@gmail.com"
           method="post"
           encType="text/plain"
         >
