@@ -22,11 +22,11 @@ products.forEach((p, i) => {
   const m = p.name.match(/^Ref\s+([0-9A-Za-z]+)/);
   const ref = m ? m[1] : null;
   sql +=
-    `insert into public.products (ref,slug,name,category_id,description,price_retail,price_wholesale,wholesale_min_qty,colors,color_images,sizes,images,is_featured,is_new,in_stock,is_active,stock,sort_order) values (` +
+    `insert into public.products (ref,slug,name,category_id,description,price_retail,price_wholesale,wholesale_min_qty,colors,color_images,sizes,size_prices,images,is_featured,is_new,in_stock,is_active,stock,sort_order) values (` +
     `${q(ref)},${q(p.slug)},${q(p.name)},(select id from public.categories where slug=${q(p.category)}),${q(p.description)},` +
-    `${p.priceRetail},${p.priceWholesale},${p.wholesaleMinQty},${jb(p.colors)},${p.colorImages ? jb(p.colorImages) : 'null'},${jb(p.sizes)},${jb(p.images)},` +
+    `${p.priceRetail},${p.priceWholesale},${p.wholesaleMinQty},${jb(p.colors)},${p.colorImages ? jb(p.colorImages) : 'null'},${jb(p.sizes)},${p.sizePrices ? jb(p.sizePrices) : 'null'},${jb(p.images)},` +
     `${p.isFeatured},${p.isNew},${p.inStock},true,0,${i}) ` +
-    `on conflict (slug) do update set ref=excluded.ref,name=excluded.name,category_id=excluded.category_id,description=excluded.description,price_retail=excluded.price_retail,price_wholesale=excluded.price_wholesale,colors=excluded.colors,color_images=excluded.color_images,sizes=excluded.sizes,images=excluded.images,is_featured=excluded.is_featured,is_new=excluded.is_new,in_stock=excluded.in_stock,sort_order=excluded.sort_order;\n`;
+    `on conflict (slug) do update set ref=excluded.ref,name=excluded.name,category_id=excluded.category_id,description=excluded.description,price_retail=excluded.price_retail,price_wholesale=excluded.price_wholesale,colors=excluded.colors,color_images=excluded.color_images,sizes=excluded.sizes,size_prices=excluded.size_prices,images=excluded.images,is_featured=excluded.is_featured,is_new=excluded.is_new,in_stock=excluded.in_stock,sort_order=excluded.sort_order;\n`;
 });
 
 writeFileSync('scripts/seed.sql', sql, 'utf8');

@@ -87,7 +87,7 @@ export async function createOrder(input: CreateOrderInput) {
   const ids = [...new Set(items.map((i) => i.productId))];
   const { data: products, error: pe } = await sb
     .from('products')
-    .select('id,name,ref,slug,price_retail,price_wholesale,images,is_active')
+    .select('id,name,ref,slug,price_retail,price_wholesale,size_prices,images,is_active')
     .in('id', ids);
   if (pe) return { error: pe.message };
 
@@ -123,7 +123,11 @@ export async function createOrder(input: CreateOrderInput) {
   for (const it of items) {
     const p = byId.get(it.productId);
     if (!p || !p.is_active) continue;
-    const raw = isWholesale ? p.price_wholesale : p.price_retail;
+    // Precio de la talla pedida (si la prenda varía por talla); si no, el base.
+    const sp = (p.size_prices as Record<string, { retail: number; wholesale: number }> | null)?.[it.size];
+    const raw = isWholesale
+      ? sp?.wholesale ?? p.price_wholesale
+      : sp?.retail ?? p.price_retail;
     const base = discountPct > 0 ? Math.round(raw * (1 - discountPct / 100)) : raw;
     const unit = priceForMethod(base, method);
     total += unit * it.quantity;
@@ -197,7 +201,7 @@ export async function logWhatsAppOrder(items: CartLine[], source: string) {
     const ids = [...new Set(valid.map((i) => i.productId))];
     const { data: products } = await sb
       .from('products')
-      .select('id,name,ref,slug,price_retail,price_wholesale,images,is_active')
+      .select('id,name,ref,slug,price_retail,price_wholesale,size_prices,images,is_active')
       .in('id', ids);
 
     const byId = new Map((products ?? []).map((p) => [p.id, p]));
@@ -209,7 +213,10 @@ export async function logWhatsAppOrder(items: CartLine[], source: string) {
     for (const it of valid) {
       const p = byId.get(it.productId);
       if (!p || !p.is_active) continue;
-      const unit = isWholesale ? p.price_wholesale : p.price_retail;
+      const sp = (p.size_prices as Record<string, { retail: number; wholesale: number }> | null)?.[it.size];
+      const unit = isWholesale
+        ? sp?.wholesale ?? p.price_wholesale
+        : sp?.retail ?? p.price_retail;
       total += unit * it.quantity;
       lineItems.push({
         productId: p.id,

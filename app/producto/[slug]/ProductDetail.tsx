@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Heart, ShoppingBag, Truck, RotateCcw, Shield } from 'lucide-react';
-import type { Product } from '@/lib/data/products';
+import { priceForSize, type Product } from '@/lib/data/products';
 import { colorSwatch, imageForColor } from '@/lib/data/colors';
 import PriceDisplay from '@/components/ui/PriceDisplay';
 import Badge from '@/components/ui/Badge';
@@ -21,6 +21,9 @@ export default function ProductDetail({ product }: { product: Product }) {
   const inWish = useWishlistStore((s) => s.isInWishlist(product.id));
   const router = useRouter();
 
+  // Precio de la talla elegida (cae al precio base si la prenda no varía por talla).
+  const price = priceForSize(product, selectedSize);
+
   const handleAdd = () => {
     addItem({
       productId: product.id,
@@ -29,8 +32,8 @@ export default function ProductDetail({ product }: { product: Product }) {
       image: product.images[0],
       color: selectedColor,
       size: selectedSize,
-      priceRetail: product.priceRetail,
-      priceWholesale: product.priceWholesale,
+      priceRetail: price.retail,
+      priceWholesale: price.wholesale,
       quantity,
     });
   };
@@ -111,8 +114,8 @@ export default function ProductDetail({ product }: { product: Product }) {
 
         <div className="mt-6">
           <PriceDisplay
-            priceRetail={product.priceRetail}
-            priceWholesale={product.priceWholesale}
+            priceRetail={price.retail}
+            priceWholesale={price.wholesale}
             size="xl"
             showLabels
           />

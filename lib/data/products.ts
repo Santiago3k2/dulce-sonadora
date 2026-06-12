@@ -1,3 +1,9 @@
+/** Precio (detal y mayorista) de una talla puntual. */
+export interface SizePrice {
+  retail: number;
+  wholesale: number;
+}
+
 export interface Product {
   id: string;
   slug: string;
@@ -11,10 +17,27 @@ export interface Product {
   /** Optional map of color name → image path, so selecting a color shows its photo. */
   colorImages?: Record<string, string>;
   sizes: string[];
+  /**
+   * Precio por talla (opcional). Si una prenda cuesta distinto según la talla
+   * (ej. infantil 2-4-6-8 vs 10-12-14-16), aquí va el precio de cada talla.
+   * Si está, manda sobre priceRetail/priceWholesale al elegir esa talla.
+   * priceRetail/priceWholesale quedan como precio base ("desde", la talla más
+   * económica) para las tarjetas y listados sin talla seleccionada.
+   */
+  sizePrices?: Record<string, SizePrice>;
   isFeatured: boolean;
   isNew: boolean;
   inStock: boolean;
   description: string;
+}
+
+/** Precio detal/mayorista de la talla elegida (cae al precio base si no hay). */
+export function priceForSize(
+  p: Pick<Product, 'priceRetail' | 'priceWholesale' | 'sizePrices'>,
+  size: string | null | undefined
+): { retail: number; wholesale: number } {
+  const sp = size ? p.sizePrices?.[size] : undefined;
+  return sp ?? { retail: p.priceRetail, wholesale: p.priceWholesale };
 }
 
 // Tallas oficiales (Tabla de Precios 2026 — Confeccionar G&C S.A.S.)
@@ -32,6 +55,16 @@ const KIDS_XS = ['2', '4', '6', '8', '10', '12', '14', '16', 'XS'];
 // talla en el Excel, se usa la banda de MAYOR precio (ej. 204 → 10-12-14-16).
 // Refs sin fila en el Excel llevan un precio estimado alineado a su prenda
 // equivalente (marcadas con "estimado" en el comentario).
+
+// Precio infantil por banda de talla del Excel oficial (2-4-6-8 vs 10-12-14-16).
+// Recibe el precio de fábrica (mayorista) de cada banda; el detal = +$10.000.
+const kidsBands = (wLow: number, wHigh: number): Record<string, SizePrice> => {
+  const p = (w: number): SizePrice => ({ wholesale: w, retail: w + 10000 });
+  return {
+    '2': p(wLow), '4': p(wLow), '6': p(wLow), '8': p(wLow),
+    '10': p(wHigh), '12': p(wHigh), '14': p(wHigh), '16': p(wHigh),
+  };
+};
 
 export const products: Product[] = [
   // ══════════ PANTALÓN ALGODÓN ══════════
@@ -623,8 +656,8 @@ export const products: Product[] = [
       '/products/navidad-1-merry-christmas-rojo-verde-papa-noel/photo-1.jpg?v=2',
       '/products/navidad-1-merry-christmas-rojo-verde-papa-noel/photo-2.jpg?v=2',
     ],
-    priceRetail: 32000,
-    priceWholesale: 22000,
+    priceRetail: 47300,
+    priceWholesale: 37300,
     wholesaleMinQty: 6,
     colors: ['rojo', 'verde'],
     sizes: ADULT,
@@ -645,8 +678,8 @@ export const products: Product[] = [
       '/products/navidad-2-merry-xmas-blanco-azul-marino-renos/photo-3.jpg?v=2',
       '/products/navidad-2-merry-xmas-blanco-azul-marino-renos/photo-4.jpg?v=2',
     ],
-    priceRetail: 32000,
-    priceWholesale: 22000,
+    priceRetail: 47300,
+    priceWholesale: 37300,
     wholesaleMinQty: 6,
     colors: ['blanco', 'azul marino'],
     sizes: ADULT,
@@ -666,8 +699,8 @@ export const products: Product[] = [
       '/products/navidad-3-merry-christmas-blanco-rojo-santa-carita/photo-2.jpg?v=2',
       '/products/navidad-3-merry-christmas-blanco-rojo-santa-carita/photo-3.jpg?v=2',
     ],
-    priceRetail: 32000,
-    priceWholesale: 22000,
+    priceRetail: 47300,
+    priceWholesale: 37300,
     wholesaleMinQty: 6,
     colors: ['blanco', 'rojo'],
     sizes: ADULT,
@@ -685,8 +718,8 @@ export const products: Product[] = [
     images: [
       '/products/navidad-4-ho-ho-ho-blanco-negro-cuadros/photo-1.jpg?v=2',
     ],
-    priceRetail: 32000,
-    priceWholesale: 22000,
+    priceRetail: 47300,
+    priceWholesale: 37300,
     wholesaleMinQty: 6,
     colors: ['blanco', 'negro'],
     sizes: ADULT,
@@ -932,8 +965,8 @@ export const products: Product[] = [
       '/products/ref-065-bermuda-camisa-cuello-v-manga-franela/photo-6.jpg?v=2',
       '/products/ref-065-bermuda-camisa-cuello-v-manga-franela/photo-7.jpg?v=2',
     ],
-    priceRetail: 36387,
-    priceWholesale: 26387,
+    priceRetail: 40014,
+    priceWholesale: 30014,
     wholesaleMinQty: 6,
     colors: [
       'Azul Marino Puntos Rojo',
@@ -1143,11 +1176,12 @@ export const products: Product[] = [
       '/products/ref-204-nino-bano-conjunto-camiseta-short/photo-2.jpg?v=2',
       '/products/ref-204-nino-bano-conjunto-camiseta-short/photo-3.jpg?v=2',
     ],
-    priceRetail: 50608,
-    priceWholesale: 40608,
+    priceRetail: 38500,
+    priceWholesale: 28500,
     wholesaleMinQty: 6,
     colors: ['Summer Capybara', 'Aloha Stitch', 'Baby Shark'],
     sizes: KIDS,
+    sizePrices: kidsBands(28500, 29400),
     isFeatured: false,
     isNew: true,
     inStock: true,
@@ -1188,16 +1222,17 @@ export const products: Product[] = [
       '/products/ref-201-2-nina-bano-enterizo-manga-larga/photo-4.jpg?v=2',
       '/products/ref-201-2-nina-bano-enterizo-manga-larga/photo-5.jpg?v=2',
     ],
-    priceRetail: 47773,
-    priceWholesale: 37773,
+    priceRetail: 38800,
+    priceWholesale: 28800,
     wholesaleMinQty: 6,
     colors: ['Flores', 'Capibara', 'Stitch', 'Mar', 'Tiburón'],
     sizes: KIDS,
+    sizePrices: kidsBands(28800, 30600),
     isFeatured: false,
     isNew: true,
     inStock: true,
     description:
-      'Vestido de baño enterizo manga larga para niña con protección solar. Estampados: flores, capibara, Stitch, fondo marino y tiburón. (Precio estimado — pendiente confirmar.)',
+      'Vestido de baño enterizo manga larga para niña con protección solar. Estampados: flores, capibara, Stitch, fondo marino y tiburón.',
   },
   {
     id: 'p-207',
@@ -1212,16 +1247,17 @@ export const products: Product[] = [
       '/products/ref-207-nina-bano-enterizo-sisa/photo-5.jpg?v=2',
       '/products/ref-207-nina-bano-enterizo-sisa/photo-6.jpg?v=2',
     ],
-    priceRetail: 49185,
-    priceWholesale: 39185,
+    priceRetail: 32300,
+    priceWholesale: 22300,
     wholesaleMinQty: 6,
     colors: ['Frutas', 'Capibara', 'Hello Kitty', 'Stitch', 'Flores', 'Playa'],
     sizes: KIDS,
+    sizePrices: kidsBands(22300, 24100),
     isFeatured: false,
     isNew: true,
     inStock: true,
     description:
-      'Vestido de baño enterizo sisa (sin mangas) para niña. Estampados: frutas, capibara, Hello Kitty, Stitch, flores y playa. (Precio estimado — pendiente confirmar.)',
+      'Vestido de baño enterizo sisa (sin mangas) para niña. Estampados: frutas, capibara, Hello Kitty, Stitch, flores y playa.',
   },
   {
     id: 'p-208',
@@ -1235,16 +1271,17 @@ export const products: Product[] = [
       '/products/ref-208-nina-bano-enterizo-bolero/photo-4.jpg?v=2',
       '/products/ref-208-nina-bano-enterizo-bolero/photo-5.jpg?v=2',
     ],
-    priceRetail: 49185,
-    priceWholesale: 39185,
+    priceRetail: 32300,
+    priceWholesale: 22300,
     wholesaleMinQty: 6,
     colors: ['Stitch', 'Flores', 'Helados', 'Mar', 'Capibara'],
     sizes: KIDS,
+    sizePrices: kidsBands(22300, 24100),
     isFeatured: false,
     isNew: true,
     inStock: true,
     description:
-      'Vestido de baño enterizo para niña con boleritos en los hombros. Estampados: Stitch, flores, helados, fondo marino y capibara. (Precio estimado — pendiente confirmar.)',
+      'Vestido de baño enterizo para niña con boleritos en los hombros. Estampados: Stitch, flores, helados, fondo marino y capibara.',
   },
   {
     id: 'p-209',
@@ -1256,16 +1293,17 @@ export const products: Product[] = [
       '/products/ref-209-nina-bano-conjunto-camiseta-short/photo-2.jpg?v=2',
       '/products/ref-209-nina-bano-conjunto-camiseta-short/photo-3.jpg?v=2',
     ],
-    priceRetail: 49185,
-    priceWholesale: 39185,
+    priceRetail: 38500,
+    priceWholesale: 28500,
     wholesaleMinQty: 6,
     colors: ['Cute Capy', 'Little Mermaid', 'Stitch'],
     sizes: KIDS,
+    sizePrices: kidsBands(28500, 29400),
     isFeatured: false,
     isNew: true,
     inStock: true,
     description:
-      'Conjunto de baño para niña: camiseta manga larga + short. Estampados: Cute Capy, Little Mermaid y Stitch. (Precio estimado — pendiente confirmar.)',
+      'Conjunto de baño para niña: camiseta manga larga + short. Estampados: Cute Capy, Little Mermaid y Stitch.',
   },
 
   // ══════════ NUEVOS (10 jun 2026) — precios estimados, pendientes de confirmar ══════════

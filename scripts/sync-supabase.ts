@@ -70,6 +70,7 @@ async function main() {
       colors: p.colors,
       color_images: p.colorImages ?? null,
       sizes: p.sizes,
+      size_prices: p.sizePrices ?? null,
       images: p.images,
       is_featured: p.isFeatured,
       is_new: p.isNew,
@@ -103,7 +104,15 @@ async function main() {
     return;
   }
 
-  const { error: ue } = await sb.from('products').upsert(rows, { onConflict: 'slug' });
+  let { error: ue } = await sb.from('products').upsert(rows, { onConflict: 'slug' });
+  if (ue && /size_prices/i.test(ue.message)) {
+    // La columna size_prices aún no existe (falta correr la migración):
+    // subimos sin ese campo para no bloquear el resto del catálogo.
+    console.warn('⚠ Columna size_prices no existe todavía — subiendo sin precio por talla.');
+    console.warn('  Corre scripts/migrations/2026-06-12-product-size-prices.sql en Supabase y vuelve a sincronizar.');
+    const stripped = rows.map(({ size_prices: _omit, ...rest }) => rest);
+    ({ error: ue } = await sb.from('products').upsert(stripped, { onConflict: 'slug' }));
+  }
   if (ue) throw ue;
   console.log(`✓ Upsert: ${rows.length} productos`);
 

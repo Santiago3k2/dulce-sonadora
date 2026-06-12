@@ -23,6 +23,7 @@ function mapProduct(row: Row): Product {
     colors: (row.colors ?? []) as string[],
     colorImages: row.color_images ?? undefined,
     sizes: (row.sizes ?? []) as string[],
+    sizePrices: row.size_prices ?? undefined,
     isFeatured: row.is_featured,
     isNew: row.is_new,
     inStock: row.in_stock,
