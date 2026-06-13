@@ -38,6 +38,7 @@ export const COLOR_HEX_MAP: Record<string, string> = {
   donut: '#F6D858',
   aqua: '#7FD4D0',
   nude: '#E8C9B8',
+  celeste: '#8FC7E8',
 };
 
 /**

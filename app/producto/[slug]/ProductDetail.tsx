@@ -131,24 +131,32 @@ export default function ProductDetail({ product }: { product: Product }) {
             Color: <span className="text-pink-deeper">{selectedColor}</span>
           </h3>
           <div className="flex flex-wrap gap-2">
-            {product.colors.map((color) => (
-              <button
-                key={color}
-                onClick={() => {
-                  setSelectedColor(color);
-                  const img = imageForColor(product, color);
-                  if (img) setMainImage(img);
-                }}
-                aria-label={color}
-                title={color}
-                className={`w-10 h-10 rounded-full border-2 transition ${
-                  selectedColor === color
-                    ? 'border-pink-deeper scale-110'
-                    : 'border-gray-line'
-                }`}
-                style={{ background: colorSwatch(color) }}
-              />
-            ))}
+            {product.colors.map((color) => {
+              // Si la variante tiene foto propia (estampados, personajes), el
+              // círculo muestra una miniatura del diseño; si no, el color sólido.
+              const swatchImg = imageForColor(product, color);
+              return (
+                <button
+                  key={color}
+                  onClick={() => {
+                    setSelectedColor(color);
+                    if (swatchImg) setMainImage(swatchImg);
+                  }}
+                  aria-label={color}
+                  title={color}
+                  className={`w-10 h-10 rounded-full border-2 overflow-hidden bg-cover bg-center transition ${
+                    selectedColor === color
+                      ? 'border-pink-deeper scale-110'
+                      : 'border-gray-line'
+                  }`}
+                  style={
+                    swatchImg
+                      ? { backgroundImage: `url(${swatchImg})`, backgroundPosition: 'center 22%' }
+                      : { background: colorSwatch(color) }
+                  }
+                />
+              );
+            })}
           </div>
         </div>
 
