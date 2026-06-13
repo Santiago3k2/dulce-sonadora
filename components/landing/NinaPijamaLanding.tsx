@@ -42,9 +42,17 @@ export default function NinaPijamaLanding({ product }: { product: Product }) {
   const realPrice = product.priceRetail;
   const discount = Math.round(((ANCHOR - realPrice) / ANCHOR) * 100);
   const saving = ANCHOR - realPrice;
+  // Infografías de campaña (en el mismo orden que product.colors:
+  // 1 Sweet Dreams · 2 Good Night · 3 Huntrix · 4 Chicas Superpoderosas).
+  const LANDING_IMAGES = [
+    '/landing/pijama-nina/nina-1.png',
+    '/landing/pijama-nina/nina-2.png',
+    '/landing/pijama-nina/nina-3.png',
+    '/landing/pijama-nina/nina-4.png',
+  ];
   const gallery = product.colors.map((c, i) => ({
     color: c,
-    src: product.images[i] ?? product.images[0],
+    src: LANDING_IMAGES[i] ?? product.images[i] ?? product.images[0],
   }));
 
   // Galería deslizable (swipe con el dedo).
@@ -201,7 +209,7 @@ export default function NinaPijamaLanding({ product }: { product: Product }) {
               <div className="embla__container">
                 {gallery.map((g, i) => (
                   <div className="embla__slide" key={g.color}>
-                    <div className="relative aspect-[2/3] bg-white/10">
+                    <div className="relative aspect-[3/4] bg-white/10">
                       <Image
                         src={g.src}
                         alt={`Pijama niña — ${g.color}`}

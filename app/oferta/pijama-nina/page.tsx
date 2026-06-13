@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '💖 La pijama favorita de las niñas — Dulce Soñadora',
     description: 'Algodón suave, estampados que les encantan. Envío gratis a toda Colombia.',
-    images: ['/products/ref-064-nina-pijama-manga-corta/photo-1.png'],
+    images: ['/landing/pijama-nina/nina-1.png'],
     type: 'website',
   },
 };
