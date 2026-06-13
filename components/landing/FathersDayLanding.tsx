@@ -226,7 +226,7 @@ export default function FathersDayLanding({ product }: { product: Product }) {
                         sizes="360px"
                         priority={i === 0}
                         draggable={false}
-                        className="object-cover select-none"
+                        className="object-contain select-none"
                       />
                     </div>
                   </div>
