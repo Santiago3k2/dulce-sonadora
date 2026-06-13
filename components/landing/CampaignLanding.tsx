@@ -3,60 +3,55 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
 import useEmblaCarousel from 'embla-carousel-react';
-import {
-  Sun,
-  Waves,
-  Droplets,
-  ShieldCheck,
-  Truck,
-  Star,
-  Check,
-  Loader2,
-  MessageCircle,
-  ChevronLeft,
-  ChevronRight,
-} from 'lucide-react';
+import { Star, Check, Loader2, MessageCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { priceForSize, type Product } from '@/lib/data/products';
-import { formatCOP, WHATSAPP_NUMBER, buildWhatsAppLink } from '@/lib/utils/format';
+import { formatCOP, cn, WHATSAPP_NUMBER, buildWhatsAppLink } from '@/lib/utils/format';
 import { createOrder } from '@/app/checkout/actions';
+import { CAMPAIGNS, type CampaignKey } from './campaigns';
 
-// Precio ancla referencial (gancho) tachado sobre el precio "desde".
-const ANCHOR = 46900;
+function useCountdown(dateStr?: string) {
+  const [left, setLeft] = useState<{ d: number; h: number; m: number; s: number } | null>(null);
+  useEffect(() => {
+    if (!dateStr) return;
+    const target = new Date(dateStr).getTime();
+    const tick = () => {
+      const diff = target - Date.now();
+      if (diff <= 0) return setLeft(null);
+      setLeft({
+        d: Math.floor(diff / 86400000),
+        h: Math.floor(diff / 3600000) % 24,
+        m: Math.floor(diff / 60000) % 60,
+        s: Math.floor(diff / 1000) % 60,
+      });
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [dateStr]);
+  return left;
+}
 
-const BENEFITS = [
-  'Protección UV: cuida su piel del sol',
-  'Secado rápido para seguir jugando',
-  'Resistente al cloro y la sal',
-  'Tela suave y elástica que no aprieta',
-  'Boleritos en los hombros, ¡divinos!',
-  'Tallas de la 2 a la 16',
-];
+export default function CampaignLanding({
+  product,
+  campaign,
+}: {
+  product: Product;
+  campaign: CampaignKey;
+}) {
+  const cfg = CAMPAIGNS[campaign];
+  const t = cfg.theme;
 
-const REVIEWS = [
-  { name: 'Paola C.', city: 'Santa Marta', text: 'Perfecto para la piscina, seca rapidísimo y a mi hija le encantó el de Stitch.' },
-  { name: 'Natalia R.', city: 'Cartagena', text: 'La tela es muy buena y no le marcó la piel con el sol. Repito sin duda.' },
-  { name: 'Sara M.', city: 'Pereira', text: 'Llegó rápido y pagué al recibir. Los estampados son hermosos.' },
-];
-
-export default function BanoVeranoLanding({ product }: { product: Product }) {
-  // Infografías de campaña en el orden de product.colors:
-  // Stitch · Flores · Helados · Mar · Capibara
-  const LANDING_IMAGES = [
-    '/landing/bano-verano/bano-1.png',
-    '/landing/bano-verano/bano-2.png',
-    '/landing/bano-verano/bano-3.png',
-    '/landing/bano-verano/bano-4.png',
-    '/landing/bano-verano/bano-5.png',
-  ];
   const gallery = product.colors.map((c, i) => ({
     color: c,
-    src: LANDING_IMAGES[i] ?? product.images[i] ?? product.images[0],
+    src: cfg.images[i] ?? product.images[i] ?? product.images[0],
   }));
 
-  // Precio "desde" (talla más pequeña).
-  const fromPrice = priceForSize(product, product.sizes[0]).retail;
-  const discount = Math.round(((ANCHOR - fromPrice) / ANCHOR) * 100);
-  const saving = ANCHOR - fromPrice;
+  // Precio: si el producto varía por talla, mostramos "Desde" la talla más barata.
+  const perSize = !!product.sizePrices;
+  const heroPrice = priceForSize(product, product.sizes[0]).retail;
+  const heroWholesale = priceForSize(product, product.sizes[0]).wholesale;
+  const discount = Math.round(((cfg.anchor - heroPrice) / cfg.anchor) * 100);
+  const saving = cfg.anchor - heroPrice;
 
   // Galería deslizable (swipe).
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'start' });
@@ -88,19 +83,23 @@ export default function BanoVeranoLanding({ product }: { product: Product }) {
   useEffect(() => {
     const el = formRef.current;
     if (!el) return;
-    const obs = new IntersectionObserver(([e]) => setFormInView(e.isIntersecting), {
-      threshold: 0.15,
-    });
+    const obs = new IntersectionObserver(([e]) => setFormInView(e.isIntersecting), { threshold: 0.15 });
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
   const scrollToForm = () => formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-  // Precio según la talla elegida (la 208 cuesta distinto por banda de talla).
   const sizePrice = priceForSize(product, size);
   const isWholesale = qty >= product.wholesaleMinQty;
   const unit = isWholesale ? sizePrice.wholesale : sizePrice.retail;
   const total = unit * qty;
+
+  const left = useCountdown(cfg.urgency?.kind === 'countdown' ? cfg.urgency.date : undefined);
+
+  const dots = {
+    backgroundImage: `radial-gradient(${t.dotsRGBA} 1px, transparent 1.6px)`,
+    backgroundSize: '22px 22px',
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -116,7 +115,7 @@ export default function BanoVeranoLanding({ product }: { product: Product }) {
       customer_phone: form.phone,
       customer_city: form.city,
       customer_address: form.address,
-      notes: `🏖️ Pedido landing Vacaciones Verano — Ref 208 · Diseño: ${gallery[active]?.color} · Talla: ${size}`,
+      notes: `${cfg.notesPrefix} · ${cfg.designLabel}: ${gallery[active]?.color} · Talla: ${size}`,
       items: [{ productId: product.id, color: gallery[active]?.color ?? '', size, quantity: qty }],
       payment_method: 'whatsapp',
     });
@@ -129,25 +128,25 @@ export default function BanoVeranoLanding({ product }: { product: Product }) {
     }
   };
 
-  // Textura de puntos blancos sutil.
-  const dots = {
-    backgroundImage: 'radial-gradient(rgba(255,255,255,0.14) 1px, transparent 1.6px)',
-    backgroundSize: '22px 22px',
-  };
+  const EyebrowIcon = cfg.eyebrow.icon;
+  const CtaIcon = cfg.ctaIcon;
 
   // ─── Confirmación ─────────────────────────────────────────────────────
   if (done) {
     const waLink = buildWhatsAppLink(
       WHATSAPP_NUMBER,
-      `¡Hola! Acabo de hacer el pedido #${done.orderNumber} del vestido de baño (Ref 208, diseño ${gallery[active]?.color}, talla ${size}). Quiero confirmarlo ☀️`
+      cfg.waConfirm
+        .replace('{n}', String(done.orderNumber))
+        .replace('{color}', gallery[active]?.color ?? '')
+        .replace('{size}', size)
     );
     return (
-      <div className="relative min-h-screen bg-gradient-to-b from-[#23B5C9] via-[#1E7FB0] to-[#143F73] text-white flex items-center justify-center px-5 py-16 overflow-hidden">
+      <div className={cn('relative min-h-screen text-white flex items-center justify-center px-5 py-16 overflow-hidden', t.confirmGradient)}>
         <div className="pointer-events-none absolute inset-0" style={dots} />
-        <div className="pointer-events-none absolute -top-20 right-0 w-80 h-80 rounded-full bg-amber-300/25 blur-3xl" />
+        <div className="pointer-events-none absolute -top-20 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-white/20 blur-3xl" />
         <div className="relative w-full max-w-md text-center">
-          <div className="mx-auto w-20 h-20 rounded-full bg-white flex items-center justify-center mb-6 shadow-xl">
-            <Check size={42} className="text-[#1E7FB0]" strokeWidth={3} />
+          <div className={cn('mx-auto w-20 h-20 rounded-full flex items-center justify-center mb-6 shadow-xl', t.confirmCircle)}>
+            <Check size={42} className={t.confirmCheck} strokeWidth={3} />
           </div>
           <h1 className="font-serif text-3xl md:text-4xl mb-3">¡Pedido confirmado! 🎉</h1>
           <p className="text-white/90 mb-1">
@@ -175,37 +174,33 @@ export default function BanoVeranoLanding({ product }: { product: Product }) {
 
   // ─── Landing ──────────────────────────────────────────────────────────
   return (
-    <div className="relative min-h-screen bg-[#1E7FB0] text-white overflow-hidden">
-      {/* Fondo: océano turquesa → azul profundo + sol */}
+    <div className={cn('relative min-h-screen text-white overflow-hidden', t.rootBg)}>
+      {/* Fondo con profundidad */}
       <div className="pointer-events-none fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#27B9CC] via-[#1E84B4] to-[#103864]" />
+        <div className={cn('absolute inset-0', t.bgGradient)} />
         <div className="absolute inset-0" style={dots} />
-        <div className="absolute -top-24 -right-16 w-[420px] h-[420px] rounded-full bg-amber-300/25 blur-[90px]" />
-        <div className="absolute top-1/2 -left-24 w-80 h-80 rounded-full bg-cyan-300/15 blur-[90px]" />
-        <div className="absolute inset-0 [background:radial-gradient(ellipse_at_center,transparent_55%,rgba(6,30,60,0.45)_100%)]" />
+        <div className={t.glow1} />
+        <div className={t.glow2} />
+        <div className="absolute inset-0 [background:radial-gradient(ellipse_at_center,transparent_55%,rgba(0,0,0,0.4)_100%)]" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-md pb-28">
         {/* Barra superior */}
         <div className="flex items-center justify-between px-5 py-3.5">
           <span className="font-serif text-xl tracking-wide text-white">Dulce Soñadora</span>
-          <span className="text-[10px] uppercase tracking-[0.25em] text-white/70">Verano</span>
+          <span className="text-[10px] uppercase tracking-[0.25em] text-white/70">Oferta especial</span>
         </div>
 
         {/* HERO */}
         <section className="px-5 pt-3 text-center">
-          <p className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] text-amber-200 font-bold mb-3">
-            <Sun size={15} className="text-amber-300" /> Vacaciones de verano
+          <p className={cn('inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] font-bold mb-3', t.eyebrowText)}>
+            <EyebrowIcon size={15} className={t.accentSoft} /> {cfg.eyebrow.text}
           </p>
           <h1 className="font-serif leading-[1.02] mb-3">
-            <span className="block text-white/90 text-2xl sm:text-3xl font-light">Vestidos de baño</span>
-            <span className="block italic text-5xl sm:text-6xl bg-gradient-to-r from-[#FFE15A] via-[#FFB23F] to-[#FF7A59] bg-clip-text text-transparent">
-              para el verano
-            </span>
+            <span className="block text-white/90 text-2xl sm:text-3xl font-light">{cfg.title.top}</span>
+            <span className={cn('block italic text-5xl sm:text-6xl', t.headlineAccent)}>{cfg.title.accent}</span>
           </h1>
-          <p className="text-sm text-white/85 max-w-xs mx-auto mb-5">
-            Protección UV, secado rápido y diseños que les encantan. ¡Listas para la piscina, el mar y el sol! 🏖️
-          </p>
+          <p className="text-sm text-white/85 max-w-xs mx-auto mb-5">{cfg.subtitle}</p>
 
           {/* Galería deslizable */}
           <div className="relative mx-auto w-full max-w-[360px]">
@@ -216,7 +211,7 @@ export default function BanoVeranoLanding({ product }: { product: Product }) {
                     <div className="relative aspect-[2/3]">
                       <Image
                         src={g.src}
-                        alt={`Vestido de baño niña — ${g.color}`}
+                        alt={`${cfg.title.top} — ${g.color}`}
                         fill
                         sizes="360px"
                         priority={i === 0}
@@ -229,7 +224,7 @@ export default function BanoVeranoLanding({ product }: { product: Product }) {
               </div>
             </div>
 
-            <span className="absolute top-3 left-3 z-10 bg-[#FFD23F] text-[#0E3A63] text-xs font-extrabold px-3 py-1 rounded-full shadow">
+            <span className={cn('absolute top-3 left-3 z-10 text-xs font-extrabold px-3 py-1 rounded-full shadow', t.badge)}>
               -{discount}% OFF
             </span>
 
@@ -254,9 +249,7 @@ export default function BanoVeranoLanding({ product }: { product: Product }) {
                   key={g.color}
                   onClick={() => goTo(i)}
                   aria-label={`Ver ${g.color}`}
-                  className={`h-1.5 rounded-full transition-all ${
-                    active === i ? 'w-5 bg-amber-300' : 'w-1.5 bg-white/50'
-                  }`}
+                  className={cn('h-1.5 rounded-full transition-all', active === i ? `w-5 ${t.dotActive}` : 'w-1.5 bg-white/50')}
                 />
               ))}
             </div>
@@ -264,12 +257,12 @@ export default function BanoVeranoLanding({ product }: { product: Product }) {
 
           {/* Hint + diseño */}
           <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-white/70">
-            <ChevronLeft size={13} className="text-amber-300" />
-            Desliza para ver los {gallery.length} diseños
-            <ChevronRight size={13} className="text-amber-300" />
+            <ChevronLeft size={13} className={t.accentSoft} />
+            Desliza para ver los {gallery.length} {cfg.designLabel === 'Color' ? 'colores' : 'diseños'}
+            <ChevronRight size={13} className={t.accentSoft} />
           </p>
           <p className="mt-1 text-sm">
-            Diseño: <span className="font-semibold text-amber-200">{gallery[active]?.color}</span>
+            {cfg.designLabel}: <span className={cn('font-semibold', t.accentSoft)}>{gallery[active]?.color}</span>
           </p>
 
           {/* Miniaturas */}
@@ -279,9 +272,10 @@ export default function BanoVeranoLanding({ product }: { product: Product }) {
                 key={g.color}
                 onClick={() => goTo(i)}
                 aria-label={g.color}
-                className={`relative w-11 h-14 rounded-lg overflow-hidden ring-2 transition ${
-                  active === i ? 'ring-amber-300 scale-105' : 'ring-white/25 opacity-75 hover:opacity-100'
-                }`}
+                className={cn(
+                  'relative w-11 h-14 rounded-lg overflow-hidden ring-2 transition',
+                  active === i ? `${t.thumbRing} scale-105` : 'ring-white/25 opacity-75 hover:opacity-100'
+                )}
               >
                 <Image src={g.src} alt={g.color} fill sizes="44px" className="object-cover" />
               </button>
@@ -290,60 +284,77 @@ export default function BanoVeranoLanding({ product }: { product: Product }) {
 
           {/* Precio */}
           <div className="mt-6 flex items-end justify-center gap-3">
-            <span className="text-white/55 line-through text-lg mb-1.5">{formatCOP(ANCHOR)}</span>
-            <div className="text-left leading-none">
-              <span className="block text-[11px] uppercase tracking-wider text-white/70 mb-1">Desde</span>
-              <span className="font-serif text-5xl font-bold text-white drop-shadow">{formatCOP(fromPrice)}</span>
-            </div>
+            <span className="text-white/55 line-through text-lg mb-1.5">{formatCOP(cfg.anchor)}</span>
+            {perSize ? (
+              <div className="text-left leading-none">
+                <span className="block text-[11px] uppercase tracking-wider text-white/70 mb-1">Desde</span>
+                <span className={cn('font-serif text-5xl font-bold', t.priceClass)}>{formatCOP(heroPrice)}</span>
+              </div>
+            ) : (
+              <span className={cn('font-serif text-5xl font-bold leading-none', t.priceClass)}>{formatCOP(heroPrice)}</span>
+            )}
           </div>
-          <p className="mt-2 inline-block rounded-full bg-[#FF7A59] text-white text-xs font-bold px-3 py-1 shadow">
-            ¡Ahorras {formatCOP(saving)}! · Precio imperdible
+          <p className={cn('mt-2 inline-block rounded-full text-xs font-semibold px-3 py-1', t.saving)}>
+            {cfg.savingText.replace('{saving}', formatCOP(saving))}
           </p>
           <p className="mt-2 text-xs text-white/70">
-            Llevando {product.wholesaleMinQty}+: {formatCOP(priceForSize(product, product.sizes[0]).wholesale)} c/u
+            Llevando {product.wholesaleMinQty}+: {formatCOP(heroWholesale)} c/u
           </p>
 
           {/* CTA principal */}
           <button
             onClick={scrollToForm}
-            className="mt-6 w-full rounded-full py-4 text-lg font-extrabold bg-gradient-to-r from-[#FF8A5B] to-[#FF6B3D] text-white shadow-lg shadow-[#FF6B3D]/40 hover:scale-[1.02] transition flex items-center justify-center gap-2"
+            className={cn('mt-6 w-full rounded-full py-4 text-lg font-extrabold shadow-lg hover:scale-[1.02] transition flex items-center justify-center gap-2', t.cta)}
           >
-            <Sun size={20} /> ¡LA QUIERO PARA EL VERANO!
+            <CtaIcon size={20} className={cfg.ctaFillIcon ? 'fill-current' : ''} /> {cfg.ctaLabel}
           </button>
 
           {/* Confianza */}
           <div className="mt-5 grid grid-cols-3 gap-2 text-[11px]">
-            {[
-              { Icon: Truck, t: 'Envío GRATIS' },
-              { Icon: ShieldCheck, t: 'Pago al recibir' },
-              { Icon: Sun, t: 'Protección UV' },
-            ].map(({ Icon, t }) => (
-              <div key={t} className="flex flex-col items-center gap-1 rounded-xl bg-white/12 border border-white/20 py-2.5">
-                <Icon size={18} className="text-amber-200" />
-                <span className="text-white/90 leading-tight text-center">{t}</span>
+            {cfg.trust.map(({ icon: Icon, text }) => (
+              <div key={text} className={cn('flex flex-col items-center gap-1 rounded-xl py-2.5', t.card)}>
+                <Icon size={18} className={t.accentSoft} />
+                <span className="text-white/90 leading-tight text-center">{text}</span>
               </div>
             ))}
           </div>
         </section>
 
         {/* Urgencia */}
-        <section className="mt-8 mx-5 rounded-2xl bg-[#FF7A59]/20 border border-[#FFB23F]/40 backdrop-blur p-4 text-center">
-          <p className="text-sm text-white">
-            🔥 <strong>Temporada de vacaciones</strong> · Precios imperdibles · ¡Últimas tallas disponibles!
-          </p>
-        </section>
+        {cfg.urgency?.kind === 'countdown' && left && (
+          <section className={cn('mt-8 mx-5 rounded-2xl backdrop-blur p-5 text-center', t.urgencyBox)}>
+            <p className={cn('text-[11px] uppercase tracking-[0.25em] mb-3 font-semibold', t.accentSoft)}>
+              {cfg.urgency.label}
+            </p>
+            <div className="flex justify-center gap-2">
+              {([['Días', left.d], ['Horas', left.h], ['Min', left.m], ['Seg', left.s]] as const).map(([l, v]) => (
+                <div key={l} className="w-16 rounded-xl bg-black/25 border border-white/10 py-2">
+                  <div className={cn('text-2xl font-bold tabular-nums leading-none', t.accentSoft)}>
+                    {String(v).padStart(2, '0')}
+                  </div>
+                  <div className="mt-1 text-[9px] uppercase tracking-widest text-white/55">{l}</div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+        {cfg.urgency?.kind === 'text' && (
+          <section className={cn('mt-8 mx-5 rounded-2xl backdrop-blur p-4 text-center', t.urgencyBox)}>
+            <p className="text-sm text-white">{cfg.urgency.text}</p>
+          </section>
+        )}
 
         {/* Beneficios */}
         <section className="px-5 py-9">
           <h2 className="font-serif text-2xl text-center mb-1">
-            Hechos para <span className="italic text-amber-200">disfrutar el sol</span>
+            {cfg.benefitsHeading.text} <span className={cn('italic', t.accentSoft)}>{cfg.benefitsHeading.accent}</span>
           </h2>
-          <div className="mx-auto w-16 h-px bg-gradient-to-r from-transparent via-amber-300/60 to-transparent mb-6" />
+          <div className="mx-auto w-16 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent mb-6" />
           <div className="grid grid-cols-1 gap-2.5">
-            {BENEFITS.map((b) => (
-              <div key={b} className="flex items-center gap-3 rounded-xl bg-white/12 border border-white/20 px-4 py-3">
-                <span className="w-7 h-7 rounded-full bg-amber-300/25 flex items-center justify-center shrink-0">
-                  <Check size={15} className="text-amber-200" />
+            {cfg.benefits.map((b) => (
+              <div key={b} className={cn('flex items-center gap-3 rounded-xl px-4 py-3', t.card)}>
+                <span className="w-7 h-7 rounded-full bg-white/15 flex items-center justify-center shrink-0">
+                  <Check size={15} className={t.accentSoft} />
                 </span>
                 <span className="text-sm text-white/90">{b}</span>
               </div>
@@ -353,24 +364,24 @@ export default function BanoVeranoLanding({ product }: { product: Product }) {
 
         {/* Prueba social */}
         <section className="px-5 py-8 border-y border-white/15 bg-white/[0.06]">
-          <div className="flex justify-center gap-1 text-amber-300 mb-1">
+          <div className={cn('flex justify-center gap-1 mb-1', t.accentSoft)}>
             {Array.from({ length: 5 }).map((_, i) => (
-              <Star key={i} size={20} className="fill-amber-300" />
+              <Star key={i} size={20} className="fill-current" />
             ))}
           </div>
           <p className="text-center text-sm text-white/80 mb-6">
-            <strong className="text-white">+5.000</strong> niñas felices disfrutando el agua
+            <strong className="text-white">{cfg.reviewsStrong}</strong> {cfg.reviewsRest}
           </p>
           <div className="space-y-3">
-            {REVIEWS.map((r) => (
-              <div key={r.name} className="rounded-2xl bg-white/12 border border-white/20 p-4">
-                <div className="flex gap-0.5 text-amber-300 mb-1.5">
+            {cfg.reviews.map((r) => (
+              <div key={r.name} className={cn('rounded-2xl p-4', t.card)}>
+                <div className={cn('flex gap-0.5 mb-1.5', t.accentSoft)}>
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} size={12} className="fill-amber-300" />
+                    <Star key={i} size={12} className="fill-current" />
                   ))}
                 </div>
                 <p className="text-sm text-white/90 italic">&ldquo;{r.text}&rdquo;</p>
-                <p className="mt-2 text-xs text-amber-200 font-semibold">
+                <p className={cn('mt-2 text-xs font-semibold', t.accentSoft)}>
                   — {r.name}, {r.city}
                 </p>
               </div>
@@ -380,18 +391,16 @@ export default function BanoVeranoLanding({ product }: { product: Product }) {
 
         {/* FORMULARIO */}
         <section ref={formRef} className="px-5 py-9">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-amber-200 font-bold mb-2">Pídelo ahora</p>
+          <p className={cn('text-[11px] uppercase tracking-[0.3em] font-bold mb-2', t.accentSoft)}>Pídela ahora</p>
           <h2 className="font-serif text-3xl mb-1">
-            ¡A disfrutar el <span className="italic text-amber-200">verano</span>! ☀️
+            {cfg.formTitle.text} <span className={cn('italic', t.accentSoft)}>{cfg.formTitle.accent}</span>
           </h2>
-          <p className="text-sm text-white/85 mb-5">
-            Llena tus datos y se lo llevamos con <strong className="text-white">pago contra entrega</strong>. ¡Envío gratis a toda Colombia!
-          </p>
+          <p className="text-sm text-white/85 mb-5">{cfg.formIntro}</p>
 
           <form onSubmit={submit} className="space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <label className="text-xs text-white/80">
-                Diseño
+                {cfg.designLabel}
                 <select
                   value={active}
                   onChange={(e) => {
@@ -399,7 +408,7 @@ export default function BanoVeranoLanding({ product }: { product: Product }) {
                     setActive(i);
                     goTo(i);
                   }}
-                  className="mt-1 w-full rounded-lg bg-white text-[#103864] px-3 py-2.5 text-sm font-medium"
+                  className={cn('mt-1 w-full rounded-lg bg-white px-3 py-2.5 text-sm font-medium', t.field)}
                 >
                   {gallery.map((g, i) => (
                     <option key={g.color} value={i}>
@@ -413,7 +422,7 @@ export default function BanoVeranoLanding({ product }: { product: Product }) {
                 <select
                   value={size}
                   onChange={(e) => setSize(e.target.value)}
-                  className="mt-1 w-full rounded-lg bg-white text-[#103864] px-3 py-2.5 text-sm font-medium"
+                  className={cn('mt-1 w-full rounded-lg bg-white px-3 py-2.5 text-sm font-medium', t.field)}
                 >
                   {product.sizes.map((s) => (
                     <option key={s} value={s}>
@@ -433,25 +442,25 @@ export default function BanoVeranoLanding({ product }: { product: Product }) {
               </div>
             </div>
 
-            <input type="text" placeholder="Nombre completo" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required className="w-full rounded-lg bg-white text-[#103864] placeholder-gray-400 px-3 py-3 text-sm" />
-            <input type="tel" placeholder="Teléfono / WhatsApp" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} required className="w-full rounded-lg bg-white text-[#103864] placeholder-gray-400 px-3 py-3 text-sm" />
-            <input type="text" placeholder="Ciudad / Municipio" value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} className="w-full rounded-lg bg-white text-[#103864] placeholder-gray-400 px-3 py-3 text-sm" />
-            <input type="text" placeholder="Dirección de entrega" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} className="w-full rounded-lg bg-white text-[#103864] placeholder-gray-400 px-3 py-3 text-sm" />
+            <input type="text" placeholder="Nombre completo" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required className={cn('w-full rounded-lg bg-white placeholder-gray-400 px-3 py-3 text-sm', t.field)} />
+            <input type="tel" placeholder="Teléfono / WhatsApp" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} required className={cn('w-full rounded-lg bg-white placeholder-gray-400 px-3 py-3 text-sm', t.field)} />
+            <input type="text" placeholder="Ciudad / Municipio" value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} className={cn('w-full rounded-lg bg-white placeholder-gray-400 px-3 py-3 text-sm', t.field)} />
+            <input type="text" placeholder="Dirección de entrega" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} className={cn('w-full rounded-lg bg-white placeholder-gray-400 px-3 py-3 text-sm', t.field)} />
 
-            <div className="flex items-center justify-between rounded-xl bg-white/15 border border-white/25 px-4 py-3">
+            <div className={cn('flex items-center justify-between rounded-xl px-4 py-3', t.totalBox)}>
               <div>
-                <p className="text-sm text-white/90">Total a pagar (talla {size})</p>
-                {isWholesale && <p className="text-[11px] text-amber-200">¡Precio especial por {qty} unidades!</p>}
+                <p className="text-sm text-white/90">{perSize ? `Total a pagar (talla ${size})` : 'Total a pagar'}</p>
+                {isWholesale && <p className={cn('text-[11px]', t.accentSoft)}>¡Precio especial por {qty} unidades!</p>}
               </div>
-              <span className="font-serif text-2xl font-bold text-white">{formatCOP(total)}</span>
+              <span className={cn('font-serif text-2xl font-bold', t.totalValue)}>{formatCOP(total)}</span>
             </div>
 
             {error && (
               <p className="text-sm text-white bg-red-500/30 border border-white/30 rounded-lg px-3 py-2">{error}</p>
             )}
 
-            <button type="submit" disabled={submitting} className="w-full rounded-full py-4 text-lg font-extrabold bg-gradient-to-r from-[#FF8A5B] to-[#FF6B3D] text-white shadow-lg shadow-[#FF6B3D]/40 hover:scale-[1.02] transition flex items-center justify-center gap-2 disabled:opacity-60">
-              {submitting ? (<><Loader2 size={20} className="animate-spin" /> Enviando…</>) : (<>🏖️ PEDIR CONTRA ENTREGA</>)}
+            <button type="submit" disabled={submitting} className={cn('w-full rounded-full py-4 text-lg font-extrabold shadow-lg hover:scale-[1.02] transition flex items-center justify-center gap-2 disabled:opacity-60', t.cta)}>
+              {submitting ? (<><Loader2 size={20} className="animate-spin" /> Enviando…</>) : (<>📦 PEDIR CONTRA ENTREGA</>)}
             </button>
             <p className="text-center text-[11px] text-white/70">🔒 Sin pagos por adelantado · Pagas cuando recibes</p>
           </form>
@@ -466,18 +475,18 @@ export default function BanoVeranoLanding({ product }: { product: Product }) {
 
       {/* Botón fijo de compra */}
       {!formInView && (
-        <div className="fixed bottom-0 inset-x-0 z-40 px-3 pb-3 pt-2 bg-gradient-to-t from-[#0B2B4D] via-[#0B2B4D]/90 to-transparent">
+        <div className={cn('fixed bottom-0 inset-x-0 z-40 px-3 pb-3 pt-2 bg-gradient-to-t to-transparent', t.sticky)}>
           <div className="mx-auto max-w-md">
             <button
               onClick={scrollToForm}
-              className="w-full rounded-full py-3.5 px-5 font-extrabold bg-gradient-to-r from-[#FF8A5B] to-[#FF6B3D] text-white shadow-lg shadow-black/25 flex items-center justify-between"
+              className={cn('w-full rounded-full py-3.5 px-5 font-extrabold shadow-lg shadow-black/25 flex items-center justify-between', t.stickyBtn)}
             >
               <span className="flex flex-col items-start leading-tight">
-                <span className="text-[10px] font-semibold opacity-80">Vacaciones · -{discount}%</span>
-                <span className="text-base">Pedir ahora · desde {formatCOP(fromPrice)}</span>
+                <span className="text-[10px] font-semibold opacity-70">Oferta · -{discount}%</span>
+                <span className="text-base">Pedir ahora · {perSize ? 'desde ' : ''}{formatCOP(heroPrice)}</span>
               </span>
               <span className="flex items-center gap-1 text-sm">
-                <Sun size={18} /> →
+                <CtaIcon size={18} className={cfg.ctaFillIcon ? 'fill-current' : ''} /> →
               </span>
             </button>
           </div>

@@ -1,32 +1,25 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getProductBySlug } from '@/lib/data/queries';
-import BanoVeranoLanding from '@/components/landing/BanoVeranoLanding';
+import CampaignLanding from '@/components/landing/CampaignLanding';
+import { CAMPAIGNS } from '@/components/landing/campaigns';
 
 /**
- * Landing de campaña VACACIONES DE VERANO — Vestidos de baño niña (Ref 208).
- * Ruta oculta y aislada para Ads. Link: /oferta/bano-verano
- * Maneja precio por talla (2-4-6-8 vs 10-12-14-16) y registra el pedido en
- * el mismo sistema (/admin/pedidos + correo).
+ * Landing campaña VACACIONES DE VERANO (Ref 208, baño niña). Precio por talla.
+ * Ruta oculta y aislada para Ads. Link: /oferta/bano-verano · Plantilla CampaignLanding.
  */
-
-const PRODUCT_SLUG = 'nina-bano-enterizo-bolero';
+const KEY = 'bano-verano' as const;
+const cfg = CAMPAIGNS[KEY];
 
 export const metadata: Metadata = {
-  title: '☀️ Vestidos de Baño Niña — Vacaciones de Verano | Dulce Soñadora',
-  description:
-    'Vestidos de baño para niña con protección UV y secado rápido. ¡Precios imperdibles de temporada! Envío gratis y pago contra entrega a toda Colombia.',
+  title: cfg.meta.title,
+  description: cfg.meta.description,
   robots: { index: false, follow: false },
-  openGraph: {
-    title: '☀️ Vestidos de baño niña — Precios imperdibles de verano',
-    description: 'Protección UV, secado rápido y diseños divinos. Envío gratis a toda Colombia.',
-    images: ['/landing/bano-verano/bano-4.png'],
-    type: 'website',
-  },
+  openGraph: { title: cfg.meta.title, description: cfg.meta.description, images: [cfg.meta.ogImage], type: 'website' },
 };
 
 export default async function BanoVeranoPage() {
-  const product = await getProductBySlug(PRODUCT_SLUG);
+  const product = await getProductBySlug(cfg.productSlug);
   if (!product) notFound();
-  return <BanoVeranoLanding product={product} />;
+  return <CampaignLanding product={product} campaign={KEY} />;
 }
