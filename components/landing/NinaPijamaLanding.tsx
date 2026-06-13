@@ -203,13 +203,13 @@ export default function NinaPijamaLanding({ product }: { product: Product }) {
           {/* Galería deslizable */}
           <div className="relative mx-auto w-full max-w-[360px]">
             <div
-              className="embla rounded-2xl overflow-hidden ring-1 ring-white/30 shadow-2xl shadow-black/30"
+              className="embla rounded-2xl overflow-hidden shadow-2xl shadow-black/30"
               ref={emblaRef}
             >
               <div className="embla__container">
                 {gallery.map((g, i) => (
                   <div className="embla__slide" key={g.color}>
-                    <div className="relative aspect-[3/4] bg-white/10">
+                    <div className="relative aspect-[2/3]">
                       <Image
                         src={g.src}
                         alt={`Pijama niña — ${g.color}`}
@@ -217,7 +217,7 @@ export default function NinaPijamaLanding({ product }: { product: Product }) {
                         sizes="360px"
                         priority={i === 0}
                         draggable={false}
-                        className="object-contain select-none"
+                        className="object-cover select-none"
                       />
                     </div>
                   </div>
