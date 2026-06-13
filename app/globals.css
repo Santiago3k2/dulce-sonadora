@@ -285,6 +285,50 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 20px 40px -10px rgba(230, 62, 128, 0.7);
 }
 
+/* ====== Landing premium (campañas: Día del Padre, etc.) ====== */
+/* Texto dorado con brillo animado (titulares de lujo) */
+@keyframes goldShine {
+  0%   { background-position: -150% 0; }
+  100% { background-position: 250% 0; }
+}
+.gold-shine {
+  background: linear-gradient(110deg, #C99A3E 0%, #F4DFA0 22%, #FCEFC9 32%, #E7C168 48%, #C99A3E 100%);
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: goldShine 6s linear infinite;
+}
+.gold-text {
+  background: linear-gradient(180deg, #FCEFC9 0%, #E7C168 50%, #C99A3E 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+/* Textura de puntos sutil (eco del estampado de las pijamas) */
+.lux-dots {
+  background-image: radial-gradient(rgba(231, 193, 104, 0.10) 1px, transparent 1.5px);
+  background-size: 20px 20px;
+}
+/* Botón dorado premium (gold real sobre navy) */
+.btn-lux {
+  background: linear-gradient(135deg, #F4DFA0 0%, #E7C168 45%, #C99A3E 100%);
+  background-size: 180% auto;
+  color: #0B1E3C;
+  transition: background-position 0.6s ease, transform 0.25s ease, box-shadow 0.3s ease;
+  box-shadow: 0 16px 34px -12px rgba(231, 193, 104, 0.6);
+}
+.btn-lux:hover {
+  background-position: right center;
+  transform: translateY(-2px);
+  box-shadow: 0 22px 44px -12px rgba(231, 193, 104, 0.8);
+}
+@keyframes goldPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(231, 193, 104, 0.5); }
+  50%      { box-shadow: 0 0 0 12px rgba(231, 193, 104, 0); }
+}
+.animate-gold-pulse { animation: goldPulse 2.4s ease-in-out infinite; }
+
 /* Tarjeta checkout — sombra premium */
 .shadow-checkout {
   box-shadow:

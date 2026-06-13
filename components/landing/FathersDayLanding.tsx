@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
+import useEmblaCarousel from 'embla-carousel-react';
 import {
   Gift,
   Truck,
@@ -10,10 +11,10 @@ import {
   Star,
   Check,
   Crown,
-  Sparkles,
   Loader2,
   MessageCircle,
-  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import type { Product } from '@/lib/data/products';
 import { formatCOP, WHATSAPP_NUMBER, buildWhatsAppLink } from '@/lib/utils/format';
@@ -26,18 +27,18 @@ const FATHERS_DAY = new Date('2026-06-21T23:59:59-05:00');
 const img = (n: number) => `/landing/dia-del-padre/hombre-${n}.png`;
 
 const BENEFITS = [
-  'Tela suave y fresca',
-  'Máxima comodidad',
-  'Diseños exclusivos',
-  'Calidad premium',
-  'Ajuste perfecto',
-  'Resistente al lavado',
+  'Tela suave tipo algodón premium',
+  'Fresca y transpirable',
+  'Corte moderno que no aprieta',
+  'Bolsillo y ribete en contraste',
+  'Resiste lavadas sin perder color',
+  'Empaque listo para regalar',
 ];
 
 const REVIEWS = [
-  { name: 'Laura G.', text: 'El regalo perfecto para mi papá, le encantó. La tela es suavísima.' },
-  { name: 'Andrés M.', text: 'Calidad excelente y llegó rapidísimo con pago contra entrega.' },
-  { name: 'Diana R.', text: 'Compré dos para mi esposo y mi suegro. Superó mis expectativas.' },
+  { name: 'Laura G.', city: 'Bogotá', text: 'El regalo perfecto para mi papá, le encantó. La tela es suavísima.' },
+  { name: 'Andrés M.', city: 'Medellín', text: 'Calidad excelente y llegó rapidísimo, pagué al recibir. 10/10.' },
+  { name: 'Diana R.', city: 'Cali', text: 'Compré para mi esposo y mi suegro. Se ven elegantísimas.' },
 ];
 
 function useCountdown(target: Date) {
@@ -63,10 +64,28 @@ function useCountdown(target: Date) {
 export default function FathersDayLanding({ product }: { product: Product }) {
   const realPrice = product.priceRetail;
   const discount = Math.round(((ANCHOR - realPrice) / ANCHOR) * 100);
+  const saving = ANCHOR - realPrice;
   const gallery = product.colors.slice(0, 7).map((c, i) => ({ color: c, src: img(i + 1) }));
   const left = useCountdown(FATHERS_DAY);
 
+  // Galería deslizable (swipe con el dedo).
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'start' });
   const [active, setActive] = useState(0);
+  const onSelect = useCallback(() => {
+    if (emblaApi) setActive(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on('select', onSelect);
+    emblaApi.on('reInit', onSelect);
+    return () => {
+      emblaApi.off('select', onSelect);
+      emblaApi.off('reInit', onSelect);
+    };
+  }, [emblaApi, onSelect]);
+  const goTo = (i: number) => emblaApi?.scrollTo(i);
+
   const [size, setSize] = useState(product.sizes[0]);
   const [qty, setQty] = useState(1);
   const [form, setForm] = useState({ name: '', phone: '', city: '', address: '' });
@@ -75,8 +94,17 @@ export default function FathersDayLanding({ product }: { product: Product }) {
   const [error, setError] = useState('');
 
   const formRef = useRef<HTMLDivElement>(null);
-  const scrollToForm = () =>
-    formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const [formInView, setFormInView] = useState(false);
+  useEffect(() => {
+    const el = formRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => setFormInView(e.isIntersecting), {
+      threshold: 0.15,
+    });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  const scrollToForm = () => formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
   const isWholesale = qty >= product.wholesaleMinQty;
   const unit = isWholesale ? product.priceWholesale : product.priceRetail;
@@ -109,24 +137,28 @@ export default function FathersDayLanding({ product }: { product: Product }) {
     }
   };
 
-  // ─── Pantalla de confirmación ───────────────────────────────────────────
+  // ─── Confirmación ─────────────────────────────────────────────────────
   if (done) {
     const waLink = buildWhatsAppLink(
       WHATSAPP_NUMBER,
       `¡Hola! Acabo de hacer el pedido #${done.orderNumber} del Día del Padre (Ref 065, color ${gallery[active]?.color}, talla ${size}). Quiero confirmarlo 🎁`
     );
     return (
-      <div className="min-h-screen bg-gradient-to-b from-[#0B1E3C] to-[#16335F] text-white flex items-center justify-center px-5 py-16">
-        <div className="w-full max-w-md text-center">
-          <div className="mx-auto w-20 h-20 rounded-full bg-gradient-to-br from-amber-300 to-amber-500 flex items-center justify-center mb-6 shadow-lg shadow-amber-500/30">
-            <Check size={42} className="text-[#0F2647]" strokeWidth={3} />
+      <div className="relative min-h-screen bg-[#0B1E3C] text-white flex items-center justify-center px-5 py-16 overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 lux-dots opacity-60" />
+        <div className="pointer-events-none absolute -top-20 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-amber-400/20 blur-3xl" />
+        <div className="relative w-full max-w-md text-center">
+          <div className="mx-auto w-20 h-20 rounded-full btn-lux flex items-center justify-center mb-6">
+            <Check size={42} className="text-[#0B1E3C]" strokeWidth={3} />
           </div>
-          <h1 className="font-serif text-3xl md:text-4xl mb-3">¡Pedido recibido! 🎉</h1>
+          <h1 className="font-serif text-3xl md:text-4xl mb-3">
+            ¡Pedido <span className="gold-text italic">confirmado</span>! 🎉
+          </h1>
           <p className="text-white/80 mb-1">
-            Tu pedido <strong className="text-amber-300">#{done.orderNumber}</strong> quedó registrado.
+            Tu pedido <strong className="gold-text">#{done.orderNumber}</strong> quedó registrado.
           </p>
           <p className="text-white/80 mb-6">
-            Total: <strong className="text-amber-300">{formatCOP(done.total)}</strong> · Pago contra entrega.
+            Total: <strong className="gold-text">{formatCOP(done.total)}</strong> · Pago contra entrega.
           </p>
           <p className="text-sm text-white/70 mb-8">
             Te contactaremos muy pronto para coordinar la entrega. Si quieres confirmar de una vez,
@@ -145,117 +177,174 @@ export default function FathersDayLanding({ product }: { product: Product }) {
     );
   }
 
-  // ─── Landing ────────────────────────────────────────────────────────────
+  // ─── Landing ──────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-[#0B1E3C] text-white">
-      <div className="mx-auto max-w-md">
+    <div className="relative min-h-screen bg-[#0B1E3C] text-white overflow-hidden">
+      {/* Fondo con profundidad (fijo: da sensación de capas al hacer scroll) */}
+      <div className="pointer-events-none fixed inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0A1A33] via-[#102A52] to-[#070F22]" />
+        <div className="absolute inset-0 lux-dots opacity-70" />
+        <div className="absolute -top-28 left-1/2 -translate-x-1/2 w-[460px] h-[460px] rounded-full bg-amber-400/15 blur-[90px]" />
+        <div className="absolute top-1/3 -right-24 w-80 h-80 rounded-full bg-sky-500/10 blur-[90px]" />
+        <div className="absolute inset-0 [background:radial-gradient(ellipse_at_center,transparent_50%,rgba(0,0,0,0.5)_100%)]" />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-md pb-28">
         {/* Barra superior */}
-        <div className="sticky top-0 z-30 flex items-center justify-between bg-[#0B1E3C]/90 backdrop-blur px-4 py-2.5 border-b border-white/10">
-          <span className="font-serif text-lg tracking-wide text-amber-300">Dulce Soñadora</span>
-          <span className="text-[10px] uppercase tracking-[0.2em] text-white/70">Día del Padre</span>
+        <div className="flex items-center justify-between px-5 py-3.5">
+          <span className="font-serif text-xl tracking-wide gold-text">Dulce Soñadora</span>
+          <span className="text-[10px] uppercase tracking-[0.25em] text-white/55">Est. Premium</span>
         </div>
 
         {/* HERO */}
-        <section className="relative px-5 pt-7 pb-6 text-center overflow-hidden">
-          <div className="absolute -top-10 -right-10 w-52 h-52 rounded-full bg-amber-400/20 blur-3xl pointer-events-none" />
-          <div className="inline-flex items-center gap-2 rounded-full border border-amber-300/40 bg-white/5 px-4 py-1.5 mb-4">
-            <Crown size={15} className="text-amber-300" />
-            <span className="text-[11px] uppercase tracking-[0.25em] text-amber-200 font-semibold">
-              Para el rey de la casa
-            </span>
-          </div>
-          <h1 className="font-serif text-3xl sm:text-4xl font-medium leading-tight mb-3">
-            🎁 El regalo perfecto <br /> para papá
+        <section className="px-5 pt-3 text-center">
+          <p className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] gold-text font-semibold mb-3">
+            <Crown size={14} className="text-amber-300" /> Edición Día del Padre
+          </p>
+          <h1 className="font-serif leading-[1.02] mb-3">
+            <span className="block text-white/90 text-2xl sm:text-3xl font-light">El regalo perfecto</span>
+            <span className="block gold-shine italic text-5xl sm:text-6xl">para Papá</span>
           </h1>
-          <p className="text-sm text-white/75 max-w-sm mx-auto mb-5">
-            Comodidad, estilo y calidad premium para celebrar a quien siempre ha estado contigo.
+          <p className="text-sm text-white/70 max-w-xs mx-auto mb-5">
+            Pijama premium, suave y elegante. Comodidad que se siente, estilo que se nota.
           </p>
 
-          {/* Imagen principal (infografía del color elegido) */}
-          <div className="relative mx-auto w-full max-w-[340px] rounded-2xl overflow-hidden ring-1 ring-white/15 shadow-2xl shadow-black/40 bg-white">
-            <div className="relative aspect-[2/3]">
-              <Image
-                src={gallery[active]?.src ?? img(1)}
-                alt={`Pijama para papá — ${gallery[active]?.color}`}
-                fill
-                sizes="340px"
-                priority
-                className="object-cover"
-              />
+          {/* Galería deslizable */}
+          <div className="relative mx-auto w-full max-w-[360px]">
+            <div
+              className="embla rounded-[1.4rem] p-[3px] bg-gradient-to-br from-amber-200/70 via-amber-400/30 to-transparent shadow-2xl shadow-black/50"
+              ref={emblaRef}
+            >
+              <div className="embla__container">
+                {gallery.map((g, i) => (
+                  <div className="embla__slide" key={g.color}>
+                    <div className="relative aspect-[3/4] rounded-[1.25rem] overflow-hidden bg-[#0B1E3C]">
+                      <Image
+                        src={g.src}
+                        alt={`Pijama para papá — ${g.color}`}
+                        fill
+                        sizes="360px"
+                        priority={i === 0}
+                        draggable={false}
+                        className="object-cover select-none"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-            <span className="absolute top-3 left-3 bg-gradient-to-r from-amber-300 to-amber-500 text-[#0F2647] text-xs font-extrabold px-3 py-1 rounded-full shadow">
+
+            {/* Badge descuento */}
+            <span className="absolute top-3 left-3 z-10 btn-lux text-xs font-extrabold px-3 py-1 rounded-full">
               -{discount}% OFF
             </span>
+
+            {/* Flechas */}
+            <button
+              onClick={() => emblaApi?.scrollPrev()}
+              aria-label="Anterior"
+              className="absolute left-1.5 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-black/40 backdrop-blur border border-white/15 flex items-center justify-center text-white/90 hover:bg-black/60 transition"
+            >
+              <ChevronLeft size={20} />
+            </button>
+            <button
+              onClick={() => emblaApi?.scrollNext()}
+              aria-label="Siguiente"
+              className="absolute right-1.5 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-black/40 backdrop-blur border border-white/15 flex items-center justify-center text-white/90 hover:bg-black/60 transition"
+            >
+              <ChevronRight size={20} />
+            </button>
+
+            {/* Puntos */}
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 flex gap-1.5 rounded-full bg-black/35 backdrop-blur px-2.5 py-1.5">
+              {gallery.map((g, i) => (
+                <button
+                  key={g.color}
+                  onClick={() => goTo(i)}
+                  aria-label={`Ver ${g.color}`}
+                  className={`h-1.5 rounded-full transition-all ${
+                    active === i ? 'w-5 bg-amber-300' : 'w-1.5 bg-white/50'
+                  }`}
+                />
+              ))}
+            </div>
           </div>
 
-          {/* Selector de color */}
-          <p className="mt-5 mb-2 text-xs uppercase tracking-widest text-white/60">
-            Color: <span className="text-amber-300 font-semibold normal-case tracking-normal">{gallery[active]?.color}</span>
+          {/* Hint + color */}
+          <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-white/55">
+            <ChevronLeft size={13} className="text-amber-300" />
+            Desliza para ver los 7 colores
+            <ChevronRight size={13} className="text-amber-300" />
           </p>
-          <div className="flex flex-wrap justify-center gap-2">
+          <p className="mt-1 text-sm">
+            Color: <span className="gold-text font-semibold">{gallery[active]?.color}</span>
+          </p>
+
+          {/* Miniaturas de color */}
+          <div className="mt-3 flex flex-wrap justify-center gap-2">
             {gallery.map((g, i) => (
               <button
                 key={g.color}
-                onClick={() => setActive(i)}
+                onClick={() => goTo(i)}
                 aria-label={g.color}
-                className={`relative w-12 h-16 rounded-lg overflow-hidden ring-2 transition ${
-                  active === i ? 'ring-amber-400 scale-105' : 'ring-white/20 opacity-75 hover:opacity-100'
+                className={`relative w-11 h-14 rounded-lg overflow-hidden ring-2 transition ${
+                  active === i ? 'ring-amber-300 scale-105' : 'ring-white/15 opacity-70 hover:opacity-100'
                 }`}
               >
-                <Image src={g.src} alt={g.color} fill sizes="48px" className="object-cover" />
+                <Image src={g.src} alt={g.color} fill sizes="44px" className="object-cover" />
               </button>
             ))}
           </div>
 
           {/* Precio */}
-          <div className="mt-6 flex items-center justify-center gap-3">
-            <span className="text-white/50 line-through text-lg">{formatCOP(ANCHOR)}</span>
-            <span className="font-serif text-4xl font-bold text-amber-300">{formatCOP(realPrice)}</span>
+          <div className="mt-6 flex items-end justify-center gap-3">
+            <span className="text-white/45 line-through text-lg mb-1.5">{formatCOP(ANCHOR)}</span>
+            <span className="font-serif text-5xl font-bold gold-shine leading-none">{formatCOP(realPrice)}</span>
           </div>
-          <p className="mt-1 text-xs text-white/60">
-            Llevando {product.wholesaleMinQty} o más: {formatCOP(product.priceWholesale)} c/u
+          <p className="mt-2 inline-block rounded-full bg-emerald-400/15 border border-emerald-300/30 text-emerald-200 text-xs font-semibold px-3 py-1">
+            Ahorras {formatCOP(saving)} hoy
+          </p>
+          <p className="mt-2 text-xs text-white/55">
+            Llevando {product.wholesaleMinQty}+: {formatCOP(product.priceWholesale)} c/u
           </p>
 
-          {/* Beneficios oferta */}
-          <div className="mt-5 grid grid-cols-2 gap-2 text-left text-sm">
+          {/* CTA principal */}
+          <button
+            onClick={scrollToForm}
+            className="btn-lux mt-6 w-full rounded-full py-4 text-lg font-extrabold flex items-center justify-center gap-2"
+          >
+            <Gift size={20} /> QUIERO REGALÁRSELA
+          </button>
+
+          {/* Confianza */}
+          <div className="mt-5 grid grid-cols-3 gap-2 text-[11px]">
             {[
               { Icon: Truck, t: 'Envío GRATIS' },
-              { Icon: ShieldCheck, t: 'Pago contra entrega' },
-              { Icon: RefreshCw, t: 'Cambios garantizados' },
-              { Icon: Gift, t: 'Listo para regalar' },
+              { Icon: ShieldCheck, t: 'Pago al recibir' },
+              { Icon: RefreshCw, t: 'Cambios fáciles' },
             ].map(({ Icon, t }) => (
-              <div key={t} className="flex items-center gap-2 rounded-lg bg-white/5 border border-white/10 px-3 py-2">
-                <Icon size={16} className="text-amber-300 shrink-0" />
-                <span className="text-white/85">{t}</span>
+              <div key={t} className="flex flex-col items-center gap-1 rounded-xl bg-white/5 border border-white/10 py-2.5">
+                <Icon size={18} className="text-amber-300" />
+                <span className="text-white/80 leading-tight text-center">{t}</span>
               </div>
             ))}
           </div>
-
-          <button
-            onClick={scrollToForm}
-            className="mt-6 w-full bg-gradient-to-r from-amber-300 to-amber-500 text-[#0F2647] font-extrabold text-lg py-4 rounded-full shadow-lg shadow-amber-500/30 hover:scale-[1.02] transition flex items-center justify-center gap-2"
-          >
-            🛍️ COMPRAR AHORA
-          </button>
-          <button onClick={scrollToForm} className="mt-2 text-white/60 text-xs inline-flex items-center gap-1">
-            Pedir contra entrega <ChevronDown size={14} />
-          </button>
         </section>
 
         {/* Cuenta regresiva */}
         {left && (
-          <section className="px-5 py-5 bg-white/5 border-y border-white/10 text-center">
-            <p className="text-[11px] uppercase tracking-[0.25em] text-amber-200 mb-3">
-              ⏳ La promoción termina el Día del Padre
+          <section className="mt-8 mx-5 rounded-2xl bg-white/5 border border-amber-300/20 backdrop-blur p-5 text-center">
+            <p className="text-[11px] uppercase tracking-[0.25em] gold-text mb-3 font-semibold">
+              ⏳ La promoción termina pronto
             </p>
             <div className="flex justify-center gap-2">
               {([['Días', left.d], ['Horas', left.h], ['Min', left.m], ['Seg', left.s]] as const).map(
                 ([l, v]) => (
-                  <div key={l} className="w-16 rounded-xl bg-[#0B1E3C] border border-white/15 py-2">
-                    <div className="text-2xl font-bold text-amber-300 tabular-nums leading-none">
+                  <div key={l} className="w-16 rounded-xl bg-[#0B1E3C]/80 border border-white/10 py-2">
+                    <div className="text-2xl font-bold gold-text tabular-nums leading-none">
                       {String(v).padStart(2, '0')}
                     </div>
-                    <div className="mt-1 text-[9px] uppercase tracking-widest text-white/55">{l}</div>
+                    <div className="mt-1 text-[9px] uppercase tracking-widest text-white/50">{l}</div>
                   </div>
                 )
               )}
@@ -263,68 +352,75 @@ export default function FathersDayLanding({ product }: { product: Product }) {
           </section>
         )}
 
-        {/* Beneficios del producto */}
-        <section className="px-5 py-8">
-          <h2 className="font-serif text-2xl text-center mb-5">¿Por qué le va a encantar?</h2>
-          <div className="grid grid-cols-2 gap-3">
+        {/* Beneficios */}
+        <section className="px-5 py-9">
+          <h2 className="font-serif text-2xl text-center mb-1">
+            Hecha para <span className="gold-text italic">consentir a papá</span>
+          </h2>
+          <div className="mx-auto w-16 h-px bg-gradient-to-r from-transparent via-amber-300/60 to-transparent mb-6" />
+          <div className="grid grid-cols-1 gap-2.5">
             {BENEFITS.map((b) => (
-              <div key={b} className="flex items-center gap-2 text-sm text-white/85">
-                <span className="w-6 h-6 rounded-full bg-amber-300/20 flex items-center justify-center shrink-0">
-                  <Check size={14} className="text-amber-300" />
+              <div key={b} className="flex items-center gap-3 rounded-xl bg-white/5 border border-white/10 px-4 py-3">
+                <span className="w-7 h-7 rounded-full bg-amber-300/15 flex items-center justify-center shrink-0">
+                  <Check size={15} className="text-amber-300" />
                 </span>
-                {b}
+                <span className="text-sm text-white/85">{b}</span>
               </div>
             ))}
           </div>
         </section>
 
         {/* Prueba social */}
-        <section className="px-5 py-8 bg-white/5 border-y border-white/10">
+        <section className="px-5 py-8 border-y border-white/10 bg-white/[0.03]">
           <div className="flex justify-center gap-1 text-amber-300 mb-1">
             {Array.from({ length: 5 }).map((_, i) => (
               <Star key={i} size={20} className="fill-amber-300" />
             ))}
           </div>
-          <p className="text-center text-sm text-white/70 mb-6">
-            Más de <strong className="text-white">5.000 clientes</strong> felices
+          <p className="text-center text-sm text-white/65 mb-6">
+            <strong className="text-white">+5.000</strong> papás felices en toda Colombia
           </p>
           <div className="space-y-3">
             {REVIEWS.map((r) => (
-              <div key={r.name} className="rounded-xl bg-[#0B1E3C] border border-white/10 p-4">
+              <div key={r.name} className="rounded-2xl bg-[#0B1E3C]/70 border border-white/10 p-4">
                 <div className="flex gap-0.5 text-amber-300 mb-1.5">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <Star key={i} size={12} className="fill-amber-300" />
                   ))}
                 </div>
                 <p className="text-sm text-white/85 italic">&ldquo;{r.text}&rdquo;</p>
-                <p className="mt-2 text-xs text-amber-200 font-semibold">— {r.name}</p>
+                <p className="mt-2 text-xs gold-text font-semibold">
+                  — {r.name}, {r.city}
+                </p>
               </div>
             ))}
           </div>
         </section>
 
-        {/* FORMULARIO DE PEDIDO */}
+        {/* FORMULARIO */}
         <section ref={formRef} className="px-5 py-9">
-          <div className="inline-flex items-center gap-2 mb-2">
-            <Sparkles size={16} className="text-amber-300" />
-            <span className="text-[11px] uppercase tracking-[0.25em] text-amber-200 font-semibold">
-              Pídela ahora
-            </span>
-          </div>
-          <h2 className="font-serif text-2xl mb-1">Haz feliz a papá 🎁</h2>
+          <p className="text-[11px] uppercase tracking-[0.3em] gold-text font-semibold mb-2">
+            Pídela ahora
+          </p>
+          <h2 className="font-serif text-3xl mb-1">
+            Hazlo sentir <span className="gold-text italic">especial</span>
+          </h2>
           <p className="text-sm text-white/70 mb-5">
-            Completa tus datos y te la enviamos con <strong className="text-amber-300">pago contra entrega</strong>. ¡Envío gratis!
+            Llena tus datos y te la llevamos con <strong className="text-amber-200">pago contra entrega</strong>. Envío gratis a toda Colombia.
           </p>
 
           <form onSubmit={submit} className="space-y-3">
-            {/* Color + talla + cantidad */}
             <div className="grid grid-cols-2 gap-3">
               <label className="text-xs text-white/70">
                 Color
                 <select
                   value={active}
-                  onChange={(e) => setActive(Number(e.target.value))}
-                  className="mt-1 w-full rounded-lg bg-white text-[#0F2647] px-3 py-2.5 text-sm font-medium"
+                  onChange={(e) => {
+                    const i = Number(e.target.value);
+                    setActive(i);
+                    goTo(i);
+                  }}
+                  className="mt-1 w-full rounded-lg bg-white text-[#0B1E3C] px-3 py-2.5 text-sm font-medium"
                 >
                   {gallery.map((g, i) => (
                     <option key={g.color} value={i}>
@@ -338,7 +434,7 @@ export default function FathersDayLanding({ product }: { product: Product }) {
                 <select
                   value={size}
                   onChange={(e) => setSize(e.target.value)}
-                  className="mt-1 w-full rounded-lg bg-white text-[#0F2647] px-3 py-2.5 text-sm font-medium"
+                  className="mt-1 w-full rounded-lg bg-white text-[#0B1E3C] px-3 py-2.5 text-sm font-medium"
                 >
                   {product.sizes.map((s) => (
                     <option key={s} value={s}>
@@ -349,102 +445,65 @@ export default function FathersDayLanding({ product }: { product: Product }) {
               </label>
             </div>
 
-            <div className="flex items-center justify-between rounded-lg bg-white/5 border border-white/10 px-3 py-2.5">
+            <div className="flex items-center justify-between rounded-lg bg-white/5 border border-white/10 px-4 py-2.5">
               <span className="text-sm text-white/80">Cantidad</span>
               <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => setQty((q) => Math.max(1, q - 1))}
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-lg leading-none"
-                  aria-label="Disminuir"
-                >
-                  −
-                </button>
+                <button type="button" onClick={() => setQty((q) => Math.max(1, q - 1))} className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-lg leading-none" aria-label="Disminuir">−</button>
                 <span className="w-6 text-center font-semibold">{qty}</span>
-                <button
-                  type="button"
-                  onClick={() => setQty((q) => q + 1)}
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-lg leading-none"
-                  aria-label="Aumentar"
-                >
-                  +
-                </button>
+                <button type="button" onClick={() => setQty((q) => q + 1)} className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-lg leading-none" aria-label="Aumentar">+</button>
               </div>
             </div>
 
-            <input
-              type="text"
-              placeholder="Nombre completo"
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              required
-              className="w-full rounded-lg bg-white text-[#0F2647] placeholder-gray-400 px-3 py-3 text-sm"
-            />
-            <input
-              type="tel"
-              placeholder="Teléfono / WhatsApp"
-              value={form.phone}
-              onChange={(e) => setForm({ ...form, phone: e.target.value })}
-              required
-              className="w-full rounded-lg bg-white text-[#0F2647] placeholder-gray-400 px-3 py-3 text-sm"
-            />
-            <input
-              type="text"
-              placeholder="Ciudad / Municipio"
-              value={form.city}
-              onChange={(e) => setForm({ ...form, city: e.target.value })}
-              className="w-full rounded-lg bg-white text-[#0F2647] placeholder-gray-400 px-3 py-3 text-sm"
-            />
-            <input
-              type="text"
-              placeholder="Dirección de entrega"
-              value={form.address}
-              onChange={(e) => setForm({ ...form, address: e.target.value })}
-              className="w-full rounded-lg bg-white text-[#0F2647] placeholder-gray-400 px-3 py-3 text-sm"
-            />
+            <input type="text" placeholder="Nombre completo" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required className="w-full rounded-lg bg-white text-[#0B1E3C] placeholder-gray-400 px-3 py-3 text-sm" />
+            <input type="tel" placeholder="Teléfono / WhatsApp" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} required className="w-full rounded-lg bg-white text-[#0B1E3C] placeholder-gray-400 px-3 py-3 text-sm" />
+            <input type="text" placeholder="Ciudad / Municipio" value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} className="w-full rounded-lg bg-white text-[#0B1E3C] placeholder-gray-400 px-3 py-3 text-sm" />
+            <input type="text" placeholder="Dirección de entrega" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} className="w-full rounded-lg bg-white text-[#0B1E3C] placeholder-gray-400 px-3 py-3 text-sm" />
 
-            {/* Resumen total */}
-            <div className="flex items-center justify-between rounded-lg bg-amber-300/10 border border-amber-300/30 px-4 py-3">
+            <div className="flex items-center justify-between rounded-xl bg-amber-300/10 border border-amber-300/30 px-4 py-3">
               <div>
                 <p className="text-sm text-white/80">Total a pagar</p>
-                {isWholesale && (
-                  <p className="text-[11px] text-amber-200">¡Precio especial por {qty} unidades!</p>
-                )}
+                {isWholesale && <p className="text-[11px] text-amber-200">¡Precio especial por {qty} unidades!</p>}
               </div>
-              <span className="font-serif text-2xl font-bold text-amber-300">{formatCOP(total)}</span>
+              <span className="font-serif text-2xl font-bold gold-text">{formatCOP(total)}</span>
             </div>
 
             {error && (
-              <p className="text-sm text-red-300 bg-red-500/10 border border-red-400/30 rounded-lg px-3 py-2">
-                {error}
-              </p>
+              <p className="text-sm text-red-200 bg-red-500/10 border border-red-400/30 rounded-lg px-3 py-2">{error}</p>
             )}
 
-            <button
-              type="submit"
-              disabled={submitting}
-              className="w-full bg-gradient-to-r from-amber-300 to-amber-500 text-[#0F2647] font-extrabold text-lg py-4 rounded-full shadow-lg shadow-amber-500/30 hover:scale-[1.02] transition flex items-center justify-center gap-2 disabled:opacity-60"
-            >
-              {submitting ? (
-                <>
-                  <Loader2 size={20} className="animate-spin" /> Enviando…
-                </>
-              ) : (
-                <>📦 PEDIR CONTRA ENTREGA</>
-              )}
+            <button type="submit" disabled={submitting} className="btn-lux w-full rounded-full py-4 text-lg font-extrabold flex items-center justify-center gap-2 disabled:opacity-60">
+              {submitting ? (<><Loader2 size={20} className="animate-spin" /> Enviando…</>) : (<>📦 PEDIR CONTRA ENTREGA</>)}
             </button>
-            <p className="text-center text-[11px] text-white/55">
-              🔒 Sin pagos por adelantado · Pagas cuando recibes
-            </p>
+            <p className="text-center text-[11px] text-white/55">🔒 Sin pagos por adelantado · Pagas cuando recibes</p>
           </form>
         </section>
 
         {/* Cierre */}
         <footer className="px-5 py-8 text-center border-t border-white/10">
-          <p className="font-serif text-xl text-amber-300">Dulce Soñadora</p>
-          <p className="text-xs text-white/50 mt-1">El encanto de soñar · Envíos a toda Colombia</p>
+          <p className="font-serif text-xl gold-text">Dulce Soñadora</p>
+          <p className="text-xs text-white/45 mt-1 italic">El encanto de soñar · Envíos a toda Colombia</p>
         </footer>
       </div>
+
+      {/* Botón fijo de compra (visible desde que entras) */}
+      {!formInView && (
+        <div className="fixed bottom-0 inset-x-0 z-40 px-3 pb-3 pt-2 bg-gradient-to-t from-[#070F22] via-[#070F22]/90 to-transparent">
+          <div className="mx-auto max-w-md">
+            <button
+              onClick={scrollToForm}
+              className="btn-lux animate-gold-pulse w-full rounded-full py-3.5 px-5 font-extrabold flex items-center justify-between"
+            >
+              <span className="flex flex-col items-start leading-tight">
+                <span className="text-[10px] font-semibold opacity-70">Día del Padre · -{discount}%</span>
+                <span className="text-base">Pedir ahora · {formatCOP(realPrice)}</span>
+              </span>
+              <span className="flex items-center gap-1 text-sm">
+                <Gift size={18} /> →
+              </span>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
