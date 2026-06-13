@@ -137,7 +137,7 @@ export default function NinaPijamaLanding({ product }: { product: Product }) {
       `¡Hola! Acabo de hacer el pedido #${done.orderNumber} de la pijama de niña (Ref 064, diseño ${gallery[active]?.color}, talla ${size}). Quiero confirmarlo 💖`
     );
     return (
-      <div className="relative min-h-screen bg-gradient-to-b from-[#F86FB0] via-[#C56EC4] to-[#9A6BD6] text-white flex items-center justify-center px-5 py-16 overflow-hidden">
+      <div className="relative min-h-screen bg-gradient-to-b from-[#B76E8E] via-[#8C5A82] to-[#574568] text-white flex items-center justify-center px-5 py-16 overflow-hidden">
         <div className="pointer-events-none absolute inset-0" style={dots} />
         <div className="pointer-events-none absolute -top-20 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-white/20 blur-3xl" />
         <div className="relative w-full max-w-md text-center">
@@ -170,10 +170,10 @@ export default function NinaPijamaLanding({ product }: { product: Product }) {
 
   // ─── Landing ──────────────────────────────────────────────────────────
   return (
-    <div className="relative min-h-screen bg-[#C56EC4] text-white overflow-hidden">
-      {/* Fondo con profundidad */}
+    <div className="relative min-h-screen bg-[#8C5A82] text-white overflow-hidden">
+      {/* Fondo con profundidad — rosa empolvado → malva → ciruela (elegante, no empalagoso) */}
       <div className="pointer-events-none fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#F876B4] via-[#C264C0] to-[#8E63CF]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#B76E8E] via-[#8C5A82] to-[#574568]" />
         <div className="absolute inset-0" style={dots} />
         <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[440px] h-[440px] rounded-full bg-white/15 blur-[90px]" />
         <div className="absolute top-1/3 -right-24 w-80 h-80 rounded-full bg-amber-200/15 blur-[90px]" />
@@ -194,7 +194,7 @@ export default function NinaPijamaLanding({ product }: { product: Product }) {
           </p>
           <h1 className="font-serif leading-[1.02] mb-3">
             <span className="block text-white/90 text-2xl sm:text-3xl font-light">La pijama soñada</span>
-            <span className="block shimmer-text italic text-5xl sm:text-6xl">para tu niña</span>
+            <span className="block gold-text italic text-5xl sm:text-6xl">para tu niña</span>
           </h1>
           <p className="text-sm text-white/85 max-w-xs mx-auto mb-5">
             Camiseta manga corta + pantalón en algodón suave. Con sus personajes favoritos. 💖
@@ -461,7 +461,7 @@ export default function NinaPijamaLanding({ product }: { product: Product }) {
 
       {/* Botón fijo de compra (visible desde que entras) */}
       {!formInView && (
-        <div className="fixed bottom-0 inset-x-0 z-40 px-3 pb-3 pt-2 bg-gradient-to-t from-[#7E54B8] via-[#7E54B8]/90 to-transparent">
+        <div className="fixed bottom-0 inset-x-0 z-40 px-3 pb-3 pt-2 bg-gradient-to-t from-[#3E3152] via-[#3E3152]/90 to-transparent">
           <div className="mx-auto max-w-md">
             <button
               onClick={scrollToForm}
