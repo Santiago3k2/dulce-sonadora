@@ -306,6 +306,54 @@ export const CAMPAIGNS: Record<string, CampaignConfig> = {
       '¡Hola! Acabo de hacer el pedido #{n} del vestido de baño (Ref 208, diseño {color}, talla {size}). Quiero confirmarlo ☀️',
     theme: THEME_OCEAN,
   },
+
+  'bano-manga-larga': {
+    productSlug: 'nina-bano-enterizo-manga-larga',
+    anchor: 56900,
+    images: [1, 2, 3, 4, 5].map((n) => `/landing/bano-manga-larga/bano-${n}.png`),
+    designLabel: 'Diseño',
+    meta: {
+      title: '☀️ Vestido de Baño Manga Larga Niña — Protección Solar | Dulce Soñadora',
+      description:
+        'Vestido de baño enterizo manga larga con protección UV: cubre más la piel de tu niña. Secado rápido y diseños divinos. ¡Precios imperdibles! Envío gratis y pago contra entrega.',
+      ogImage: '/landing/bano-manga-larga/bano-4.png',
+    },
+    eyebrow: { icon: Sun, text: 'Protección solar UV' },
+    title: { top: 'Vestido de baño', accent: 'manga larga' },
+    subtitle:
+      'Cubre más, protege más: manga larga con filtro UV. Secado rápido y diseños divinos para el sol, la piscina y el mar. 🏖️',
+    ctaLabel: '¡LO QUIERO PARA EL SOL!',
+    ctaIcon: Sun,
+    savingText: '¡Ahorras {saving}! · Precio imperdible',
+    benefitsHeading: { text: 'Protección que', accent: 'cuida su piel' },
+    benefits: [
+      'Manga larga con protección UV',
+      'Cubre hombros y brazos del sol',
+      'Secado rápido para seguir jugando',
+      'Resistente al cloro y la sal',
+      'Tela suave y elástica que no aprieta',
+      'Tallas de la 2 a la 16',
+    ],
+    reviewsStrong: '+5.000',
+    reviewsRest: 'niñas protegidas del sol',
+    reviews: [
+      { name: 'Marcela V.', city: 'Barranquilla', text: 'La manga larga es ideal para la playa, no se quemó nada. Y seca rapidísimo.' },
+      { name: 'Tatiana L.', city: 'Villavicencio', text: 'Hermoso y de muy buena tela. A mi hija le encantó el de capibara.' },
+      { name: 'Andrea S.', city: 'Ibagué', text: 'Llegó rápido y pagué al recibir. Perfecto para las vacaciones.' },
+    ],
+    urgency: { kind: 'text', text: '🔥 Temporada de playa y piscina · Precios imperdibles · ¡Últimas tallas!' },
+    trust: [
+      { icon: Truck, text: 'Envío GRATIS' },
+      { icon: ShieldCheck, text: 'Pago al recibir' },
+      { icon: Sun, text: 'Protección UV' },
+    ],
+    formTitle: { text: '¡Listas para el', accent: 'sol! ☀️' },
+    formIntro: 'Llena tus datos y se lo llevamos con pago contra entrega. ¡Envío gratis a toda Colombia!',
+    notesPrefix: '🏖️ Pedido landing Baño Manga Larga — Ref 201-2',
+    waConfirm:
+      '¡Hola! Acabo de hacer el pedido #{n} del vestido de baño manga larga (Ref 201-2, diseño {color}, talla {size}). Quiero confirmarlo ☀️',
+    theme: THEME_OCEAN,
+  },
 };
 
 export type CampaignKey = keyof typeof CAMPAIGNS;
