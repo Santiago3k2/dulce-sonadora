@@ -212,13 +212,13 @@ export default function FathersDayLanding({ product }: { product: Product }) {
           {/* Galería deslizable */}
           <div className="relative mx-auto w-full max-w-[360px]">
             <div
-              className="embla rounded-[1.4rem] p-[3px] bg-gradient-to-br from-amber-200/70 via-amber-400/30 to-transparent shadow-2xl shadow-black/50"
+              className="embla rounded-2xl overflow-hidden ring-1 ring-white/15 shadow-2xl shadow-black/45"
               ref={emblaRef}
             >
               <div className="embla__container">
                 {gallery.map((g, i) => (
                   <div className="embla__slide" key={g.color}>
-                    <div className="relative aspect-[3/4] rounded-[1.25rem] overflow-hidden bg-[#0B1E3C]">
+                    <div className="relative aspect-[2/3] bg-[#0B1E3C]">
                       <Image
                         src={g.src}
                         alt={`Pijama para papá — ${g.color}`}
