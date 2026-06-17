@@ -222,8 +222,9 @@ export default function ProductDetail({ product }: { product: Product }) {
           <PriceDisplay
             priceRetail={price.retail}
             priceWholesale={price.wholesale}
+            wholesaleMinQty={product.wholesaleMinQty}
             size="xl"
-            showLabels
+            variant="detail"
           />
         </div>
 
@@ -338,7 +339,8 @@ export default function ProductDetail({ product }: { product: Product }) {
         </button>
 
         <p className="mt-5 text-xs text-text-muted italic">
-          ⓘ Precio mayorista aplica automáticamente al sumar {product.wholesaleMinQty} o más unidades en el carrito.
+          ⓘ Al llevar {product.wholesaleMinQty} o más unidades (puedes combinar diseños, colores y tallas), el
+          precio mayorista se aplica solo a <span className="not-italic font-medium text-pink-deeper">todas</span> tus unidades. Se activa automáticamente en el carrito.
         </p>
 
         {/* Trust badges */}

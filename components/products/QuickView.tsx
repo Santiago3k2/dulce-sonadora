@@ -114,8 +114,9 @@ export default function QuickView({ product, onClose }: QuickViewProps) {
               <PriceDisplay
                 priceRetail={product.priceRetail}
                 priceWholesale={product.priceWholesale}
+                wholesaleMinQty={product.wholesaleMinQty}
                 size="xl"
-                showLabels
+                variant="detail"
               />
             </div>
 
@@ -197,7 +198,7 @@ export default function QuickView({ product, onClose }: QuickViewProps) {
             </div>
 
             <p className="mt-4 text-xs text-text-muted italic">
-              Precio mayorista aplica para pedidos mínimos de {product.wholesaleMinQty} unidades.
+              Llevando {product.wholesaleMinQty} o más unidades (combinando diseños) obtienes el precio mayorista en todas.
             </p>
 
             <div className="mt-6 flex flex-col gap-2">

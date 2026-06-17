@@ -100,6 +100,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             <PriceDisplay
               priceRetail={product.priceRetail}
               priceWholesale={product.priceWholesale}
+              wholesaleMinQty={product.wholesaleMinQty}
               size="md"
             />
           </div>
