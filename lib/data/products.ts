@@ -66,7 +66,7 @@ const kidsBands = (wLow: number, wHigh: number): Record<string, SizePrice> => {
   };
 };
 
-export const products: Product[] = [
+const rawProducts: Product[] = [
   // ══════════ PANTALÓN ALGODÓN ══════════
   {
     id: 'p-006',
@@ -1425,6 +1425,83 @@ export const products: Product[] = [
       'Conjunto de camisa de botones manga corta con vivos en contraste y pantalón largo a juego, estampado de corazones. (Precio estimado — pendiente confirmar.)',
   },
 ];
+
+// ════════════════════════════════════════════════════════════════════
+// PRECIOS OFICIALES POR TALLA (Tabla de Precios 2026).
+// El precio depende de la referencia Y la talla: las prendas con dos
+// bandas de talla cuestan distinto. Mayorista por talla; el detal =
+// mayorista + $10.000 (constante en todo el Excel oficial 2026).
+// Mapeado por ID de producto (no por número de ref) para evitar las
+// colisiones de referencia (201-1/201-2, 026, etc.).
+// ════════════════════════════════════════════════════════════════════
+
+/** Adulto: S-M-L-XL a un precio y XXL más caro. */
+const adultXXL = (wReg: number, wXXL: number): Record<string, SizePrice> => {
+  const q = (w: number): SizePrice => ({ wholesale: w, retail: w + 10000 });
+  return { S: q(wReg), M: q(wReg), L: q(wReg), XL: q(wReg), XXL: q(wXXL) };
+};
+
+/** Infantil con talla XS además de las dos bandas 2-4-6-8 / 10-12-14-16. */
+const kidsBandsXS = (
+  wLow: number,
+  wHigh: number,
+  wXS: number
+): Record<string, SizePrice> => {
+  const q = (w: number): SizePrice => ({ wholesale: w, retail: w + 10000 });
+  return {
+    '2': q(wLow), '4': q(wLow), '6': q(wLow), '8': q(wLow),
+    '10': q(wHigh), '12': q(wHigh), '14': q(wHigh), '16': q(wHigh),
+    XS: q(wXS),
+  };
+};
+
+const OFFICIAL_PRICES: Record<string, Record<string, SizePrice>> = {
+  // ── Infantil (pijamas): banda 2-4-6-8 vs 10-12-14-16 (+XS donde aplica) ──
+  'p-036': kidsBands(19768, 20138),
+  'p-037': kidsBands(22233, 23513),
+  'p-049': kidsBandsXS(21393, 22931, 24412),
+  'p-060': kidsBandsXS(19144, 18663, 21118),
+  'p-061': kidsBandsXS(23968, 25578, 26848),
+  'p-062': kidsBands(18763, 20649),
+  // ── Adulto: S-M-L-XL vs XXL (XXL ~$1.500 más caro) ──
+  'p-006': adultXXL(31098, 32598),
+  'p-009': adultXXL(31251, 32751),
+  'p-023': adultXXL(28783, 30283),
+  'p-044': adultXXL(29763, 31263),
+  'p-401': adultXXL(31251, 32751),
+  'p-002': adultXXL(28077, 29577),
+  'p-008': adultXXL(28077, 29577),
+  'p-004': adultXXL(24061, 26061),
+  'p-007': adultXXL(24061, 25061),
+  'p-015': adultXXL(24061, 25061),
+  'p-035': adultXXL(22459, 23459),
+};
+
+/**
+ * Aplica los precios oficiales por talla: define sizePrices (solo para las
+ * tallas que la prenda realmente maneja) y deja el precio base en la banda
+ * más barata ("desde", para tarjetas/listados sin talla seleccionada).
+ * Las prendas que ya traen sizePrices propio (baño infantil) y no están en
+ * la tabla quedan intactas.
+ */
+function applyOfficialPrices(list: Product[]): Product[] {
+  return list.map((p) => {
+    const table = OFFICIAL_PRICES[p.id];
+    if (!table) return p;
+    const sizePrices: Record<string, SizePrice> = {};
+    for (const s of p.sizes) if (table[s]) sizePrices[s] = table[s];
+    const vals = Object.values(sizePrices);
+    if (!vals.length) return p;
+    return {
+      ...p,
+      priceWholesale: Math.min(...vals.map((v) => v.wholesale)),
+      priceRetail: Math.min(...vals.map((v) => v.retail)),
+      sizePrices,
+    };
+  });
+}
+
+export const products: Product[] = applyOfficialPrices(rawProducts);
 
 export function getProductBySlug(slug: string): Product | undefined {
   return products.find((p) => p.slug === slug);
