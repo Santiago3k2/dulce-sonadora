@@ -970,8 +970,8 @@ const rawProducts: Product[] = [
       '/products/ref-065-bermuda-camisa-cuello-v-manga-franela/photo-11.jpg?v=2',
       '/products/ref-065-bermuda-camisa-cuello-v-manga-franela/photo-12.jpg?v=2',
     ],
-    priceRetail: 40014,
-    priceWholesale: 30014,
+    priceRetail: 43040,
+    priceWholesale: 33040,
     wholesaleMinQty: 6,
     colors: [
       'Azul Marino Puntos Rojo',
