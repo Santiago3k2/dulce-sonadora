@@ -51,13 +51,15 @@ const KIDS_XS = ['2', '4', '6', '8', '10', '12', '14', '16', 'XS'];
 //   priceWholesale (mayorista, ≥6 und) = "Tabla de Precios" de fábrica.
 //   priceRetail   (detal, <6 und)      = "Tabla de Precios AL DETAL".
 // Valores EXACTOS del Excel, sin redondear (decisión de Santiago, 11 jun 2026).
-// El detal de fábrica = mayorista + $10.000. Si la ref tiene varias bandas de
-// talla en el Excel, se usa la banda de MAYOR precio (ej. 204 → 10-12-14-16).
+// Modelo nuevo (lista de fábrica 2026-06-18): el mayorista y el detal son
+// INDEPENDIENTES por talla (ya NO detal = mayorista + $10.000). Las refs con
+// dos bandas (XXL o infantil) definen su sizePrices vía OFFICIAL_PRICES.
 // Refs sin fila en el Excel llevan un precio estimado alineado a su prenda
 // equivalente (marcadas con "estimado" en el comentario).
 
 // Precio infantil por banda de talla del Excel oficial (2-4-6-8 vs 10-12-14-16).
-// Recibe el precio de fábrica (mayorista) de cada banda; el detal = +$10.000.
+// Recibe el mayorista de cada banda; el detal = +$10.000. SOLO baño infantil
+// (204/201-2/207/208/209) conserva este modelo; las demás usan los helpers *2.
 const kidsBands = (wLow: number, wHigh: number): Record<string, SizePrice> => {
   const p = (w: number): SizePrice => ({ wholesale: w, retail: w + 10000 });
   return {
@@ -81,8 +83,8 @@ const rawProducts: Product[] = [
       '/products/ref-006-tank-be-happy-sage-capri-floral-gris/photo-5.jpg?v=2',
       '/products/ref-006-tank-be-happy-sage-capri-floral-gris/photo-6.jpg?v=2',
     ],
-    priceRetail: 42598,
-    priceWholesale: 32598,
+    priceRetail: 40000,
+    priceWholesale: 31500,
     wholesaleMinQty: 6,
     colors: [
       'Rosa Follow Heart',
@@ -110,8 +112,8 @@ const rawProducts: Product[] = [
       '/products/ref-010-pantalon-copa-unicolor-piel-durazno/photo-3.jpg?v=2',
       '/products/ref-010-pantalon-copa-unicolor-piel-durazno/photo-4.jpg?v=2',
     ],
-    priceRetail: 35871,
-    priceWholesale: 25871,
+    priceRetail: 30000,
+    priceWholesale: 25900,
     wholesaleMinQty: 6,
     colors: ['Rosa', 'Verde Sage', 'Negro', 'Amarillo'],
     sizes: ADULT,
@@ -137,8 +139,8 @@ const rawProducts: Product[] = [
       '/products/ref-009-camiseta-love-rosa-negro-corazones-blanco-leopardo/photo-8.jpg?v=2',
       '/products/ref-009-camiseta-love-rosa-negro-corazones-blanco-leopardo/photo-9.jpg?v=2',
     ],
-    priceRetail: 42751,
-    priceWholesale: 32751,
+    priceRetail: 40000,
+    priceWholesale: 31500,
     wholesaleMinQty: 6,
     colors: [
       'Blanco Cute Love',
@@ -203,8 +205,8 @@ const rawProducts: Product[] = [
       '/products/ref-042-conjunto-good-night-y-stars-amarillo-y-verde/photo-8.jpg?v=2',
       '/products/ref-042-conjunto-good-night-y-stars-amarillo-y-verde/photo-9.jpg?v=2',
     ],
-    priceRetail: 38404,
-    priceWholesale: 28404,
+    priceRetail: 33624,
+    priceWholesale: 28400,
     wholesaleMinQty: 6,
     colors: [
       'Azul Acero',
@@ -296,8 +298,8 @@ const rawProducts: Product[] = [
       '/products/ref-401-pantalon-piel-durazno-blusa-sublimada-osito-avocato/photo-4.jpg?v=2',
       '/products/ref-401-pantalon-piel-durazno-blusa-sublimada-osito-avocato/photo-5.jpg?v=2',
     ],
-    priceRetail: 42751,
-    priceWholesale: 32751,
+    priceRetail: 40000,
+    priceWholesale: 31500,
     wholesaleMinQty: 6,
     colors: [
       'Beige Osito',
@@ -325,8 +327,8 @@ const rawProducts: Product[] = [
       '/products/ref-058-conjunto-satin-rosa-cerezas/photo-3.png?v=2',
       '/products/ref-058-conjunto-satin-rosa-cerezas/photo-4.png?v=2',
     ],
-    priceRetail: 58534,
-    priceWholesale: 48534,
+    priceRetail: 58000,
+    priceWholesale: 48500,
     wholesaleMinQty: 6,
     colors: ['Rosa Snoopy', 'Azul Corazones', 'Rosa Floral', 'Blanco Cerezas'],
     sizes: ADULT,
@@ -445,8 +447,8 @@ const rawProducts: Product[] = [
       '/products/ref-069-capri-camisa-botones-estampados/photo-4.png?v=2',
       '/products/ref-069-capri-camisa-botones-estampados/photo-5.png?v=2',
     ],
-    priceRetail: 47372,
-    priceWholesale: 37372,
+    priceRetail: 40000,
+    priceWholesale: 29000,
     wholesaleMinQty: 6,
     colors: [
       'Gris Corazones',
@@ -599,8 +601,8 @@ const rawProducts: Product[] = [
       '/products/ref-014-romper-menta-solido-ruffle/photo-azul.jpg?v=2',
       '/products/ref-014-romper-menta-solido-ruffle/photo-blanco.jpg?v=2',
     ],
-    priceRetail: 29717,
-    priceWholesale: 19717,
+    priceRetail: 25000,
+    priceWholesale: 20000,
     wholesaleMinQty: 6,
     colors: ['durazno', 'rojo', 'amarillo', 'menta', 'azul acero', 'blanco'],
     colorImages: {
@@ -742,8 +744,8 @@ const rawProducts: Product[] = [
       '/products/ref-039-satin-conjunto-estampados/photo-3.jpg?v=2',
       '/products/ref-039-satin-conjunto-estampados/photo-4.jpg?v=2',
     ],
-    priceRetail: 41905,
-    priceWholesale: 31905,
+    priceRetail: 40000,
+    priceWholesale: 33000,
     wholesaleMinQty: 6,
     colors: [
       'Durazno Snoopy',
@@ -774,7 +776,7 @@ const rawProducts: Product[] = [
       '/products/ref-111-short-satin-unicolor/photo-5.jpg?v=2',
       '/products/ref-111-short-satin-unicolor/photo-6.jpg?v=2',
     ],
-    priceRetail: 32200,
+    priceRetail: 30000,
     priceWholesale: 22200,
     wholesaleMinQty: 6,
     colors: ['Vino', 'Lila', 'Azul', 'Morado', 'Rosa', 'Rosa Palo'],
@@ -801,8 +803,8 @@ const rawProducts: Product[] = [
       '/products/ref-201-camison-maternidad-enterito-bebe-dinosaurios/photo-6.jpg?v=2',
       '/products/ref-201-camison-maternidad-enterito-bebe-dinosaurios/photo-7.jpg?v=2',
     ],
-    priceRetail: 44267,
-    priceWholesale: 34267,
+    priceRetail: 40000,
+    priceWholesale: 35000,
     wholesaleMinQty: 6,
     colors: [
       'Beige Gatitos',
@@ -836,8 +838,8 @@ const rawProducts: Product[] = [
       '/products/ref-029-bata-senorial-botones-estampada/photo-5.png?v=2',
       '/products/ref-029-bata-senorial-botones-estampada/photo-6.png?v=2',
     ],
-    priceRetail: 41355,
-    priceWholesale: 31355,
+    priceRetail: 37000,
+    priceWholesale: 30564,
     wholesaleMinQty: 6,
     colors: [
       'Aqua Flores',
@@ -866,8 +868,8 @@ const rawProducts: Product[] = [
       '/products/ref-013-camison-satin-unicolor/photo-4.png?v=2',
       '/products/ref-013-camison-satin-unicolor/photo-5.png?v=2',
     ],
-    priceRetail: 33777,
-    priceWholesale: 23777,
+    priceRetail: 28000,
+    priceWholesale: 21000,
     wholesaleMinQty: 6,
     colors: ['Vino', 'Lila', 'Azul Rey', 'Malva', 'Rosa'],
     sizes: ADULT,
@@ -970,8 +972,8 @@ const rawProducts: Product[] = [
       '/products/ref-065-bermuda-camisa-cuello-v-manga-franela/photo-11.jpg?v=2',
       '/products/ref-065-bermuda-camisa-cuello-v-manga-franela/photo-12.jpg?v=2',
     ],
-    priceRetail: 43040,
-    priceWholesale: 33040,
+    priceRetail: 40000,
+    priceWholesale: 33000,
     wholesaleMinQty: 6,
     colors: [
       'Azul Marino Puntos Rojo',
@@ -1160,8 +1162,8 @@ const rawProducts: Product[] = [
       '/products/ref-203-camison-unicolor-encaje-tiras/photo-4.png?v=2',
       '/products/ref-203-camison-unicolor-encaje-tiras/photo-5.png?v=2',
     ],
-    priceRetail: 37000,
-    priceWholesale: 27000,
+    priceRetail: 25000,
+    priceWholesale: 20000,
     wholesaleMinQty: 6,
     colors: ['Lila', 'Menta', 'Amarillo', 'Rosa Palo', 'Gris'],
     sizes: ADULT,
@@ -1348,8 +1350,8 @@ const rawProducts: Product[] = [
     images: [
       '/products/ref-068-pijama-cuello-v-encaje-pantalon-floral/photo-1.png?v=2',
     ],
-    priceRetail: 40000,
-    priceWholesale: 30000,
+    priceRetail: 45000,
+    priceWholesale: 37000,
     wholesaleMinQty: 6,
     colors: ['Lila Floral'],
     sizes: ADULT,
@@ -1370,8 +1372,8 @@ const rawProducts: Product[] = [
       '/products/ref-046-camison-manga-corta-frases/photo-3.png?v=2',
       '/products/ref-046-camison-manga-corta-frases/photo-4.png?v=2',
     ],
-    priceRetail: 31403,
-    priceWholesale: 21403,
+    priceRetail: 25000,
+    priceWholesale: 20000,
     wholesaleMinQty: 6,
     colors: [
       'Rosa Paris',
@@ -1429,52 +1431,62 @@ const rawProducts: Product[] = [
 // ════════════════════════════════════════════════════════════════════
 // PRECIOS OFICIALES POR TALLA (Tabla de Precios 2026).
 // El precio depende de la referencia Y la talla: las prendas con dos
-// bandas de talla cuestan distinto. Mayorista por talla; el detal =
-// mayorista + $10.000 (constante en todo el Excel oficial 2026).
+// bandas de talla cuestan distinto. Mayorista y detal son INDEPENDIENTES por
+// talla (lista de fábrica 2026-06-18; ya no hay regla detal = mayor + $10.000).
 // Mapeado por ID de producto (no por número de ref) para evitar las
 // colisiones de referencia (201-1/201-2, 026, etc.).
 // ════════════════════════════════════════════════════════════════════
 
-/** Adulto: S-M-L-XL a un precio y XXL más caro. */
-const adultXXL = (wReg: number, wXXL: number): Record<string, SizePrice> => {
-  const q = (w: number): SizePrice => ({ wholesale: w, retail: w + 10000 });
-  return { S: q(wReg), M: q(wReg), L: q(wReg), XL: q(wReg), XXL: q(wXXL) };
-};
+/** Precio mayor/detal de una talla puntual (modelo 2026: independientes). */
+const szp = (wholesale: number, retail: number): SizePrice => ({ wholesale, retail });
 
-/** Infantil con talla XS además de las dos bandas 2-4-6-8 / 10-12-14-16. */
-const kidsBandsXS = (
-  wLow: number,
-  wHigh: number,
-  wXS: number
-): Record<string, SizePrice> => {
-  const q = (w: number): SizePrice => ({ wholesale: w, retail: w + 10000 });
-  return {
-    '2': q(wLow), '4': q(wLow), '6': q(wLow), '8': q(wLow),
-    '10': q(wHigh), '12': q(wHigh), '14': q(wHigh), '16': q(wHigh),
-    XS: q(wXS),
-  };
-};
+/** Adulto: S-M-L-XL a un precio (mayor/detal) y XXL a otro. */
+const adultXXL2 = (
+  wReg: number, rReg: number, wXXL: number, rXXL: number
+): Record<string, SizePrice> => ({
+  S: szp(wReg, rReg), M: szp(wReg, rReg), L: szp(wReg, rReg), XL: szp(wReg, rReg),
+  XXL: szp(wXXL, rXXL),
+});
+
+/** Infantil: banda 2-4-6-8 vs 10-12-14-16, cada una con su mayor y detal. */
+const kidsBands2 = (
+  wLow: number, rLow: number, wHigh: number, rHigh: number
+): Record<string, SizePrice> => ({
+  '2': szp(wLow, rLow), '4': szp(wLow, rLow), '6': szp(wLow, rLow), '8': szp(wLow, rLow),
+  '10': szp(wHigh, rHigh), '12': szp(wHigh, rHigh), '14': szp(wHigh, rHigh), '16': szp(wHigh, rHigh),
+});
+
+/** Infantil con talla XS además de las dos bandas. */
+const kidsBandsXS2 = (
+  wLow: number, rLow: number, wHigh: number, rHigh: number, wXS: number, rXS: number
+): Record<string, SizePrice> => ({
+  ...kidsBands2(wLow, rLow, wHigh, rHigh),
+  XS: szp(wXS, rXS),
+});
 
 const OFFICIAL_PRICES: Record<string, Record<string, SizePrice>> = {
-  // ── Infantil (pijamas): banda 2-4-6-8 vs 10-12-14-16 (+XS donde aplica) ──
-  'p-036': kidsBands(19768, 20138),
-  'p-037': kidsBands(22233, 23513),
-  'p-049': kidsBandsXS(21393, 22931, 24412),
-  'p-060': kidsBandsXS(19144, 18663, 21118),
-  'p-061': kidsBandsXS(23968, 25578, 26848),
-  'p-062': kidsBands(18763, 20649),
-  // ── Adulto: S-M-L-XL vs XXL (XXL ~$1.500 más caro) ──
-  'p-006': adultXXL(31098, 32598),
-  'p-009': adultXXL(31251, 32751),
-  'p-023': adultXXL(28783, 30283),
-  'p-044': adultXXL(29763, 31263),
-  'p-401': adultXXL(31251, 32751),
-  'p-002': adultXXL(28077, 29577),
-  'p-008': adultXXL(28077, 29577),
-  'p-004': adultXXL(24061, 26061),
-  'p-007': adultXXL(24061, 25061),
-  'p-015': adultXXL(24061, 25061),
-  'p-035': adultXXL(22459, 23459),
+  // ── Adulto: S-M-L-XL vs XXL (mayor y detal por talla) ──
+  'p-006': adultXXL2(31500, 40000, 33500, 42000),
+  'p-009': adultXXL2(31500, 40000, 33500, 42000),
+  'p-401': adultXXL2(31500, 40000, 33500, 42000),
+  'p-023': adultXXL2(29046, 38000, 31046, 40000),
+  'p-044': adultXXL2(29993, 38000, 31993, 40000),
+  'p-002': adultXXL2(28077, 35000, 29577, 36500),
+  'p-008': adultXXL2(28077, 35000, 29577, 36500),
+  'p-020': adultXXL2(27400, 33000, 28900, 34500),
+  'p-004': adultXXL2(24000, 27000, 26000, 29000),
+  'p-007': adultXXL2(22000, 25000, 24000, 26000),
+  'p-015': adultXXL2(24000, 27000, 26000, 28000),
+  'p-035': adultXXL2(20000, 23000, 22000, 24000),
+  // ── Infantil niña: bandas 2-4-6-8 vs 10-12-14-16 ──
+  'p-036': kidsBands2(20000, 23000, 21000, 25000),
+  'p-037': kidsBands2(23300, 27000, 24600, 30000),
+  'p-062': kidsBands2(21000, 25000, 22500, 27000),
+  'p-064': kidsBands2(20200, 22000, 22200, 25000),
+  // ── Infantil niño: bandas 2-4-6-8 vs 10-12-14-16 + XS ──
+  'p-049': kidsBandsXS2(22500, 25000, 23500, 27000, 25300, 30000),
+  'p-060': kidsBandsXS2(20000, 23000, 21000, 25000, 23000, 27000),
+  'p-061': kidsBandsXS2(23900, 25500, 25600, 27000, 26800, 30000),
 };
 
 /**
