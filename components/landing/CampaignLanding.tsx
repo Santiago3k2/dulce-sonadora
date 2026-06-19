@@ -8,6 +8,7 @@ import { priceForSize, type Product } from '@/lib/data/products';
 import { formatCOP, cn, WHATSAPP_NUMBER, buildWhatsAppLink } from '@/lib/utils/format';
 import { createOrder } from '@/app/checkout/actions';
 import { CAMPAIGNS, type CampaignKey } from './campaigns';
+import { CAMPAIGN_OFFERS } from '@/lib/data/campaignOffers';
 
 function useCountdown(dateStr?: string) {
   const [left, setLeft] = useState<{ d: number; h: number; m: number; s: number } | null>(null);
@@ -47,9 +48,15 @@ export default function CampaignLanding({
   }));
 
   // Precio: si el producto varía por talla, mostramos "Desde" la talla más barata.
-  const perSize = !!product.sizePrices;
-  const heroPrice = priceForSize(product, product.sizes[0]).retail;
-  const heroWholesale = priceForSize(product, product.sizes[0]).wholesale;
+  // Una campaña puede fijar su propio precio (CAMPAIGN_OFFERS), independiente del
+  // catálogo, para conservar el precio con el que salió en los Ads aunque la
+  // tienda cambie. createOrder usa el mismo override para cobrar lo mismo.
+  const offer = CAMPAIGN_OFFERS[campaign];
+  const priceFor = (s: string) =>
+    offer ? { retail: offer.retail, wholesale: offer.wholesale } : priceForSize(product, s);
+  const perSize = !offer && !!product.sizePrices;
+  const heroPrice = priceFor(product.sizes[0]).retail;
+  const heroWholesale = priceFor(product.sizes[0]).wholesale;
   const discount = Math.round(((cfg.anchor - heroPrice) / cfg.anchor) * 100);
   const saving = cfg.anchor - heroPrice;
 
@@ -89,7 +96,7 @@ export default function CampaignLanding({
   }, []);
   const scrollToForm = () => formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-  const sizePrice = priceForSize(product, size);
+  const sizePrice = priceFor(size);
   const isWholesale = qty >= product.wholesaleMinQty;
   const unit = isWholesale ? sizePrice.wholesale : sizePrice.retail;
   const total = unit * qty;
@@ -118,6 +125,7 @@ export default function CampaignLanding({
       notes: `${cfg.notesPrefix} · ${cfg.designLabel}: ${gallery[active]?.color} · Talla: ${size}`,
       items: [{ productId: product.id, color: gallery[active]?.color ?? '', size, quantity: qty }],
       payment_method: 'whatsapp',
+      campaign,
     });
     setSubmitting(false);
     if ('ok' in res && res.ok) {

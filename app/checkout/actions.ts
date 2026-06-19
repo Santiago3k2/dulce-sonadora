@@ -6,6 +6,7 @@ import { createServerSupabase } from '@/lib/supabase/server';
 import { tierIsWholesale } from '@/lib/customer';
 import { isPaymentMethod, priceForMethod, type PaymentMethod } from '@/lib/utils/pricing';
 import { notifyNewOrder } from '@/lib/notifications/email';
+import { CAMPAIGN_OFFERS } from '@/lib/data/campaignOffers';
 
 interface CartLine {
   productId: string;
@@ -22,6 +23,8 @@ interface CreateOrderInput {
   notes?: string;
   items: CartLine[];
   payment_method?: PaymentMethod;
+  /** Clave de campaña /oferta: aplica su precio fijo (CAMPAIGN_OFFERS) al producto. */
+  campaign?: string;
 }
 
 const WHOLESALE_MIN_QTY = 6;
@@ -118,16 +121,25 @@ export async function createOrder(input: CreateOrderInput) {
   // Mayorista por cantidad (≥6) O por tier del cliente.
   const isWholesale = totalQty >= WHOLESALE_MIN_QTY || tierWholesale;
 
+  // Precio fijo de campaña (/oferta): solo aplica al producto de esa campaña.
+  const offer = input.campaign ? CAMPAIGN_OFFERS[input.campaign] : undefined;
+
   const lineItems = [];
   let total = 0;
   for (const it of items) {
     const p = byId.get(it.productId);
     if (!p || !p.is_active) continue;
     // Precio de la talla pedida (si la prenda varía por talla); si no, el base.
+    // Si la campaña tiene precio fijo para ESTE producto, manda sobre el catálogo.
+    const useOffer = offer && p.slug === offer.productSlug;
     const sp = (p.size_prices as Record<string, { retail: number; wholesale: number }> | null)?.[it.size];
-    const raw = isWholesale
-      ? sp?.wholesale ?? p.price_wholesale
-      : sp?.retail ?? p.price_retail;
+    const raw = useOffer
+      ? isWholesale
+        ? offer!.wholesale
+        : offer!.retail
+      : isWholesale
+        ? sp?.wholesale ?? p.price_wholesale
+        : sp?.retail ?? p.price_retail;
     const base = discountPct > 0 ? Math.round(raw * (1 - discountPct / 100)) : raw;
     const unit = priceForMethod(base, method);
     total += unit * it.quantity;
