@@ -3,27 +3,41 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { X, Crown, Sparkles } from 'lucide-react';
+import { X, Sparkles } from 'lucide-react';
 
-const STORAGE_KEY = 'dulce-promo-fathers-day-seen';
+const STORAGE_KEY = 'dulce-promo-satin-seen';
 const DELAY_MS = 2200; // aparece despues del splash + un respiro
 
-// Día del Padre en Colombia: tercer domingo de junio (21 jun 2026).
-const FATHERS_DAY = new Date('2026-06-21T00:00:00-05:00');
+// Promoción DEL MES: la cuenta regresiva va al último instante del mes en curso
+// (hora Colombia). Se recalcula sola, así el modal no queda vencido como pasó
+// con el countdown de fecha fija del Día del Padre.
+function endOfMonthCO(): Date {
+  const now = new Date();
+  // 1° del mes siguiente a las 00:00 en UTC-5 = fin del mes actual en Colombia.
+  return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1, 5, 0, 0));
+}
 
-// Fotos de las pijamas para papá (Ref 065) con su pie de foto estilo polaroid.
+const MONTHS = [
+  'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+  'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre',
+];
+
+// Fotos de la colección en satín (Ref 039 short · Ref 058 pantalón).
 const PHOTOS = [
   {
-    src: '/products/ref-065-bermuda-camisa-cuello-v-manga-franela/photo-1.jpg',
-    caption: 'El consentido',
+    src: '/products/ref-039-satin-conjunto-estampados/photo-8.png',
+    caption: 'Lila corazones',
+    alt: 'Conjunto de short en satín lila con corazones',
   },
   {
-    src: '/products/ref-065-bermuda-camisa-cuello-v-manga-franela/photo-5.jpg',
-    caption: 'Para Papá 💙',
+    src: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-5.png',
+    caption: 'Suave como seda',
+    alt: 'Conjunto de pantalón en satín lila estampado',
   },
   {
-    src: '/products/ref-065-bermuda-camisa-cuello-v-manga-franela/photo-3.jpg',
-    caption: 'Modo descanso',
+    src: '/products/ref-039-satin-conjunto-estampados/photo-10.png',
+    caption: 'Rosa corazones',
+    alt: 'Conjunto de short en satín rosa con corazones negros',
   },
 ];
 
@@ -48,6 +62,7 @@ function timeLeftTo(target: Date): TimeLeft | null {
 export default function PromoModal() {
   const [open, setOpen] = useState(false);
   const [left, setLeft] = useState<TimeLeft | null>(null);
+  const [month, setMonth] = useState('');
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -64,8 +79,10 @@ export default function PromoModal() {
   // Cuenta regresiva en vivo mientras el modal está abierto.
   useEffect(() => {
     if (!open) return;
-    setLeft(timeLeftTo(FATHERS_DAY));
-    const id = setInterval(() => setLeft(timeLeftTo(FATHERS_DAY)), 1000);
+    const end = endOfMonthCO();
+    setMonth(MONTHS[new Date().getMonth()]);
+    setLeft(timeLeftTo(end));
+    const id = setInterval(() => setLeft(timeLeftTo(end)), 1000);
     return () => clearInterval(id);
   }, [open]);
 
@@ -108,18 +125,18 @@ export default function PromoModal() {
         onClick={(e) => e.stopPropagation()}
         className="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto overflow-x-hidden rounded-3xl shadow-2xl animate-zoom-in"
       >
-        {/* Fondo degradado azul navy */}
-        <div className="relative bg-gradient-to-br from-[#0B1E3C] via-[#16335F] to-[#2C5BA8] text-white">
+        {/* Fondo degradado lila/rosa satinado */}
+        <div className="relative bg-gradient-to-br from-[#5B3B6B] via-[#8E6099] to-[#C79BC4] text-white">
           {/* Glows decorativos */}
           <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute -top-10 -left-10 w-56 h-56 rounded-full bg-amber-400/20 blur-3xl" />
-            <div className="absolute -bottom-16 -right-10 w-64 h-64 rounded-full bg-sky-400/20 blur-3xl" />
-            <div className="absolute top-1/3 left-1/2 w-72 h-72 -translate-x-1/2 rounded-full bg-blue-300/10 blur-3xl" />
+            <div className="absolute -top-10 -left-10 w-56 h-56 rounded-full bg-pink-200/25 blur-3xl" />
+            <div className="absolute -bottom-16 -right-10 w-64 h-64 rounded-full bg-fuchsia-300/20 blur-3xl" />
+            <div className="absolute top-1/3 left-1/2 w-72 h-72 -translate-x-1/2 rounded-full bg-white/10 blur-3xl" />
           </div>
 
-          {/* Cinta edición limitada */}
-          <div className="absolute top-7 -left-12 z-20 w-48 -rotate-45 bg-gradient-to-r from-amber-300 to-amber-500 py-1.5 text-center text-[10px] font-bold uppercase tracking-[0.18em] text-[#0F2647] shadow-lg shadow-black/30">
-            Edición limitada
+          {/* Cinta promoción del mes */}
+          <div className="absolute top-7 -left-12 z-20 w-48 -rotate-45 bg-gradient-to-r from-pink-200 to-fuchsia-300 py-1.5 text-center text-[10px] font-bold uppercase tracking-[0.18em] text-[#5B3B6B] shadow-lg shadow-black/30">
+            Promo del mes
           </div>
 
           {/* Botón cerrar */}
@@ -132,28 +149,31 @@ export default function PromoModal() {
           </button>
 
           {/* Estrellitas decorativas */}
-          <Sparkles className="absolute top-8 right-16 text-amber-300/70 animate-float" size={20} strokeWidth={1.5} />
-          <Sparkles className="absolute top-24 left-8 text-amber-300/40" size={14} strokeWidth={1.5} />
-          <Sparkles className="absolute bottom-16 right-10 text-amber-300/50" size={16} strokeWidth={1.5} />
+          <Sparkles className="absolute top-8 right-16 text-pink-100/70 animate-float" size={20} strokeWidth={1.5} />
+          <Sparkles className="absolute top-24 left-8 text-pink-100/40" size={14} strokeWidth={1.5} />
+          <Sparkles className="absolute bottom-16 right-10 text-pink-100/50" size={16} strokeWidth={1.5} />
 
           <div className="relative px-5 sm:px-10 pt-12 pb-9 text-center">
             {/* Eyebrow */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-amber-300/40 bg-white/5 backdrop-blur px-4 py-1.5 mb-4">
-              <Crown size={15} className="text-amber-300" strokeWidth={2} />
-              <span className="text-[11px] sm:text-xs uppercase tracking-[0.28em] text-amber-200 font-semibold">
-                Para el rey de la casa
+            <div className="inline-flex items-center gap-2 rounded-full border border-pink-200/40 bg-white/5 backdrop-blur px-4 py-1.5 mb-4">
+              <Sparkles size={15} className="text-pink-100" strokeWidth={2} />
+              <span className="text-[11px] sm:text-xs uppercase tracking-[0.28em] text-pink-100 font-semibold">
+                Nuevos estampados
               </span>
             </div>
 
-            {/* Título dorado */}
+            {/* Título satinado */}
             <h2
               id="promo-title"
-              className="font-serif text-4xl sm:text-5xl md:text-6xl font-medium leading-tight mb-2 bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200 bg-clip-text text-transparent drop-shadow-[0_2px_12px_rgba(251,191,36,0.25)]"
+              className="font-serif text-4xl sm:text-5xl md:text-6xl font-medium leading-tight mb-2 bg-gradient-to-r from-pink-100 via-white to-pink-200 bg-clip-text text-transparent drop-shadow-[0_2px_12px_rgba(255,255,255,0.25)]"
             >
-              Día del Padre
+              Colección en Satín
             </h2>
             <p className="text-sm sm:text-base text-white/80 mb-7">
-              Regálale noches de descanso · <span className="text-amber-300 font-semibold">Domingo 21 de junio</span>
+              Suave, fresquita y elegante ·{' '}
+              <span className="text-pink-100 font-semibold">
+                Promoción de {month || 'este mes'}
+              </span>
             </p>
 
             {/* Abanico de fotos estilo polaroid */}
@@ -162,13 +182,13 @@ export default function PromoModal() {
                 <div className="relative aspect-[2/3] overflow-hidden rounded-md">
                   <Image
                     src={PHOTOS[0].src}
-                    alt="Pijama para papá — azul marino"
+                    alt={PHOTOS[0].alt}
                     fill
                     sizes="(max-width: 640px) 30vw, 160px"
                     className="object-cover"
                   />
                 </div>
-                <p className="mt-1.5 text-center text-[10px] sm:text-xs font-serif italic text-[#1B3A6B]">
+                <p className="mt-1.5 text-center text-[10px] sm:text-xs font-serif italic text-[#5B3B6B]">
                   {PHOTOS[0].caption}
                 </p>
               </div>
@@ -177,14 +197,14 @@ export default function PromoModal() {
                 <div className="relative aspect-[2/3] overflow-hidden rounded-md">
                   <Image
                     src={PHOTOS[1].src}
-                    alt="Pijama para papá — azul con gris"
+                    alt={PHOTOS[1].alt}
                     fill
                     sizes="(max-width: 640px) 34vw, 176px"
                     priority
                     className="object-cover"
                   />
                 </div>
-                <p className="mt-1.5 text-center text-[10px] sm:text-xs font-serif italic text-[#1B3A6B]">
+                <p className="mt-1.5 text-center text-[10px] sm:text-xs font-serif italic text-[#5B3B6B]">
                   {PHOTOS[1].caption}
                 </p>
               </div>
@@ -193,13 +213,13 @@ export default function PromoModal() {
                 <div className="relative aspect-[2/3] overflow-hidden rounded-md">
                   <Image
                     src={PHOTOS[2].src}
-                    alt="Pijama para papá — verde oliva"
+                    alt={PHOTOS[2].alt}
                     fill
                     sizes="(max-width: 640px) 30vw, 160px"
                     className="object-cover"
                   />
                 </div>
-                <p className="mt-1.5 text-center text-[10px] sm:text-xs font-serif italic text-[#1B3A6B]">
+                <p className="mt-1.5 text-center text-[10px] sm:text-xs font-serif italic text-[#5B3B6B]">
                   {PHOTOS[2].caption}
                 </p>
               </div>
@@ -209,7 +229,7 @@ export default function PromoModal() {
             {left && (
               <div className="mb-7">
                 <p className="text-[10px] uppercase tracking-[0.3em] text-white/55 mb-2.5">
-                  Falta poco para sorprenderlo
+                  La promo termina en
                 </p>
                 <div className="flex justify-center gap-2 sm:gap-3">
                   {(
@@ -224,7 +244,7 @@ export default function PromoModal() {
                       key={label}
                       className="w-14 sm:w-16 rounded-xl bg-white/10 border border-white/15 backdrop-blur px-1 py-2"
                     >
-                      <div className="text-xl sm:text-2xl font-bold text-amber-300 tabular-nums leading-none">
+                      <div className="text-xl sm:text-2xl font-bold text-pink-100 tabular-nums leading-none">
                         {String(value).padStart(2, '0')}
                       </div>
                       <div className="mt-1 text-[9px] uppercase tracking-widest text-white/60">
@@ -239,18 +259,19 @@ export default function PromoModal() {
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
               <Link
-                href="/categoria/hombre"
+                href="/categoria/short-satin"
                 onClick={close}
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-300 to-amber-500 text-[#0F2647] hover:scale-105 px-8 py-3.5 rounded-full font-bold transition-all shadow-lg shadow-amber-500/30 w-full sm:w-auto justify-center"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-100 to-fuchsia-200 text-[#5B3B6B] hover:scale-105 px-8 py-3.5 rounded-full font-bold transition-all shadow-lg shadow-fuchsia-500/30 w-full sm:w-auto justify-center"
               >
-                Ver pijamas para papá →
+                Ver colección en satín →
               </Link>
-              <button
+              <Link
+                href="/categoria/pantalon-satin"
                 onClick={close}
                 className="text-white/70 hover:text-white text-sm underline-offset-4 hover:underline transition px-3 py-2"
               >
-                Seguir explorando
-              </button>
+                Ver pantalones en satín
+              </Link>
             </div>
 
             {/* Tagline pequeño */}
