@@ -5,7 +5,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { X, Sparkles } from 'lucide-react';
 
-const STORAGE_KEY = 'dulce-promo-satin-seen';
+// Al cambiar la promo hay que cambiar también esta clave: si no, a quien ya
+// cerró la anterior no le vuelve a salir el modal.
+const STORAGE_KEY = 'dulce-promo-nuevo-ingreso-ago2026-seen';
 const DELAY_MS = 2200; // aparece despues del splash + un respiro
 
 // Promoción DEL MES: la cuenta regresiva va al último instante del mes en curso
@@ -22,29 +24,29 @@ const MONTHS = [
   'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre',
 ];
 
-// Toda la colección en satín, una foto por referencia:
-// Ref 013 bata unicolor · Ref 071 bata estampada · Ref 039 short · Ref 058 pantalón.
+// El nuevo ingreso de agosto en piel de durazno, una foto por referencia:
+// Ref 006 pantalón · Ref 405 (referencia nueva) · Ref 007 short · Ref 020 capri.
 // El abanico las inclina de los extremos hacia el centro (ver ANGLES).
 const PHOTOS = [
   {
-    src: '/products/ref-013-camison-satin-unicolor/photo-1.png',
-    caption: 'Bata unicolor',
-    alt: 'Bata corta en satín vino con tiras',
-  },
-  {
-    src: '/products/ref-071-camison-satin-flamencos-corazones-floral/photo-4.jpg',
-    caption: 'Bata estampada',
-    alt: 'Bata corta en satín rosa con estampado de gatitos',
-  },
-  {
-    src: '/products/ref-039-satin-conjunto-estampados/photo-8.jpg',
-    caption: 'Short',
-    alt: 'Conjunto de short en satín lila con corazones',
-  },
-  {
-    src: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-9.jpg',
+    src: '/products/ref-006-tank-be-happy-sage-capri-floral-gris/photo-7.jpg',
     caption: 'Pantalón',
-    alt: 'Conjunto de pantalón en satín blanco con estampado de vaquita',
+    alt: 'Pijama de pantalón largo floral palo de rosa con blusa de esqueleto',
+  },
+  {
+    src: '/products/ref-405-camiseta-manga-corta-capri-estampado/photo-1.jpg',
+    caption: 'Ref 405 · nueva',
+    alt: 'Camiseta manga corta vino con capri floral palo de rosa',
+  },
+  {
+    src: '/products/ref-007-tank-short/photo-5.jpg',
+    caption: 'Short',
+    alt: 'Blusa de tiras con frase y short floral rosa',
+  },
+  {
+    src: '/products/ref-020-tank-amarillo-ruffle-capri-donut-azul/photo-7.jpg',
+    caption: 'Capri',
+    alt: 'Blusa de tiras con boleros y capri floral con mariposas en malva',
   },
 ];
 
@@ -174,7 +176,7 @@ export default function PromoModal() {
             <div className="inline-flex items-center gap-2 rounded-full border border-pink-200/40 bg-white/5 backdrop-blur px-4 py-1.5 mb-4">
               <Sparkles size={15} className="text-pink-100" strokeWidth={2} />
               <span className="text-[11px] sm:text-xs uppercase tracking-[0.28em] text-pink-100 font-semibold">
-                Nuevos estampados
+                Nuevo ingreso
               </span>
             </div>
 
@@ -183,12 +185,12 @@ export default function PromoModal() {
               id="promo-title"
               className="font-serif text-4xl sm:text-5xl md:text-6xl font-medium leading-tight mb-2 bg-gradient-to-r from-pink-100 via-white to-pink-200 bg-clip-text text-transparent drop-shadow-[0_2px_12px_rgba(255,255,255,0.25)]"
             >
-              Colección en Satín
+              Recién Llegadas
             </h2>
             <p className="text-sm sm:text-base text-white/80 mb-7">
-              Suave, fresquita y elegante ·{' '}
+              Piel de durazno, suave y fresquita ·{' '}
               <span className="text-pink-100 font-semibold">
-                Promoción de {month || 'este mes'}
+                Novedades de {month || 'este mes'}
               </span>
             </p>
 
@@ -220,7 +222,7 @@ export default function PromoModal() {
             {left && (
               <div className="mb-7">
                 <p className="text-[10px] uppercase tracking-[0.3em] text-white/55 mb-2.5">
-                  La promo termina en
+                  Novedades del mes · quedan
                 </p>
                 <div className="flex justify-center gap-2 sm:gap-3">
                   {(
@@ -247,19 +249,27 @@ export default function PromoModal() {
               </div>
             )}
 
-            {/* CTAs: la colección vive en 3 categorías, así que el botón lleva a
-                las batas (lo nuevo) y debajo quedan los otros dos apartados. */}
+            {/* CTAs: el botón lleva a la referencia nueva (la 405) y debajo
+                quedan los tres apartados donde entraron estampados nuevos. */}
             <div className="flex flex-col items-center gap-3">
               <Link
-                href="/categoria/bata-satin"
+                href="/producto/camiseta-manga-corta-capri-piel-durazno"
                 onClick={close}
                 className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-100 to-fuchsia-200 text-[#5B3B6B] hover:scale-105 px-8 py-3.5 rounded-full font-bold transition-all shadow-lg shadow-fuchsia-500/30 w-full sm:w-auto justify-center"
               >
-                Ver batas en satín →
+                Ver la Ref 405 →
               </Link>
               <div className="flex items-center gap-1 text-sm text-white/70">
                 <Link
-                  href="/categoria/short-satin"
+                  href="/categoria/pantalon-piel-durazno"
+                  onClick={close}
+                  className="hover:text-white underline-offset-4 hover:underline transition px-2 py-1"
+                >
+                  Pantalones
+                </Link>
+                <span className="text-white/30">·</span>
+                <Link
+                  href="/categoria/short-piel-durazno"
                   onClick={close}
                   className="hover:text-white underline-offset-4 hover:underline transition px-2 py-1"
                 >
@@ -267,11 +277,11 @@ export default function PromoModal() {
                 </Link>
                 <span className="text-white/30">·</span>
                 <Link
-                  href="/categoria/pantalon-satin"
+                  href="/categoria/capri-piel-durazno"
                   onClick={close}
                   className="hover:text-white underline-offset-4 hover:underline transition px-2 py-1"
                 >
-                  Pantalones
+                  Capris
                 </Link>
               </div>
             </div>

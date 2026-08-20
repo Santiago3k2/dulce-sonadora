@@ -13,20 +13,28 @@ interface Slide {
   subtitle: string;
   description: string;
   image: string;
-  priceRetail: number;
-  priceWholesale: number;
+  /** Producto del que sale el precio: así el hero nunca queda desfasado. */
+  slug: string;
   cta: string;
   href: string;
 }
 
 const slides: Slide[] = [
   {
+    title: 'Recién Llegadas',
+    subtitle: 'Nuevo ingreso',
+    description: 'Camiseta y capri en piel de durazno',
+    image: '/products/ref-405-camiseta-manga-corta-capri-estampado/photo-1.jpg',
+    slug: 'camiseta-manga-corta-capri-piel-durazno',
+    cta: 'Ver la Ref 405',
+    href: '/producto/camiseta-manga-corta-capri-piel-durazno',
+  },
+  {
     title: 'Pijamas Satín',
     subtitle: 'Suaves como un sueño',
     description: 'Conjunto en satín',
     image: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-1.png?v=2',
-    priceRetail: 59000,
-    priceWholesale: 49000,
+    slug: 'conjunto-satin-rosa-cerezas',
     cta: 'Comprar',
     href: '/categoria/pantalon-satin',
   },
@@ -35,8 +43,7 @@ const slides: Slide[] = [
     subtitle: 'Comodidad con estilo',
     description: 'Conjunto camisa y capri',
     image: '/products/ref-069-capri-camisa-botones-estampados/photo-1.png?v=2',
-    priceRetail: 47000,
-    priceWholesale: 37000,
+    slug: 'capri-camisa-botones-estampados',
     cta: 'Comprar',
     href: '/categoria/capri-algodon',
   },
@@ -45,8 +52,7 @@ const slides: Slide[] = [
     subtitle: 'Elegante y femenina',
     description: 'Batas en satín unicolor y estampadas',
     image: '/products/ref-013-camison-satin-unicolor/photo-1.png?v=2',
-    priceRetail: 34000,
-    priceWholesale: 24000,
+    slug: 'camison-satin-unicolor',
     cta: 'Descubrir',
     href: '/categoria/bata-satin',
   },
@@ -55,14 +61,30 @@ const slides: Slide[] = [
     subtitle: 'Suavidad que abraza',
     description: 'Pijamas en piel de durazno',
     image: '/products/ref-042-conjunto-good-night-y-stars-amarillo-y-verde/photo-1.jpg?v=2',
-    priceRetail: 38000,
-    priceWholesale: 28000,
+    slug: 'conjunto-good-night-stars-amarillo-verde',
     cta: 'Comprar',
     href: '/categoria/pantalon-piel-durazno',
   },
 ];
 
-export default function HeroSlider() {
+/** Slugs que el home debe consultar para pasarle los precios al hero. */
+export const HERO_SLUGS = slides.map((s) => s.slug);
+
+export interface HeroPrice {
+  retail: number;
+  wholesale: number;
+}
+
+/**
+ * Los precios llegan del home (que los consulta a Supabase por slug). Si un
+ * producto ya no existe, esa diapositiva se muestra sin precio en vez de
+ * anunciar uno viejo.
+ */
+export default function HeroSlider({
+  prices = {},
+}: {
+  prices?: Record<string, HeroPrice>;
+}) {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: 'start' },
     [Autoplay({ delay: 5000, stopOnInteraction: false })]
@@ -105,14 +127,16 @@ export default function HeroSlider() {
                       <p className="text-sm md:text-base text-text-muted">
                         {s.description} desde
                       </p>
-                      <div className="flex items-baseline gap-3 justify-center md:justify-start">
-                        <span className="text-text-muted text-lg md:text-xl line-through">
-                          {formatCOP(s.priceRetail)}
-                        </span>
-                        <span className="font-serif text-3xl md:text-5xl font-bold bg-gradient-to-r from-pink-vivid to-pink-deeper bg-clip-text text-transparent">
-                          {formatCOP(s.priceWholesale)}
-                        </span>
-                      </div>
+                      {prices[s.slug] && (
+                        <div className="flex items-baseline gap-3 justify-center md:justify-start">
+                          <span className="text-text-muted text-lg md:text-xl line-through">
+                            {formatCOP(prices[s.slug].retail)}
+                          </span>
+                          <span className="font-serif text-3xl md:text-5xl font-bold bg-gradient-to-r from-pink-vivid to-pink-deeper bg-clip-text text-transparent">
+                            {formatCOP(prices[s.slug].wholesale)}
+                          </span>
+                        </div>
+                      )}
                     </div>
                     <Link href={s.href} className="btn-primary inline-flex">
                       {s.cta} →

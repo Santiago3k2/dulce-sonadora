@@ -64,6 +64,18 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
   return data ? mapProduct(data) : null;
 }
 
+/** Varios productos por slug, en una sola consulta (lo usa el hero del home). */
+export async function getProductsBySlugs(slugs: string[]): Promise<Product[]> {
+  if (!slugs.length) return [];
+  const { data, error } = await supabasePublic
+    .from('products')
+    .select(SELECT)
+    .in('slug', slugs)
+    .eq('is_active', true);
+  if (error) console.error('getProductsBySlugs', error.message);
+  return (data ?? []).map(mapProduct);
+}
+
 export async function getProductsByCategory(slug: string): Promise<Product[]> {
   const { data: cat } = await supabasePublic
     .from('categories')
