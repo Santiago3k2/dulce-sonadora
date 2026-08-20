@@ -23,6 +23,11 @@ build/
 # vercel
 .vercel
 
+# remotion (deps y videos renderizados; el codigo fuente si se versiona)
+remotion-ads/node_modules/
+remotion-ads/out/
+remotion-ads/.cache/
+
 # shopify (archivos locales del CLI)
 .shopify/
 
@@ -34,6 +39,9 @@ build/
 ROPA DULCE-*/
 EFECTO*.txt
 LANDING-PAGE-DULCE-SONADORA/
+
+# Copias 4:5 para Instagram/Facebook (generadas por prepare-ig-images.ps1)
+ig-images/
 
 # Excel de precios (documento fuente, no se despliega) y su lock temporal
 Tabla_Precios_*.xlsx

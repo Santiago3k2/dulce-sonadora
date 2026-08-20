@@ -123,7 +123,7 @@ export const categories: Category[] = [
     group: 'bata',
     groupLabel: 'Batas',
     image: '/products/ref-013-camison-satin-unicolor/photo-1.png?v=2',
-    description: 'Batas y camisones en satín, elegantes y femeninas.',
+    description: 'Batas en satín, elegantes y femeninas.',
   },
 
   // ── NAVIDAD ──

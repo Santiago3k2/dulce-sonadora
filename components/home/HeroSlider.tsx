@@ -43,7 +43,7 @@ const slides: Slide[] = [
   {
     title: 'Bata en Satín',
     subtitle: 'Elegante y femenina',
-    description: 'Batas y camisones en satín',
+    description: 'Batas en satín unicolor y estampadas',
     image: '/products/ref-013-camison-satin-unicolor/photo-1.png?v=2',
     priceRetail: 34000,
     priceWholesale: 24000,

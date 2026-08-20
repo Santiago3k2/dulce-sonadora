@@ -22,23 +22,39 @@ const MONTHS = [
   'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre',
 ];
 
-// Fotos de la colección en satín (Ref 039 short · Ref 058 pantalón).
+// Toda la colección en satín, una foto por referencia:
+// Ref 013 bata unicolor · Ref 071 bata estampada · Ref 039 short · Ref 058 pantalón.
+// El abanico las inclina de los extremos hacia el centro (ver ANGLES).
 const PHOTOS = [
   {
-    src: '/products/ref-039-satin-conjunto-estampados/photo-8.png',
-    caption: 'Lila corazones',
+    src: '/products/ref-013-camison-satin-unicolor/photo-1.png',
+    caption: 'Bata unicolor',
+    alt: 'Bata corta en satín vino con tiras',
+  },
+  {
+    src: '/products/ref-071-camison-satin-flamencos-corazones-floral/photo-4.jpg',
+    caption: 'Bata estampada',
+    alt: 'Bata corta en satín rosa con estampado de gatitos',
+  },
+  {
+    src: '/products/ref-039-satin-conjunto-estampados/photo-8.jpg',
+    caption: 'Short',
     alt: 'Conjunto de short en satín lila con corazones',
   },
   {
-    src: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-5.png',
-    caption: 'Suave como seda',
-    alt: 'Conjunto de pantalón en satín lila estampado',
+    src: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-9.jpg',
+    caption: 'Pantalón',
+    alt: 'Conjunto de pantalón en satín blanco con estampado de vaquita',
   },
-  {
-    src: '/products/ref-039-satin-conjunto-estampados/photo-10.png',
-    caption: 'Rosa corazones',
-    alt: 'Conjunto de short en satín rosa con corazones negros',
-  },
+];
+
+// Inclinación de cada polaroid del abanico (mismo orden que PHOTOS). Van juntas
+// pero SIN solaparse: montadas se comían el pie de foto de la tarjeta de atrás.
+const ANGLES = [
+  '-rotate-[9deg] translate-y-2',
+  '-rotate-[3deg]',
+  'rotate-[3deg]',
+  'rotate-[9deg] translate-y-2',
 ];
 
 interface TimeLeft {
@@ -176,53 +192,28 @@ export default function PromoModal() {
               </span>
             </p>
 
-            {/* Abanico de fotos estilo polaroid */}
-            <div className="flex items-end justify-center mb-8">
-              <div className="w-28 sm:w-36 md:w-40 -rotate-[8deg] translate-y-3 -mr-6 sm:-mr-7 z-0 bg-white rounded-lg p-1.5 pb-2 shadow-2xl shadow-black/50 transition-transform duration-300 hover:rotate-0 hover:scale-105 hover:z-20">
-                <div className="relative aspect-[2/3] overflow-hidden rounded-md">
-                  <Image
-                    src={PHOTOS[0].src}
-                    alt={PHOTOS[0].alt}
-                    fill
-                    sizes="(max-width: 640px) 30vw, 160px"
-                    className="object-cover"
-                  />
+            {/* Abanico de fotos estilo polaroid — una por referencia */}
+            <div className="flex items-end justify-center gap-1 sm:gap-1.5 mb-8">
+              {PHOTOS.map((photo, i) => (
+                <div
+                  key={photo.src}
+                  className={`w-[4.5rem] sm:w-28 md:w-32 shrink-0 ${ANGLES[i]} bg-white rounded-lg p-1 sm:p-1.5 pb-1.5 sm:pb-2 shadow-2xl shadow-black/50 transition-transform duration-300 hover:rotate-0 hover:scale-110 hover:z-20 relative`}
+                >
+                  <div className="relative aspect-[2/3] overflow-hidden rounded-md">
+                    <Image
+                      src={photo.src}
+                      alt={photo.alt}
+                      fill
+                      sizes="(max-width: 640px) 22vw, 128px"
+                      priority={i === 1}
+                      className="object-cover"
+                    />
+                  </div>
+                  <p className="mt-1 sm:mt-1.5 text-center text-[8px] sm:text-[10px] md:text-xs font-serif italic text-[#5B3B6B] leading-tight">
+                    {photo.caption}
+                  </p>
                 </div>
-                <p className="mt-1.5 text-center text-[10px] sm:text-xs font-serif italic text-[#5B3B6B]">
-                  {PHOTOS[0].caption}
-                </p>
-              </div>
-
-              <div className="w-32 sm:w-40 md:w-44 z-10 bg-white rounded-lg p-1.5 pb-2 shadow-2xl shadow-black/50 transition-transform duration-300 hover:scale-105">
-                <div className="relative aspect-[2/3] overflow-hidden rounded-md">
-                  <Image
-                    src={PHOTOS[1].src}
-                    alt={PHOTOS[1].alt}
-                    fill
-                    sizes="(max-width: 640px) 34vw, 176px"
-                    priority
-                    className="object-cover"
-                  />
-                </div>
-                <p className="mt-1.5 text-center text-[10px] sm:text-xs font-serif italic text-[#5B3B6B]">
-                  {PHOTOS[1].caption}
-                </p>
-              </div>
-
-              <div className="w-28 sm:w-36 md:w-40 rotate-[8deg] translate-y-3 -ml-6 sm:-ml-7 z-0 bg-white rounded-lg p-1.5 pb-2 shadow-2xl shadow-black/50 transition-transform duration-300 hover:rotate-0 hover:scale-105 hover:z-20">
-                <div className="relative aspect-[2/3] overflow-hidden rounded-md">
-                  <Image
-                    src={PHOTOS[2].src}
-                    alt={PHOTOS[2].alt}
-                    fill
-                    sizes="(max-width: 640px) 30vw, 160px"
-                    className="object-cover"
-                  />
-                </div>
-                <p className="mt-1.5 text-center text-[10px] sm:text-xs font-serif italic text-[#5B3B6B]">
-                  {PHOTOS[2].caption}
-                </p>
-              </div>
+              ))}
             </div>
 
             {/* Cuenta regresiva */}
@@ -256,22 +247,33 @@ export default function PromoModal() {
               </div>
             )}
 
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
+            {/* CTAs: la colección vive en 3 categorías, así que el botón lleva a
+                las batas (lo nuevo) y debajo quedan los otros dos apartados. */}
+            <div className="flex flex-col items-center gap-3">
               <Link
-                href="/categoria/short-satin"
+                href="/categoria/bata-satin"
                 onClick={close}
                 className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-100 to-fuchsia-200 text-[#5B3B6B] hover:scale-105 px-8 py-3.5 rounded-full font-bold transition-all shadow-lg shadow-fuchsia-500/30 w-full sm:w-auto justify-center"
               >
-                Ver colección en satín →
+                Ver batas en satín →
               </Link>
-              <Link
-                href="/categoria/pantalon-satin"
-                onClick={close}
-                className="text-white/70 hover:text-white text-sm underline-offset-4 hover:underline transition px-3 py-2"
-              >
-                Ver pantalones en satín
-              </Link>
+              <div className="flex items-center gap-1 text-sm text-white/70">
+                <Link
+                  href="/categoria/short-satin"
+                  onClick={close}
+                  className="hover:text-white underline-offset-4 hover:underline transition px-2 py-1"
+                >
+                  Shorts
+                </Link>
+                <span className="text-white/30">·</span>
+                <Link
+                  href="/categoria/pantalon-satin"
+                  onClick={close}
+                  className="hover:text-white underline-offset-4 hover:underline transition px-2 py-1"
+                >
+                  Pantalones
+                </Link>
+              </div>
             </div>
 
             {/* Tagline pequeño */}
