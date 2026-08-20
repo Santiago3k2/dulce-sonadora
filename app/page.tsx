@@ -1,4 +1,5 @@
-import HeroSlider, { HERO_SLUGS, type HeroPrice } from '@/components/home/HeroSlider';
+import HeroSlider from '@/components/home/HeroSlider';
+import { HERO_SLUGS, type HeroPrice } from '@/lib/data/hero-slides';
 import CategoryGrid from '@/components/home/CategoryGrid';
 import FeaturedProducts from '@/components/home/FeaturedProducts';
 import BenefitsSection from '@/components/home/BenefitsSection';
