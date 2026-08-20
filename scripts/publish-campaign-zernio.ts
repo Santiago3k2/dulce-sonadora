@@ -28,6 +28,17 @@ import { basename, extname, dirname, resolve } from 'path';
 process.loadEnvFile('.env.local');
 
 const API = 'https://zernio.com/api/v1';
+
+// Primer comentario automático (IG/FB): deja el WhatsApp y el link visibles aunque
+// el caption se corte con "... más". No aplica a TikTok ni a historias/reels.
+const FIRST_COMMENT = [
+  '📲 Pedidos por WhatsApp: 317 727 6506 → wa.me/573177276506',
+  '🛍️ Catálogo completo en dulcesoñadora.com',
+].join('\n');
+const firstCommentFor = (platform: string) =>
+  platform === 'instagram' || platform === 'facebook'
+    ? { platformSpecificData: { firstComment: FIRST_COMMENT } }
+    : {};
 const KEY = process.env.ZERNIO_API_KEY;
 const TZ = process.env.TZ ?? 'America/Bogota';
 
@@ -127,7 +138,7 @@ async function main() {
         body: JSON.stringify({
           content: p.caption,
           mediaItems: [{ type: 'image', url }],
-          platforms: [{ platform: t.platform, accountId: t.accountId }],
+          platforms: [{ platform: t.platform, accountId: t.accountId, ...firstCommentFor(t.platform) }],
           ...(p.at ? { scheduledFor: p.at, timezone: TZ } : { publishNow: true }),
         }),
       });

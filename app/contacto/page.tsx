@@ -86,7 +86,7 @@ export default function ContactPage() {
             rel="noopener noreferrer"
             className="text-xs text-text-muted hover:text-pink-deeper"
           >
-            +57 316 903 0999
+            +57 317 727 6506
           </a>
         </div>
         <div className="flex flex-col items-center text-center gap-2">

@@ -152,7 +152,7 @@ export default function Footer({ groups }: { groups: CategoryGroup[] }) {
               rel="noopener noreferrer"
               className="hover:text-pink-deeper"
             >
-              +57 316 903 0999
+              +57 317 727 6506
             </a>
           </div>
           <div className="flex items-start gap-2">
