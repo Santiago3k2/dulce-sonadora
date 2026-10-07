@@ -27,7 +27,7 @@ export const categories: Category[] = [
     name: 'Pantalón Algodón',
     group: 'pantalon',
     groupLabel: 'Pantalones',
-    image: '/products/ref-072-pantalon-camisa-botones-unicolor/photo-1.png?v=2',
+    image: '/products/ref-072-pantalon-camisa-botones-unicolor/photo-1.jpg?v=2',
     description: 'Pijamas de pantalón largo en algodón: tela galleta y franela.',
   },
   {
@@ -43,7 +43,7 @@ export const categories: Category[] = [
     name: 'Pantalón Satín',
     group: 'pantalon',
     groupLabel: 'Pantalones',
-    image: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-1.png?v=2',
+    image: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-1.jpg?v=2',
     description: 'Pijamas de pantalón largo en satín suave.',
   },
 
@@ -53,7 +53,7 @@ export const categories: Category[] = [
     name: 'Capri Algodón',
     group: 'capri',
     groupLabel: 'Capris',
-    image: '/products/ref-069-capri-camisa-botones-estampados/photo-1.png?v=2',
+    image: '/products/ref-069-capri-camisa-botones-estampados/photo-1.jpg?v=2',
     description: 'Conjuntos con capri en algodón y franela.',
   },
   {
@@ -69,7 +69,7 @@ export const categories: Category[] = [
     name: 'Capri Satín',
     group: 'capri',
     groupLabel: 'Capris',
-    image: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-1.png?v=2',
+    image: '/products/ref-058-conjunto-satin-rosa-cerezas/photo-1.jpg?v=2',
     description: 'Conjuntos con capri en satín.',
     isActive: false, // aún sin productos — se activa cuando llegue mercancía
   },
@@ -80,7 +80,7 @@ export const categories: Category[] = [
     name: 'Short Algodón',
     group: 'short',
     groupLabel: 'Shorts',
-    image: '/products/ref-074-camisa-botones-short-estampado/photo-1.png?v=3',
+    image: '/products/ref-074-camisa-botones-short-estampado/photo-1.jpg?v=3',
     description: 'Pijamas de short en algodón.',
   },
   {
@@ -106,7 +106,7 @@ export const categories: Category[] = [
     name: 'Bata Algodón',
     group: 'bata',
     groupLabel: 'Batas',
-    image: '/products/ref-029-bata-senorial-botones-estampada/photo-1.png?v=2',
+    image: '/products/ref-029-bata-senorial-botones-estampada/photo-1.jpg?v=2',
     description: 'Batas y camisones en algodón, frescos para descansar.',
   },
   {
@@ -114,7 +114,7 @@ export const categories: Category[] = [
     name: 'Bata Piel de Durazno',
     group: 'bata',
     groupLabel: 'Batas',
-    image: '/products/ref-046-camison-manga-corta-frases/photo-1.png?v=2',
+    image: '/products/ref-046-camison-manga-corta-frases/photo-1.jpg?v=2',
     description: 'Batas y camisones en piel de durazno.',
   },
   {
@@ -122,7 +122,7 @@ export const categories: Category[] = [
     name: 'Bata Satín',
     group: 'bata',
     groupLabel: 'Batas',
-    image: '/products/ref-013-camison-satin-unicolor/photo-1.png?v=2',
+    image: '/products/ref-013-camison-satin-unicolor/photo-1.jpg?v=2',
     description: 'Batas en satín, elegantes y femeninas.',
   },
 
