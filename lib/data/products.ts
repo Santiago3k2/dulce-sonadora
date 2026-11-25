@@ -1484,6 +1484,12 @@ const rawProducts: Product[] = [
     name: 'Ref 036 - SHORT DE NINA GOLAS PIEL DE DURAZNO (SUBLIMADO) CON BLUSA MANGA UNICOLOR PIEL DE DURAZNO',
     category: 'nina-pijama',
     images: [
+      '/products/ref-036-nina-huntyk-crema-short-morado/photo-7.jpg?v=2',
+      '/products/ref-036-nina-huntyk-crema-short-morado/photo-8.jpg?v=2',
+      '/products/ref-036-nina-huntyk-crema-short-morado/photo-9.jpg?v=2',
+      '/products/ref-036-nina-huntyk-crema-short-morado/photo-10.jpg?v=2',
+      '/products/ref-036-nina-huntyk-crema-short-morado/photo-11.jpg?v=2',
+      '/products/ref-036-nina-huntyk-crema-short-morado/photo-12.jpg?v=2',
       '/products/ref-036-nina-huntyk-crema-short-morado/photo-1.jpg?v=2',
       '/products/ref-036-nina-huntyk-crema-short-morado/photo-2.jpg?v=2',
       '/products/ref-036-nina-huntyk-crema-short-morado/photo-3.jpg?v=2',
@@ -1495,6 +1501,12 @@ const rawProducts: Product[] = [
     priceWholesale: 20000,
     wholesaleMinQty: 6,
     colors: [
+      'Rosado Minnie',
+      'Fucsia Hello Kitty',
+      'Amarillo Sweet Dreams',
+      'Menta Snoopy',
+      'Lila Panda Good Night',
+      'Blanco Chicas Pop',
       'Blanco Huntrix',
       'Fucsia Minnie',
       'Lila Gatito',
@@ -1504,10 +1516,10 @@ const rawProducts: Product[] = [
     ],
     sizes: KIDS,
     isFeatured: false,
-    isNew: false,
+    isNew: true,
     inStock: true,
     description:
-      'Pijama para niña: blusa manga corta + short en piel de durazno con personajes. Varios diseños: Huntrix, Minnie, gatito, osito, Stitch y Hello Kitty.',
+      'Pijama para niña: blusa manga corta + short en piel de durazno con personajes. Varios diseños: Minnie, Hello Kitty, Sweet Dreams, Snoopy, panda Good Night, chicas pop, Huntrix, gatito, osito y Stitch.',
   },
   {
     id: 'p-037',
