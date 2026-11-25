@@ -52,7 +52,7 @@ const SUSPENDED_HTML = `<!doctype html>
  */
 
 // ⬇⬇⬇  PARA REACTIVAR LA TIENDA: pon esto en false y haz git push  ⬇⬇⬇
-const SITE_SUSPENDED = true;
+const SITE_SUSPENDED = false;
 // ⬆⬆⬆ ---------------------------------------------------------------- ⬆⬆⬆
 
 export async function middleware(request: NextRequest) {
